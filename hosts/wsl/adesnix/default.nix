@@ -1,0 +1,30 @@
+{
+  pkgs,
+  user,
+  ...
+}:
+{
+  imports = [ ];
+
+  wsl = {
+    enable = true;
+    wslConf.automount.root = "/mnt";
+    defaultUser = user;
+  };
+
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+  };
+
+  networking.hostName = "adesnix";
+  virtualisation.docker.enable = true;
+  security.sudo.wheelNeedsPassword = false;
+
+  system.stateVersion = "25.05";
+}
