@@ -34,14 +34,24 @@
       };
     in
     {
-      nixosConfigurations.adesnix = mkSystem "wsl:adesnix" {
+      nixosConfigurations.nixwsl = mkSystem "wsl:adesnix" {
         system = "x86_64-linux";
         user = "xybschin";
       };
 
       nixosConfigurations.nixvidia = mkSystem "nixvidia" {
         system = "x86_64-linux";
-        user = "xybschin";
+        user = "bjarne";
+      };
+
+
+      # Work related WSL setup where I may not be able to use NixOS.
+      homeConfiguration."xybschin@customer" = inputs.home-manager.lib.homeManagerConfiguration {
+      	pkgs = import inputs.nixpkgs { inherit system; overlays = overlays; };
+	extraSpecialArgs = specialArgs;
+  	modules = [
+          ../home-manager/xybschin;
+        ];
       };
     };
 }

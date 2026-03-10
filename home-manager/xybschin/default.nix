@@ -8,6 +8,7 @@
     tree
     unzip
     gnumake
+    git
   ];
 
   imports = [

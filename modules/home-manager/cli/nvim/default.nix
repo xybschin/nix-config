@@ -26,7 +26,7 @@ in
 
     # Formtter
     nixfmt
-    prettierd
+    prettier
     beautysh
     stylua
   ];
