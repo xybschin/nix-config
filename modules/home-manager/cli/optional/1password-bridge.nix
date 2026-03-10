@@ -26,6 +26,8 @@ let
   '';
 in
 {
+  home.packages = with pkgs; [ socat ];
+
   home.sessionVariables = {
     SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
   };
