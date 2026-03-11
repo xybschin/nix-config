@@ -23,15 +23,10 @@
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
       overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+      specialArgs = { inherit overlays nixpkgs inputs configRoot; };
 
-      mkSystem = import ./lib/mksystem.nix {
-        inherit
-          overlays
-          nixpkgs
-          inputs
-          configRoot
-          ;
-      };
+      mkSystem = import ./lib/mksystem.nix specialArgs;
+      mkStandalone = import ./lib/mkstandalone.nix specialArgs;
     in
     {
       nixosConfigurations.nixwsl = mkSystem "wsl:adesnix" {
@@ -44,14 +39,8 @@
         user = "bjarne";
       };
 
-
-      # Work related WSL setup where I may not be able to use NixOS.
-      homeConfiguration."xybschin@customer" = inputs.home-manager.lib.homeManagerConfiguration {
-      	pkgs = import inputs.nixpkgs { inherit system; overlays = overlays; };
-	extraSpecialArgs = specialArgs;
-  	modules = [
-          ../home-manager/xybschin;
-        ];
+      homeConfigurations."xybschin" = mkStandalone {
+      	user = "xybschin";
       };
     };
 }

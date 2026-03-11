@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }:
@@ -9,9 +10,11 @@
 
   programs.opencode = {
     enable = true;
-    settings = {
-      provider = builtins.fromJSON (builtins.readFile "${config.xdg.configHome}/opencode/providers.json");
-    };
+    settings = lib.mkMerge [
+      (lib.mkIf (builtins.pathExists "${config.xdg.configHome}/opencode/providers.json") {
+        provider = builtins.fromJSON (builtins.readFile "${config.xdg.configHome}/opencode/providers.json");
+      })
+    ];
   };
 
   home.file.".config/opencode/themes/koda.json".text = builtins.toJSON {
