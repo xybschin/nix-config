@@ -22,7 +22,7 @@
     };
   };
 
-  networking.hostName = "adesnix";
+  networking.hostName = "nixwsl";
   virtualisation.docker.enable = true;
   security.sudo.wheelNeedsPassword = false;
 

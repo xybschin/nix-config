@@ -36,14 +36,14 @@
       mkStandalone = import ./lib/mkstandalone.nix specialArgs;
     in
     {
-      nixosConfigurations.nixwsl = mkSystem "wsl:adesnix" {
-        system = "x86_64-linux";
-        user = "xybschin";
-      };
-
       nixosConfigurations.nixvidia = mkSystem "nixvidia" {
         system = "x86_64-linux";
         user = "bjarne";
+      };
+
+      nixosConfigurations.nixwsl = mkSystem "wsl" {
+        system = "x86_64-linux";
+        user = "xybschin";
       };
 
       homeConfigurations."xybschin" = mkStandalone {

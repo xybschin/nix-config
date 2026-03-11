@@ -13,9 +13,7 @@ name:
 
 let
   isWsl = nixpkgs.lib.strings.hasInfix "wsl" name;
-  hostConfig = ../hosts/${
-    if isWsl then "wsl/${nixpkgs.lib.strings.removePrefix "wsl:" name}" else name
-  };
+  hostConfig = ../hosts/${if isWsl then "wsl" else name};
 
   userSystemConfig = ../hosts/users/${user};
 
