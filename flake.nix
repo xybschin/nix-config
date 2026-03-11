@@ -39,12 +39,8 @@
         user = "bjarne";
       };
 
-<<<<<<< HEAD
-      homeConfigurations."xybschin" = mkStandalone {
-=======
       # Work related WSL setup where I may not be able to use NixOS.
-      homeConfigurations."xybschin@customer" = mkStandalone {
->>>>>>> dccb27679a8c39b0e80b9b7846e6b874903caaf7
+      homeConfigurations."xybschin" = mkStandalone {
       	user = "xybschin";
       };
     };
