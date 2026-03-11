@@ -112,7 +112,7 @@ now_if_args(function()
 		"bashls",
 		"nil_ls",
 		"docker_language_server",
-    "gols",
+		"gols",
 	})
 end)
 
@@ -138,7 +138,7 @@ later(function()
 			lua = { "stylua" },
 			sh = { "beautysh" },
 			yaml = { "yamlfmt" },
-			json = { "prettierd" },
+			json = { "prettier" },
 			go = { "gofmt", "goimports" },
 			nix = { "nixfmt" },
 		},
