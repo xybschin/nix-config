@@ -23,7 +23,14 @@
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
       overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
-      specialArgs = { inherit overlays nixpkgs inputs configRoot; };
+      specialArgs = {
+        inherit
+          overlays
+          nixpkgs
+          inputs
+          configRoot
+          ;
+      };
 
       mkSystem = import ./lib/mksystem.nix specialArgs;
       mkStandalone = import ./lib/mkstandalone.nix specialArgs;
@@ -39,9 +46,8 @@
         user = "bjarne";
       };
 
-      # Work related WSL setup where I may not be able to use NixOS.
       homeConfigurations."xybschin" = mkStandalone {
-      	user = "xybschin";
+        user = "xybschin";
       };
     };
 }
