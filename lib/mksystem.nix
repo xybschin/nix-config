@@ -13,8 +13,13 @@ name:
 
 let
   isWsl = nixpkgs.lib.strings.hasInfix "wsl" name;
+
+  # Load host specific nixox configurations.
   hostConfig = ../hosts/${if isWsl then "wsl" else name};
+
+  # Load user specific nixos and home-manager configurations.
   userSystemConfig = ../hosts/users/${user};
+  userHomeConfig = import ../home-manager/${user};
 
   specialArgs = {
     isWsl = isWsl;
@@ -40,7 +45,7 @@ nixpkgs.lib.nixosSystem rec {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
-      home-manager.users.${user} = import ../home-manager/${user};
+      home-manager.users.${user} = userHomeConfig;
     }
   ];
 }

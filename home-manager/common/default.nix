@@ -20,7 +20,9 @@
         ../../modules/home-manager/cli/optional/1password-bridge.nix
       ]
     else
-      [ ]
+      [
+        ../../modules/home-manager/cli/optional/1password-ssh.nix
+      ]
   );
 
   home.stateVersion = "25.05";

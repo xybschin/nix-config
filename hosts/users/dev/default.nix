@@ -1,13 +1,11 @@
-{ pkgs, user, ... }:
+{ pkgs, ... }:
 
 {
   environment.localBinInPath = true;
-
   programs.zsh.enable = true;
-
-  users.users.${user} = {
+  users.users.dev = {
     isNormalUser = true;
-    home = "/home/${user}";
+    home = "/home/dev";
     extraGroups = [
       "wheel"
       "docker"

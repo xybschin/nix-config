@@ -46,13 +46,18 @@
         user = "bjarne";
       };
 
+      nixosConfigurations.nixvm = mkSystem "nixvm" {
+        system = "x86_64-linux";
+        user = "dev";
+      };
+
       nixosConfigurations.nixwsl = mkSystem "wsl" {
         system = "x86_64-linux";
-        user = "xybschin";
+        user = "dev";
       };
 
       homeConfigurations."xybschin" = mkStandalone {
-        user = "xybschin";
+        user = "dev";
       };
     };
 }

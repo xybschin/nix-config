@@ -4,6 +4,7 @@
   ...
 }:
 let
+  sshSockPath = "~/.1password/agent.sock";
   startScript = pkgs.writeShellScript "1password-ssh-bridge" ''
     # https://gist.github.com/WillianTomaz/a972f544cc201d3fbc8cd1f6aeccef51
     mkdir -p ~/.1password
@@ -29,14 +30,14 @@ in
   home.packages = with pkgs; [ socat ];
 
   home.sessionVariables = {
-    SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
+    SSH_AUTH_SOCK = sshSockPath;
   };
 
   programs.ssh = {
     enableDefaultConfig = false;
     matchBlocks = {
       "*" = {
-        identityAgent = "~/.1password/agent.sock";
+        identityAgent = sshSockPath;
       };
     };
   };
