@@ -1,5 +1,5 @@
-{ pkgs, isWsl, ... }:
+{ ... }:
 {
-  imports = [ ../common];
+  imports = [ ../common ];
   programs.home-manager.enable = true;
 }

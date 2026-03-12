@@ -8,7 +8,7 @@
       powerManagement.enable = false;
     };
 
-    opengl = {
+    graphics  = {
       enable = true;
       enable32Bit = true;
     };

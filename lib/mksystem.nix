@@ -14,13 +14,13 @@ name:
 let
   isWsl = nixpkgs.lib.strings.hasInfix "wsl" name;
   hostConfig = ../hosts/${if isWsl then "wsl" else name};
-
   userSystemConfig = ../hosts/users/${user};
 
   specialArgs = {
     isWsl = isWsl;
     configRoot = configRoot;
     user = user;
+    inputs = inputs;
   };
 in
 nixpkgs.lib.nixosSystem rec {

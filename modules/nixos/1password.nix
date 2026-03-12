@@ -1,0 +1,18 @@
+{ user, ... }:
+{
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ user ];
+  };
+
+  environment = {
+    etc = {
+      "1password/custom_allowed_browsers" = {
+        text = ''
+          zen-bin
+        '';
+        mode = "0755";
+      };
+    };
+  };
+}
