@@ -1,7 +1,7 @@
-{ ... }:
+{ user, ... }:
 {
   imports = [ ../common ];
-  home.username = "xybschin";
-  home.homeDirectory = "/home/xybschin";
+  home.username = user;
+  home.homeDirectory = "/home/${user}";
   programs.home-manager.enable = true;
 }

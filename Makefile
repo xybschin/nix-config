@@ -9,7 +9,6 @@ build-host:
 			--sudo		  \
 			--impure          \
 			--flake .#$(host)
-	exec $$SHELL
 
 build-user:
 	@echo "Rebuilding configuration for user $(user) with CONFIG_ROOT=$(CONFIG_ROOT)"
@@ -19,7 +18,4 @@ build-user:
 			--extra-experimental-features nix-command \
 			--extra-experimental-features flakes   	  \
 			--flake .#$(user)
-
-	exec $$SHELL
-
 .PHONY: build-host build-user

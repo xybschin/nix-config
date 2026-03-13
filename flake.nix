@@ -56,7 +56,7 @@
         user = "dev";
       };
 
-      homeConfigurations."xybschin" = mkStandalone {
+      homeConfigurations.dev = mkStandalone {
         user = "dev";
       };
     };
