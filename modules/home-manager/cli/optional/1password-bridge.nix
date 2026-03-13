@@ -10,7 +10,7 @@ let
     mkdir -p ~/.1password
     SSH_AGENT_WORKING=$(ssh-add -l >/dev/null 2>&1; echo $?)
     if [[ $SSH_AGENT_WORKING != "0" ]]; then
-      # echo "ssh agent not working, killing npiperelay.exe"
+      echo "ssh agent not working, killing npiperelay.exe"
       kill $(ps -auxww | grep "[n]piperelay.exe -ei -s //./pipe/openssh-ssh-agent" | awk '{print $2}') >/dev/null 2>&1
     fi
 
@@ -21,7 +21,7 @@ let
         # echo "removing previous socket..."
         rm $SSH_AUTH_SOCK >/dev/null 2>&1
       fi
-      # echo "Starting SSH-Agent relay..."
+      echo "Starting SSH-Agent relay..."
       (setsid ${pkgs.socat}/bin/socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
     fi;
   '';
@@ -34,6 +34,7 @@ in
   };
 
   programs.ssh = {
+    enable = true;
     enableDefaultConfig = false;
     matchBlocks = {
       "*" = {
