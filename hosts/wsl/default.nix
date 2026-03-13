@@ -17,7 +17,7 @@
     settings = {
       trusted-users = [
         "root"
-        "dev"
+        user
       ];
       experimental-features = [
         "nix-command"
