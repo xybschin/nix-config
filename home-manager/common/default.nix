@@ -7,6 +7,7 @@
     unzip
     gnumake
     git
+    devenv
   ];
 
   imports = [
