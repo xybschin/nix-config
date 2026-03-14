@@ -62,21 +62,16 @@
       "$mod, TAB, focusmonitor, +1"
 
       # Switch workspaces.
-      "$mod, 1, exec, hyprworkspace 1"
-      "$mod, 2, exec, hyprworkspace 2"
-      "$mod, 3, exec, hyprworkspace 3"
-      "$mod, 4, exec, hyprworkspace 4"
-      "$mod, 5, exec, hyprworkspace 5"
-      "$mod, 6, exec, hyprworkspace 6"
-      "$mod, 7, exec, hyprworkspace 7"
-      "$mod, 8, exec, hyprworkspace 8"
-      "$mod, 9, exec, hyprworkspace 9"
-      "$mod, 0, exec, hyprworkspace 10"
-
-      "$mod CTRL, h, workspace, r-1"
-      "$mod, Left, workspace, r-1"
-      "$mod CTRL, l, workspace, r+1"
-      "$mod, Right, workspace, r+1"
+      "$mod, 1, workspace, 1"
+      "$mod, 2, workspace, 2"
+      "$mod, 3, workspace, 3"
+      "$mod, 4, workspace, 4"
+      "$mod, 5, workspace, 5"
+      "$mod, 6, workspace, 6"
+      "$mod, 7, workspace, 7"
+      "$mod, 8, workspace, 8"
+      "$mod, 9, workspace, 9"
+      "$mod, 0, workspace, 10"
 
       # Move active window to a workspace.
       "$mod SHIFT, 1, movetoworkspace, 1"
@@ -89,6 +84,7 @@
       "$mod SHIFT, 8, movetoworkspace, 8"
       "$mod SHIFT, 9, movetoworkspace, 9"
       "$mod SHIFT, 0, movetoworkspace, 10"
+
       "$mod CTRL SHIFT, l, movetoworkspace, r+1"
       "$mod SHIFT, Right, movetoworkspace, r+1"
       "$mod CTRL SHIFT, h, movetoworkspace, r-1"

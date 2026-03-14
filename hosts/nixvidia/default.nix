@@ -15,6 +15,7 @@
     ../../modules/nixos/greetd.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/bluetooth.nix
+    ../../modules/nixos/gaming
   ];
 
   time.timeZone = "Europe/Berlin";
@@ -45,6 +46,8 @@
     easyeffects
     vesktop
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+    lutris
+    gparted
   ];
 
   nix = {
@@ -58,6 +61,12 @@
         "nix-command"
         "flakes"
       ];
+    };
+  };
+
+  security = {
+    polkit = {
+      enable = true;
     };
   };
 
