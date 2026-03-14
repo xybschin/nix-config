@@ -10,7 +10,8 @@
 
   wayland.windowManager.hyprland.settings = {
     monitor = [
-      ",preferred,auto,1"
+      "DP-1,2560x1440@120,auto,auto"
+      "HDMI-A-1,2560x1440@120,auto,auto"
     ];
 
     exec-once = [

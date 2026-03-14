@@ -23,4 +23,6 @@
     portalPackage = null;
     systemd.enable = false;
   };
+
+  services.hyprpolkitagent.enable = true;
 }
