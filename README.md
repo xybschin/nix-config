@@ -20,23 +20,29 @@ make build-user user=<username>
 
 If you are behind a corporate proxy or firewall, you may need to configure SSL certificates for Nix to work properly.
 
-### Home-Manager Only (Non-NixOS)
+### Via systemctl edit
 
-For hosts running home-manager without NixOS, add the following to your user's home-manager configuration (e.g., `home-manager/dev/default.nix`):
+Edit the nix-daemon service to set environment variables:
 
-```nix
-{ pkgs, inputs, ... }:
-
-{
-  # For corporate proxy/firewall SSL certificates
-  home.sessionVariables = {
-    NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
-    SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
-  };
-}
+```bash
+sudo systemctl edit nix-daemon
 ```
 
-### /etc/nix/nix.conf
+Add the following in the editor:
+
+```ini
+[Service]
+Environment="NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
+Environment="SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
+```
+
+Then restart the daemon:
+
+```bash
+sudo systemctl restart nix-daemon
+```
+
+### Via /etc/nix/nix.conf
 
 Alternatively, add directly to `/etc/nix/nix.conf` on the target machine:
 
@@ -46,8 +52,3 @@ SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ```
 
 Replace `/etc/ssl/certs/ca-certificates.crt` with the path to your corporate CA certificate bundle if different.
-
-After making changes, rebuild with:
-```bash
-make build-user user=<your-user>
-```
