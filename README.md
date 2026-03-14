@@ -41,14 +41,3 @@ Then restart the daemon:
 ```bash
 sudo systemctl restart nix-daemon
 ```
-
-### Via /etc/nix/nix.conf
-
-Alternatively, add directly to `/etc/nix/nix.conf` on the target machine:
-
-```
-NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
-SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
-```
-
-Replace `/etc/ssl/certs/ca-certificates.crt` with the path to your corporate CA certificate bundle if different.
