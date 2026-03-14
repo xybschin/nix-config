@@ -5,11 +5,12 @@ in
 {
 
   programs.ssh = {
+    enableDefaultConfig = false;
     enable = true;
-    extraConfig = ''
-      Host *
-          IdentityAgent ${onePassPath}
-    '';
+
+    matchBlocks."*" = {
+      identityAgent = onePassPath;
+    };
   };
   home.sessionVariables = {
     SSH_AUTH_SOCK = onePassPath;
