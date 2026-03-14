@@ -16,11 +16,11 @@ make build-host host=<hostname>
 make build-user user=<username>
 ```
 
-## Corporate Proxy/Firewall SSL Configuration
+## Corporate Proxy/Firewall SSL Configuration 
 
 If you are behind a corporate proxy or firewall, you may need to configure SSL certificates for Nix to work properly.
 
-### Via systemctl edit
+### Via systemctl edit (non-NixOs hostst)
 
 Edit the nix-daemon service to set environment variables:
 
