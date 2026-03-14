@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  user,
+  ...
+}:
 
 {
   imports = [
@@ -41,6 +46,20 @@
     vesktop
     inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
+
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      trusted-users = [
+        "root"
+        user
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+  };
 
   system.stateVersion = "25.05";
 }

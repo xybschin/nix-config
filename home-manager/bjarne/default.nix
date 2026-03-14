@@ -33,5 +33,6 @@
     ../../modules/home-manager/shell
     ../../modules/home-manager/cli
     ../../modules/home-manager/cli/optional/opencode.nix
+    ../../modules/home-manager/cli/optional/1password-ssh.nix
   ];
 }

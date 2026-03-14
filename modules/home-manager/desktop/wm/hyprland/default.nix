@@ -21,7 +21,6 @@
     enable = true;
     package = null;
     portalPackage = null;
-    systemd.enable = true;
-    systemd.variables = [ "--all" ];
+    systemd.enable = false;
   };
 }
