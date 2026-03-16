@@ -45,9 +45,10 @@
     pavucontrol
     easyeffects
     vesktop
-    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
     lutris
     gparted
+    bluetui
+    gnumake
   ];
 
   nix = {

@@ -11,6 +11,7 @@
       "1password/custom_allowed_browsers" = {
         text = ''
           zen-bin
+          zen
         '';
         mode = "0755";
       };

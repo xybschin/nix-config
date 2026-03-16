@@ -39,6 +39,7 @@
       # Application shortcuts.
       "$mod, Q, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
+      "$mod, E, exec, ghostty -e ranger ~"
 
       # Special workspace
       "$mod, S, togglespecialworkspace"

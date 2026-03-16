@@ -88,12 +88,11 @@
       @define-color selection-foreground      #b0b0b0;
       @define-color divider                   #878787;
       @define-color highlight                 #a3d6a3;
-      @define-color arch-brand                #1793d1;
 
       * {
-          font-family: FontAwesome, "JetBrainsMono Nerd Font";
-          font-size: 13px;
-          font-weight: 600;
+          font-family: FontAwesome, "Terminess Nerd Font";
+          font-size: 14px;
+          font-weight: 700;
       }
 
       window#waybar {

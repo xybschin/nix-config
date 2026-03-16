@@ -10,6 +10,7 @@
     ./rules.nix
     ./settings.nix
     # ./hyprlock.nix
+    ./hyprpaper
   ];
 
   home.packages = with pkgs; [

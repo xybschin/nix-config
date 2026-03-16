@@ -6,7 +6,7 @@
     settings = {
       theme = "koda-dark";
       font-family = "JetBrainsMono NerdFont";
-      font-size = 11;
+      font-size = 15;
       window-decoration = "server";
       macos-titlebar-style = "hidden";
       window-padding-x = 6;
