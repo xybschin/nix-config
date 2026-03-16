@@ -46,6 +46,7 @@
     easyeffects
     vesktop
     lutris
+    wowup-cf
     gparted
     bluetui
     gnumake
