@@ -1,21 +1,10 @@
+{ ... }:
 {
-  pkgs,
-  ...
-}:
-{
-
-  home.packages = with pkgs; [
-    swww
-  ];
 
   wayland.windowManager.hyprland.settings = {
     monitor = [
-      "DP-1,2560x1440@120,auto,auto"
+      "DP-1,2560x1440@120,0x0,auto"
       "HDMI-A-1,2560x1440@120,auto,auto"
-    ];
-
-    exec-once = [
-      # "swww-daemon &"
     ];
 
     general = {

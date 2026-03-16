@@ -3,6 +3,7 @@
   overlays,
   inputs,
   configRoot,
+  ...
 }:
 
 name:
@@ -14,18 +15,18 @@ name:
 let
   isWsl = nixpkgs.lib.strings.hasInfix "wsl" name;
 
-  # Load host specific nixox configurations.
   hostConfig = ../hosts/${if isWsl then "wsl" else name};
 
-  # Load user specific nixos and home-manager configurations.
   userSystemConfig = ../hosts/users/${user};
   userHomeConfig = import ../home-manager/${user};
 
   specialArgs = {
-    isWsl = isWsl;
-    configRoot = configRoot;
-    user = user;
-    inputs = inputs;
+    inherit
+      isWsl
+      configRoot
+      user
+      inputs
+      ;
   };
 in
 nixpkgs.lib.nixosSystem rec {

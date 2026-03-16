@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   home.stateVersion = "25.05";
 
@@ -16,22 +16,11 @@
     };
   };
 
-  home.packages = with pkgs; [
-    htop
-    ducker
-    tree
-    unzip
-    fastfetch
-    gnumake
-    firefox
-    _1password-gui
-    spotify
-  ];
-
   imports = [
     ../../modules/home-manager/desktop
     ../../modules/home-manager/shell
     ../../modules/home-manager/cli
+    ../../modules/home-manager/cli/ranger.nix
     ../../modules/home-manager/cli/optional/opencode.nix
     ../../modules/home-manager/cli/optional/1password-ssh.nix
   ];
