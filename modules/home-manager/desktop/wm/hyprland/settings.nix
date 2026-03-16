@@ -1,10 +1,13 @@
 { ... }:
 {
-
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "DP-1,2560x1440@120,0x0,auto"
       "HDMI-A-1,2560x1440@120,auto,auto"
+    ];
+
+    exec-once = [
+      "sleep 3; uwsm-app -- 1password --silent"
     ];
 
     general = {
