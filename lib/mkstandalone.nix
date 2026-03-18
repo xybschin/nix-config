@@ -1,8 +1,7 @@
 {
+  configRoot,
   nixpkgs,
   overlays,
-  inputs,
-  configRoot,
   ...
 }:
 {
@@ -14,10 +13,11 @@ let
     isWsl = true;
     configRoot = configRoot;
     user = user;
+    overlays = overlays;
   };
 in
-inputs.home-manager.lib.homeManagerConfiguration {
-  pkgs = import inputs.nixpkgs {
+home-manager.lib.homeManagerConfiguration {
+  pkgs = import nixpkgs {
     system = "x86_64-linux";
     overlays = overlays;
   };

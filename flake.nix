@@ -3,7 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
+
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     home-manager = {
@@ -15,6 +17,16 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    apple-fonts = {
+      url = "github:Lyndeno/apple-fonts.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -23,6 +35,7 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      stylix,
       ...
     }@inputs:
     let
@@ -30,10 +43,13 @@
       overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
       specialArgs = {
         inherit
-          nixpkgs
           inputs
+          nixpkgs
           overlays
           configRoot
+          stylix
+          home-manager
+          nixos-wsl
           ;
       };
 
@@ -44,11 +60,6 @@
       nixosConfigurations.nixvidia = mkSystem "nixvidia" {
         system = "x86_64-linux";
         user = "bjarne";
-      };
-
-      nixosConfigurations.nixvm = mkSystem "nixvm" {
-        system = "x86_64-linux";
-        user = "dev";
       };
 
       nixosConfigurations.nixwsl = mkSystem "wsl" {

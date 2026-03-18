@@ -1,5 +1,15 @@
-{ pkgs, isWsl, ... }:
 {
+  overlays,
+  pkgs,
+  isWsl,
+  ...
+}:
+{
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = overlays;
+  };
+
   home.packages = with pkgs; [
     htop
     ducker

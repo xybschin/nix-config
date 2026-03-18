@@ -1,6 +1,17 @@
-{ ... }:
+{
+  stylix,
+  inputs,
+  overlays,
+  pkgs,
+  ...
+}:
 {
   home.stateVersion = "25.05";
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = overlays;
+  };
 
   programs.home-manager.enable = true;
   programs.ssh.enable = true;
@@ -20,7 +31,15 @@
     EDITOR = "nvim";
   };
 
+  stylix.fonts = {
+    serif = {
+      package = inputs.apple-fonts.packages.${pkgs.system}.sf-pro-nerd;
+      name = "SFProDisplay Nerd Font";
+    };
+  };
+
   imports = [
+    stylix.homeModules.stylix
     ../../modules/home-manager/desktop
     ../../modules/home-manager/shell
     ../../modules/home-manager/cli/nvim

@@ -1,8 +1,11 @@
 {
+  home-manager,
+  inputs,
+  nixos-wsl,
   nixpkgs,
   overlays,
-  inputs,
   configRoot,
+  stylix,
   ...
 }:
 
@@ -25,7 +28,11 @@ let
       isWsl
       configRoot
       user
+      stylix
+      home-manager
+      nixos-wsl
       inputs
+      overlays
       ;
   };
 in
@@ -36,14 +43,12 @@ nixpkgs.lib.nixosSystem rec {
     hostConfig
     userSystemConfig
 
-    { nixpkgs.config.allowUnfree = true; }
     { nixpkgs.overlays = overlays; }
 
-    (if isWsl then inputs.nixos-wsl.nixosModules.wsl else { })
+    (if isWsl then nixos-wsl.nixosModules.wsl else { })
 
-    inputs.home-manager.nixosModules.home-manager
+    home-manager.nixosModules.home-manager
     {
-      home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
       home-manager.users.${user} = userHomeConfig;
