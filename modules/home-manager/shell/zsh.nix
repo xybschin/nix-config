@@ -40,6 +40,7 @@
       gc = "git commit";
       gu = "git push";
       gd = "git pull";
+      gcap = "git add . && git commit -m \"$*\" && git push";
     };
   };
 }

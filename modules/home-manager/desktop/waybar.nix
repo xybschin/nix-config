@@ -91,7 +91,7 @@
 
       * {
           font-family: FontAwesome, "Terminess Nerd Font";
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 700;
       }
 
