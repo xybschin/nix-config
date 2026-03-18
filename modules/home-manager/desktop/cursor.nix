@@ -1,9 +1,9 @@
 { pkgs, ... }:
 {
   home.pointerCursor = {
-    name = "Bibata-Modern-Ice";
-    package = pkgs.bibata-cursors;
-    size = 24;
+    name = "macOS Cursors";
+    package = pkgs.apple-cursor;
+    size = 22;
     gtk.enable = true;
     x11.enable = true;
   };

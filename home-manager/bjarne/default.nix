@@ -16,10 +16,17 @@
     };
   };
 
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+
   imports = [
     ../../modules/home-manager/desktop
     ../../modules/home-manager/shell
-    ../../modules/home-manager/cli
+    ../../modules/home-manager/cli/nvim
+    ../../modules/home-manager/cli/tmux
+    ../../modules/home-manager/cli/lazygit.nix
+    ../../modules/home-manager/cli/direnv.nix
     ../../modules/home-manager/cli/ranger.nix
     ../../modules/home-manager/cli/optional/opencode.nix
     ../../modules/home-manager/cli/optional/1password-ssh.nix
