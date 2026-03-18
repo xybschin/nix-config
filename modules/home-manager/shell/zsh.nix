@@ -31,6 +31,11 @@
       ZSH_TMUX_AUTOSTART=true
       ZSH_TMUX_AUTOQUIT=true
       PROMPT="[%n@%F{red}%m%f %1~] "
+
+      function gcap() {
+        git add . && git commit -m "$*" && git push";
+      }
+
     '';
 
     shellAliases = {
@@ -40,7 +45,6 @@
       gc = "git commit";
       gu = "git push";
       gd = "git pull";
-      gcap = "git add . && git commit -m \"$*\" && git push";
     };
   };
 }
