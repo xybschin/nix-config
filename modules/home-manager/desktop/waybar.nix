@@ -87,7 +87,7 @@
       @define-color foreground                #ffffff;
       @define-color selection-foreground      #b0b0b0;
       @define-color divider                   #878787;
-      @define-color highlight                 #a3d6a3;
+      @define-color highlight                 #d9ba73;
 
       * {
           font-family: FontAwesome, "Terminess Nerd Font";
