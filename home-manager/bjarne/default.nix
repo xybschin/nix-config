@@ -1,7 +1,5 @@
 {
-  inputs,
   overlays,
-  pkgs,
   ...
 }:
 {
@@ -28,6 +26,19 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    XDG_SESSION_TYPE = "wayland";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "nvidia";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    GDK_BACKEND = "wayland";
+    MOZ_ENABLE_WAYLAND = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    OZONE_PLATFORM = "wayland";
+    SDL_VIDEODRIVER = "wayland";
+    PROTON_ENABLE_WAYLAND = "1";
+    PROTON_USE_WINED3D = "1";
+    GSK_RENDERER = "gl";
   };
 
   imports = [
@@ -38,7 +49,7 @@
     ../../modules/home-manager/cli/lazygit.nix
     ../../modules/home-manager/cli/direnv.nix
     ../../modules/home-manager/cli/ranger.nix
-    ../../modules/home-manager/cli/optional/opencode.nix
-    ../../modules/home-manager/cli/optional/1password-ssh.nix
+    ../../modules/home-manager/cli/opencode.nix
+    ../../modules/home-manager/1password.nix
   ];
 }

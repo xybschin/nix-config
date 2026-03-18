@@ -1,7 +1,6 @@
 {
   overlays,
   pkgs,
-  isWsl,
   ...
 }:
 {
@@ -22,19 +21,14 @@
 
   imports = [
     ../../modules/home-manager/shell
-    ../../modules/home-manager/cli
-    ../../modules/home-manager/cli/optional/opencode.nix
-  ]
-  ++ (
-    if isWsl then
-      [
-        ../../modules/home-manager/cli/optional/1password-bridge.nix
-      ]
-    else
-      [
-        ../../modules/home-manager/cli/optional/1password-ssh.nix
-      ]
-  );
+    ../../modules/home-manager/cli/nvim
+    ../../modules/home-manager/cli/tmux
+    ../../modules/home-manager/cli/lazygit.nix
+    ../../modules/home-manager/cli/direnv.nix
+    ../../modules/home-manager/cli/ranger.nix
+    ../../modules/home-manager/cli/opencode.nix
+    ../../modules/home-manager/1password.nix
+  ];
 
   home.stateVersion = "25.05";
 }
