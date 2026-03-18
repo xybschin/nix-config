@@ -1,5 +1,4 @@
 {
-  stylix,
   inputs,
   overlays,
   pkgs,
@@ -31,15 +30,7 @@
     EDITOR = "nvim";
   };
 
-  stylix.fonts = {
-    serif = {
-      package = inputs.apple-fonts.packages.${pkgs.system}.sf-pro-nerd;
-      name = "SFProDisplay Nerd Font";
-    };
-  };
-
   imports = [
-    stylix.homeModules.stylix
     ../../modules/home-manager/desktop
     ../../modules/home-manager/shell
     ../../modules/home-manager/cli/nvim

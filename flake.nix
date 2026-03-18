@@ -17,16 +17,6 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    apple-fonts = {
-      url = "github:Lyndeno/apple-fonts.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -35,7 +25,6 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
-      stylix,
       ...
     }@inputs:
     let
@@ -47,7 +36,6 @@
           nixpkgs
           overlays
           configRoot
-          stylix
           home-manager
           nixos-wsl
           ;
