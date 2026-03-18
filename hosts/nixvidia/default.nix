@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   user,
   ...
 }:
@@ -17,6 +16,8 @@
     ../../modules/nixos/bluetooth.nix
     ../../modules/nixos/gaming
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_GB.UTF-8";

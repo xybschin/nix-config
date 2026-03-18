@@ -1,7 +1,7 @@
 {
-  pkgs,
   config,
   configRoot,
+  pkgs,
   ...
 }:
 let
@@ -9,14 +9,13 @@ let
 in
 {
   programs.neovim = {
+    enable = true;
     viAlias = true;
     vimAlias = true;
     defaultEditor = true;
   };
 
   home.packages = with pkgs; [
-    neovim
-
     # LSP
     nil
     bash-language-server
@@ -24,7 +23,7 @@ in
     cmake-language-server
     docker-language-server
 
-    # Formtter
+    # Formatter
     nixfmt
     prettier
     beautysh
