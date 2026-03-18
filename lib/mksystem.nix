@@ -40,6 +40,7 @@ nixpkgs.lib.nixosSystem rec {
   modules = [
     hostConfig
     userSystemConfig
+    inputs.nixos-plymouth.nixosModules.default
 
     { nixpkgs.overlays = overlays; }
 

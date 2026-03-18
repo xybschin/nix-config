@@ -6,9 +6,10 @@
       open = true;
       modesetting.enable = true;
       powerManagement.enable = false;
+      nvidiaSettings = true;
     };
 
-    graphics  = {
+    graphics = {
       enable = true;
       enable32Bit = true;
     };

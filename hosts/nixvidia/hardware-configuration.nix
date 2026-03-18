@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
@@ -24,7 +23,10 @@
   ];
 
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [
+    "bluetooth"
+    "btusb"
+  ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
