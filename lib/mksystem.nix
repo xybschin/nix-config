@@ -5,7 +5,6 @@
   nixpkgs,
   overlays,
   configRoot,
-  stylix,
   ...
 }:
 
@@ -28,7 +27,6 @@ let
       isWsl
       configRoot
       user
-      stylix
       home-manager
       nixos-wsl
       inputs
