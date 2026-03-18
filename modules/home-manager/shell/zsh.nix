@@ -33,7 +33,7 @@
       PROMPT="[%n@%F{red}%m%f %1~] "
 
       function gcap() {
-        git add . && git commit -m "$*" && git push";
+        git add . && git commit -m "$*" && git push
       }
 
     '';

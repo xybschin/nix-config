@@ -115,21 +115,6 @@
         "type": "github"
       }
     },
-    "nixos-plymouth": {
-      "locked": {
-        "lastModified": 1758476321,
-        "narHash": "sha256-kP9fSJxZO4vHn9kL3o9h1yxKxUvON/1yvlNIYSH5yq0=",
-        "owner": "BeatLink",
-        "repo": "nixos-plymouth",
-        "rev": "33b308bfc0e9411e5c96bc114b9f7e83e7c7fd2c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "BeatLink",
-        "repo": "nixos-plymouth",
-        "type": "github"
-      }
-    },
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -201,7 +186,6 @@
       "inputs": {
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nixos-plymouth": "nixos-plymouth",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
         "zen-browser": "zen-browser"
