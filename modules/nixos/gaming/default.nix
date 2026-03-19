@@ -1,5 +1,11 @@
 { pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    vesktop
+    lutris
+    wowup-cf
+  ];
+
   programs = {
     steam = {
       enable = true;

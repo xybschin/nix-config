@@ -3,6 +3,7 @@
 {
   environment.localBinInPath = true;
   programs.zsh.enable = true;
+
   users.users.bjarne = {
     isNormalUser = true;
     home = "/home/bjarne";
