@@ -7,7 +7,5 @@
     ./cursor.nix
     ./zen-browser.nix
     ./rofi
-    ./wm/hyprland
   ];
-
 }
