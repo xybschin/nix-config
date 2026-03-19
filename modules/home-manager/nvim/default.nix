@@ -5,7 +5,7 @@
   ...
 }:
 let
-  nvimDir = "${configRoot}/modules/home-manager/cli/nvim/config";
+  nvimDir = "${configRoot}/modules/home-manager/nvim/config";
 in
 {
   programs.neovim = {

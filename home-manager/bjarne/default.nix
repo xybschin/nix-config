@@ -42,15 +42,23 @@
   };
 
   imports = [
-    ../../modules/home-manager/desktop
-    ../../modules/home-manager/shell/fzf.nix
-    ../../modules/home-manager/shell/zsh.nix
-    ../../modules/home-manager/cli/nvim
-    ../../modules/home-manager/cli/tmux
-    ../../modules/home-manager/cli/lazygit.nix
-    ../../modules/home-manager/cli/direnv.nix
-    ../../modules/home-manager/cli/ranger.nix
-    ../../modules/home-manager/cli/opencode.nix
+    ../../modules/home-manager/fzf.nix
+    ../../modules/home-manager/zsh.nix
+    ../../modules/home-manager/nvim
+    ../../modules/home-manager/tmux
+    ../../modules/home-manager/lazygit.nix
+    ../../modules/home-manager/direnv.nix
+    ../../modules/home-manager/ranger.nix
+    ../../modules/home-manager/opencode.nix
     ../../modules/home-manager/1password.nix
+
+    ../../modules/home-manager/desktop
+    ../../modules/home-manager/desktop/wm/hyprland
+    ../../modules/home-manager/desktop/ghostty.nix
+    ../../modules/home-manager/desktop/waybar.nix
+    ../../modules/home-manager/desktop/font.nix
+    ../../modules/home-manager/desktop/cursor.nix
+    ../../modules/home-manager/desktop/zen-browser.nix
+    ../../modules/home-manager/desktop/rofi
   ];
 }
