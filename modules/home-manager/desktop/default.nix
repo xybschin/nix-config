@@ -1,5 +1,7 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  home.packages = [ pkgs.nautilus ];
+
   imports = [
     ./ghostty.nix
     ./waybar.nix

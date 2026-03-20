@@ -7,5 +7,6 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.terminess-ttf
     maple-mono.truetype
+    corefonts
   ];
 }
