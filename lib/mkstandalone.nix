@@ -2,6 +2,7 @@
   configRoot,
   nixpkgs,
   overlays,
+  home-manager,
   ...
 }:
 {
@@ -10,10 +11,8 @@
 let
   userConfig = ../home-manager/${user}/standalone.nix;
   specialArgs = {
+    inherit user configRoot overlays;
     isWsl = true;
-    configRoot = configRoot;
-    user = user;
-    overlays = overlays;
   };
 in
 home-manager.lib.homeManagerConfiguration {
