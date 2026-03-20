@@ -24,7 +24,10 @@
         "hyprland/workspaces" = {
           all-outputs = true;
           warp-on-scroll = false;
-          format = "{name}";
+          format = "{icon}";
+          format-icons = {
+            "6" = "G";
+          };
         };
         clock = {
           format = "{:%Y-%d-%m %H:%M}";
