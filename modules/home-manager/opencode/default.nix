@@ -20,6 +20,8 @@ in
     ];
   };
 
+  home.file.".config/opencode/skills".source = ./config/skills;
+
   home.file.".config/opencode/themes/koda.json".text = builtins.toJSON {
     "\$schema" = "https://opencode.ai/theme.json";
     defs = {
