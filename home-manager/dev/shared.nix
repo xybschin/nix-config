@@ -28,7 +28,7 @@
     ../../modules/home-manager/lazygit.nix
     ../../modules/home-manager/direnv.nix
     ../../modules/home-manager/ranger.nix
-    ../../modules/home-manager/opencode.nix
+    ../../modules/home-manager/opencode
     ../../modules/home-manager/1password.nix
   ];
 
