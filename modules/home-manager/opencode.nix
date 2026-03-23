@@ -5,7 +5,7 @@
   ...
 }:
 let
-  providersFilePath = "${config.homeDirectory}/opencode/providers.json";
+  providersFilePath = "${config.home.homeDirectory}/opencode-providers.json";
 in
 {
   home.packages = with pkgs; [ opencode ];
