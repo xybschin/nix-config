@@ -24,6 +24,10 @@
     };
   };
 
+  home.packages = [
+    systemctl-tui
+  ];
+
   home.sessionVariables = {
     EDITOR = "nvim";
     XDG_SESSION_TYPE = "wayland";
