@@ -17,6 +17,10 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    opencode = {
+      url = "github:dan-online/opencode-nix";
+    };
   };
 
   outputs =
@@ -25,11 +29,15 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      opencode,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+      overlays = [
+        inputs.neovim-nightly-overlay.overlays.default
+        opencode.overlays.default
+      ];
       specialArgs = {
         inherit
           inputs
