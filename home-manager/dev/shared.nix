@@ -17,6 +17,7 @@
     gnumake
     git
     devenv
+    systemctl-tui
   ];
 
   imports = [
