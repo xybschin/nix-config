@@ -32,5 +32,5 @@
     ../../modules/home-manager/1password.nix
   ];
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }
