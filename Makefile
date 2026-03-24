@@ -6,8 +6,8 @@ build-host:
 	@echo "Rebuilding configuration for host $(host) with CONFIG_ROOT=$(CONFIG_ROOT)"
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_UNFREE=1 \
 		nixos-rebuild switch	  \
-			--sudo		  \
-			--impure          \
+			--sudo		  					\
+			--impure          		\
 			--flake .#$(host)
 
 build-user:
