@@ -1,4 +1,5 @@
 {
+  pkgs,
   overlays,
   ...
 }:
@@ -25,7 +26,7 @@
   };
 
   home.packages = [
-    systemctl-tui
+    pkgs.systemctl-tui
   ];
 
   home.sessionVariables = {
