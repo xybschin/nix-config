@@ -14,6 +14,7 @@
     ../../modules/nixos/greetd.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/bluetooth.nix
+    ../../modules/nixos/razer.nix
     ../../modules/nixos/gaming
   ];
 
