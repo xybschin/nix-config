@@ -4,12 +4,12 @@
     vesktop
     lutris
     wowup-cf
+    protonup-rs
   ];
 
   programs = {
     steam = {
       enable = true;
-      extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };
   };
 }
