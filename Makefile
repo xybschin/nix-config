@@ -3,19 +3,9 @@ host ?= $(shell hostname)
 user ?= $(shell echo $$USER)
 
 build-host:
-	@echo "Rebuilding configuration for host $(host) with CONFIG_ROOT=$(CONFIG_ROOT)"
-	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_UNFREE=1 \
-		nixos-rebuild switch	  \
-			--sudo		  					\
-			--impure          		\
-			--flake .#$(host)
+	CONFIG_ROOT=$(CONFIG_ROOT) nixos-rebuild switch --sudo --impure --flake .#$(host)
 
 build-user:
-	@echo "Rebuilding configuration for user $(user) with CONFIG_ROOT=$(CONFIG_ROOT)"
-	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_UNFREE=1 \
-		home-manager switch 				  \
-			--impure 				  \
-			--extra-experimental-features nix-command \
-			--extra-experimental-features flakes   	  \
-			--flake .#$(user)
+	CONFIG_ROOT=$(CONFIG_ROOT) home-manager switch --impure --flake .#$(user)
+
 .PHONY: build-host build-user
