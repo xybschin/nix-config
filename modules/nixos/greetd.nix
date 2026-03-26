@@ -8,7 +8,7 @@ in
     enable = true;
     settings = {
       default_session = {
-        command = "${tuigreet} --time --remember --remember-session --sessions ${hyprland-session}";
+        command = "${tuigreet} --time --asterisks --remember --remember-session --sessions ${hyprland-session}";
         user = "greeter";
       };
     };
