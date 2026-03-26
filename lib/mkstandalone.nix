@@ -3,6 +3,7 @@
   nixpkgs,
   overlays,
   home-manager,
+  inputs,
   ...
 }:
 {
@@ -11,7 +12,12 @@
 let
   userConfig = ../home-manager/${user}/standalone.nix;
   specialArgs = {
-    inherit user configRoot overlays;
+    inherit
+      user
+      configRoot
+      overlays
+      inputs
+      ;
     isWsl = true;
   };
 in
