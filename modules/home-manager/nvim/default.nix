@@ -7,7 +7,7 @@
 }:
 let
   nvimDir = "${configRoot}/modules/home-manager/nvim/config";
-  neovim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+  neovim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   programs.neovim = {
