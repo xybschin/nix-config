@@ -36,6 +36,10 @@
       # Lock screen
       "$mod, Escape, exec, hyprlock"
 
+      # Screenshots (hyprshot)
+      "$mod SHIFT, W, exec, hyprshot -m window"
+      "$mod SHIFT, R, exec, hyprshot -m region"
+
       # Application shortcuts.
       "$mod, Q, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
