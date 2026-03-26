@@ -46,6 +46,8 @@
     gnumake
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   nix = {
     package = pkgs.nix;
     settings = {
