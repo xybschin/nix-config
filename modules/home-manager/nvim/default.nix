@@ -2,14 +2,17 @@
   config,
   configRoot,
   pkgs,
+  inputs,
   ...
 }:
 let
   nvimDir = "${configRoot}/modules/home-manager/nvim/config";
+  neovim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 in
 {
   programs.neovim = {
     enable = true;
+    package = neovim-nightly;
     viAlias = true;
     vimAlias = true;
     defaultEditor = true;

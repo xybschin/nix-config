@@ -27,15 +27,11 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
-      opencode,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [
-        inputs.neovim-nightly-overlay.overlays.default
-        opencode.overlays.default
-      ];
+      overlays = [ inputs.opencode.overlays.default ];
       specialArgs = {
         inherit
           inputs
