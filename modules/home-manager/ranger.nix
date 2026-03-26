@@ -1,7 +1,13 @@
 { pkgs, ... }:
 {
+  programs.ranger = {
+    enable = true;
+    settings = {
+      preview_images = true;
+    };
+  };
+
   home.packages = with pkgs; [
-    ranger
     file
     imagemagick
     ffmpeg
@@ -10,5 +16,6 @@
     jq
     librsvg
     lynx
+    w3m
   ];
 }
