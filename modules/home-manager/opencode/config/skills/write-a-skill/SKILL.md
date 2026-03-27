@@ -3,115 +3,95 @@ name: write-a-skill
 description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
 ---
 
-# Writing Skills
+# Write a Skill
 
-## Process
+Create OpenCode agent skills that enable specialized workflows for specific domains or tasks.
 
-1. **Gather requirements** - ask user about:
-   - What task/domain does the skill cover?
-   - What specific use cases should it handle?
-   - Does it need executable scripts or just instructions?
-   - Any reference materials to include?
+## Quick Start
 
-2. **Draft the skill** - create:
-   - SKILL.md with concise instructions
-   - Additional reference files if content exceeds 500 lines
-   - Utility scripts if deterministic operations needed
+Skills are directories with:
+- **SKILL.md** - Main instructions and workflows
+- **Optional files** - REFERENCE.md, EXAMPLES.md, scripts/
 
-3. **Review with user** - present draft and ask:
-   - Does this cover your use cases?
-   - Anything missing or unclear?
-   - Should any section be more/less detailed?
+To create a skill:
 
-## Skill Structure
+1. Understand the task/domain the skill will cover
+2. Draft SKILL.md with quick start + workflows
+3. Add scripts or reference files if content exceeds ~100 lines
+4. Place skill folder at `~/.config/opencode/skills/<skill-name>/`
 
-```
-skill-name/
-├── SKILL.md           # Main instructions (required)
-├── REFERENCE.md       # Detailed docs (if needed)
-├── EXAMPLES.md        # Usage examples (if needed)
-└── scripts/           # Utility scripts (if needed)
-    └── helper.js
-```
+OpenCode loads skills automatically when their trigger conditions match the user's request.
 
-## SKILL.md Template
+## Skill Anatomy
 
-```md
+**SKILL.md structure** (50-100 lines typical):
+
+```markdown
 ---
 name: skill-name
-description: Brief description of capability. Use when [specific triggers].
+description: One sentence what it does. Use when [specific triggers].
 ---
 
 # Skill Name
 
 ## Quick start
+[Minimal example to get started fast]
 
-[Minimal working example]
+## Workflows
+[Step-by-step processes with decision points]
+
+## Advanced features
+[Link to REFERENCE.md for deep dives]
+```
+
+**Description** - The agent sees ONLY this to decide if it should load your skill. Make it specific:
+- First sentence: what the skill enables
+- Second sentence: "Use when [keywords or contexts]"
+- Max 1024 characters
+- Example: "Extract text and tables from PDF files, fill forms, merge documents. Use when user mentions PDFs, forms, or document extraction."
 
 ## Workflows
 
-[Step-by-step processes with checklists for complex tasks]
+Define workflows for complex multi-step tasks. Structure as:
 
-## Advanced features
+1. **Gather information** - what questions to ask the user
+2. **Plan the work** - use TodoWrite to track steps
+3. **Execute systematically** - complete tasks in priority order
+4. **Verify completion** - confirm all requirements met
 
-[Link to separate files: See [REFERENCE.md](REFERENCE.md)]
-```
+Use checklists and decision trees to guide complex processes.
 
-## Description Requirements
+## When to Use Scripts
 
-The description is **the only thing your agent sees** when deciding which skill to load. It's surfaced in the system prompt alongside all other installed skills. Your agent reads these descriptions and picks the relevant skill based on the user's request.
+Add utility scripts to `scripts/` directory when:
 
-**Goal**: Give your agent just enough info to know:
-
-1. What capability this skill provides
-2. When/why to trigger it (specific keywords, contexts, file types)
-
-**Format**:
-
-- Max 1024 chars
-- Write in third person
-- First sentence: what it does
-- Second sentence: "Use when [specific triggers]"
-
-**Good example**:
-
-```
-Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when user mentions PDFs, forms, or document extraction.
-```
-
-**Bad example**:
-
-```
-Helps with documents.
-```
-
-The bad example gives your agent no way to distinguish this from other document skills.
-
-## When to Add Scripts
-
-Add utility scripts when:
-
-- Operation is deterministic (validation, formatting)
+- Operation is deterministic (validation, formatting, parsing)
 - Same code would be generated repeatedly
-- Errors need explicit handling
+- Error handling needs explicit control
+- Speed/token usage matters
 
-Scripts save tokens and improve reliability vs generated code.
+Scripts save agent tokens and improve reliability.
 
-## When to Split Files
+## When to Split Content
 
-Split into separate files when:
+Move content to separate files when:
 
-- SKILL.md exceeds 100 lines
-- Content has distinct domains (finance vs sales schemas)
-- Advanced features are rarely needed
+- SKILL.md exceeds ~100 lines
+- Content has distinct domains (e.g., finance vs sales)
+- Advanced features are rarely needed for typical use
+
+File organization:
+- `REFERENCE.md` - detailed specs, comprehensive guides
+- `EXAMPLES.md` - concrete usage examples
+- `scripts/` - helper utilities
 
 ## Review Checklist
 
-After drafting, verify:
+Before finishing a skill:
 
-- [ ] Description includes triggers ("Use when...")
-- [ ] SKILL.md under 100 lines
-- [ ] No time-sensitive info
-- [ ] Consistent terminology
-- [ ] Concrete examples included
-- [ ] References one level deep
+- [ ] Description clearly states trigger conditions ("Use when...")
+- [ ] SKILL.md stays under 100 lines (or split if longer)
+- [ ] No time-sensitive or machine-specific paths
+- [ ] Consistent terminology throughout
+- [ ] Concrete examples in quick start
+- [ ] Workflows reference only SKILL.md/REFERENCE.md (one level deep)
