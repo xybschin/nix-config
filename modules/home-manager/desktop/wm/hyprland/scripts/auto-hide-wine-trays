@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+TARGET_CLASS="steam_app_default"
+TARGET_WIDTH=160
+TARGET_HEIGHT=20
+
+check_and_close() {
+    local address="$1"
+
+    local win_info
+    win_info=$(hyprctl clients -j 2>/dev/null | \
+        jq -r --arg addr "0x${address}" \
+        '.[] | select(.address == $addr)')
+
+    if [[ -z "$win_info" ]]; then return; fi
+
+    local class width height
+    class=$(echo "$win_info"  | jq -r '.class')
+    width=$(echo "$win_info"  | jq -r '.size[0]')
+    height=$(echo "$win_info" | jq -r '.size[1]')
+
+    echo "$class $width $height"
+
+
+    if [[ "$class" == "$TARGET_CLASS" && \
+
+          "$width" -eq "$TARGET_WIDTH"  && \
+          "$height" -eq "$TARGET_HEIGHT" ]]; then
+        echo "[info][$(date '+%T')] closing wine tray window (address: 0x${address}, ${width}x${height}, class: ${class})"
+        hyprctl dispatch closewindow "address:0x${address}" > /dev/null 2>&1
+    fi
+}
+
+echo "[info][$(date '+%T')] listening for Hyprland openwindow events..."
+echo "[info][$(date '+%T')] target: class='${TARGET_CLASS}', size=${TARGET_WIDTH}x${TARGET_HEIGHT}"
+
+socat - "UNIX-CONNECT:${XDG_RUNTIME_DIR}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/.socket2.sock" | \
+while IFS= read -r line; do
+    case "$line" in
+        openwindow*)
+            echo -e "\e[0;33m[debug][$(date '+%T')] received event: '$line' \e[0m"
+            address="${line#'openwindow>>'}"
+            address="${address%%,*}"
+            check_and_close "$address"
+            ;;
+    esac
+done
