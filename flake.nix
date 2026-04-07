@@ -6,8 +6,6 @@
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
