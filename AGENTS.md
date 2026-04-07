@@ -151,6 +151,5 @@ to `flake.nix` using `mkSystem`.
 - `nixpkgs`: nixos-unstable channel
 - `home-manager`: follows nixpkgs
 - `nixos-wsl`: WSL support
-- `neovim-nightly-overlay`: nightly Neovim builds
 - `zen-browser`: Zen browser flake
 - `opencode`: OpenCode Nix overlay
