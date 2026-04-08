@@ -22,6 +22,6 @@
       searchingActiveBorderColor = [ "#ff5733" ];
     };
 
-    authorColors."*" = [ "#ffffff" ];
+    authorColors."*" = "#ffffff";
   };
 }
