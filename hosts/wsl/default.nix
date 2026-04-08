@@ -44,5 +44,9 @@
   virtualisation.docker.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
+  environment.systemPackages = with pkgs; [
+    (azure-cli.withExtensions [ azure-cli.extensions.azure-devops ])
+  ];
+
   system.stateVersion = "25.11";
 }
