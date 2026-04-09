@@ -25,7 +25,7 @@ configuration {
     background:     #101010FF;
     background-alt: #252530FF;
     foreground:     #FFFFFFFF;
-    selected:       #A3D6A3FF;
+    selected:       #D9BA73FF;
     border:         #272727FF;
     active:         #D9BA73FF;
     urgent:         #CD8647FF;
