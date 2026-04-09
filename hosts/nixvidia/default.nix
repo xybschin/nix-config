@@ -44,6 +44,7 @@
   environment.systemPackages = with pkgs; [
     gparted
     gnumake
+    wl-clipboard
   ];
 
   nixpkgs.config.allowUnfree = true;

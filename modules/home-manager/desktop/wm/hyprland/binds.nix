@@ -39,6 +39,7 @@
       # Screenshots (hyprshot)
       "$mod SHIFT, W, exec, hyprshot -m window"
       "$mod SHIFT, R, exec, hyprshot -m region"
+      "$mod SHIFT, P, exec, hyprpicker --autocopy"
 
       # Application shortcuts.
       "$mod, Q, exec, ghostty"

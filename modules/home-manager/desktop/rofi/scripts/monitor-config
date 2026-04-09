@@ -1,29 +1,22 @@
 #!/usr/bin/env bash
-# Monitor configuration profiles for Hyprland
-# Profile 1: Two monitors - DP-1 (2560x1440@120) + HDMI-A-1 (2560x1440@120)
-# Profile 2: Single monitor - DP-1 (5120x1440@144)
-# Profile 3: Single monitor - DP-1 (2560x1440@120)
 
 set -euo pipefail
 
 case "$1" in
-  "profile1")
-    # Two monitors: DP-1 (2560x1440@120) left + HDMI-A-1 (2560x1440@120) right
-    hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
-    hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
-    ;;
-  "profile2")
-    # Single monitor: DP-1 (5120x1440@144)
-    hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
-    hyprctl keyword "monitor" "HDMI-A-1,disable"
-    ;;
-  "profile3")
-    # Single monitor: DP-1 (2560x1440@120)
-    hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
-    hyprctl keyword "monitor" "HDMI-A-1,disable"
-    ;;
-  *)
-    echo "Unknown profile: $1"
-    exit 1
-    ;;
+    "profile1")
+        hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+        hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
+        ;;
+    "profile2")
+        hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
+        hyprctl keyword "monitor" "HDMI-A-1,disable"
+        ;;
+    "profile3")
+        hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+        hyprctl keyword "monitor" "HDMI-A-1,disable"
+        ;;
+    *)
+        echo "[error] unknown profile: $1"
+        exit 1
+        ;;
 esac

@@ -23,6 +23,7 @@ in
     hyprcursor
     hyprshot
     hyprshutdown
+    hyprpicker
   ];
 
   wayland.windowManager.hyprland = {

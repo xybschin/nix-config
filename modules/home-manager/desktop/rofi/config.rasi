@@ -27,8 +27,8 @@ configuration {
     foreground:     #FFFFFFFF;
     selected:       #A3D6A3FF;
     border:         #272727FF;
-    active:         #A3D6A3FF;
-    urgent:         #CD8647EE;
+    active:         #D9BA73FF;
+    urgent:         #CD8647FF;
 
     border-colour:               var(border);
     handle-colour:               var(foreground);
@@ -142,11 +142,11 @@ entry {
     enabled:                     true;
     padding:                     10px;
     expand:                      false;
-    width:                       20em;
+    width:                       10em;
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
-    placeholder:                 "search...";
+    placeholder:                 "";
     placeholder-color:           inherit;
 }
 num-filtered-rows {
