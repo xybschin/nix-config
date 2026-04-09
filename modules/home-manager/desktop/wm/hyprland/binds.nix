@@ -44,6 +44,7 @@
       "$mod, Q, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
       "$mod, E, exec, ghostty -e ranger ~"
+      "$mod SHIFT, d, exec, $HOME/.config/rofi/scripts/rofi-monitor-menu"
 
       # Special workspace
       "$mod, S, togglespecialworkspace"
