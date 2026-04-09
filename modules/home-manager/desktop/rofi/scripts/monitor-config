@@ -2,21 +2,41 @@
 
 set -euo pipefail
 
-case "$1" in
-    "profile1")
-        hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
-        hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
-        ;;
-    "profile2")
-        hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
-        hyprctl keyword "monitor" "HDMI-A-1,disable"
-        ;;
-    "profile3")
-        hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
-        hyprctl keyword "monitor" "HDMI-A-1,disable"
-        ;;
-    *)
-        echo "[error] unknown profile: $1"
-        exit 1
-        ;;
-esac
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}"
+STATE_FILE="$STATE_DIR/hyprland-monitor-profile"
+mkdir -p "$STATE_DIR"
+
+apply_profile() {
+    local profile=$1
+    case "$profile" in
+        "profile1")
+            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
+            ;;
+        "profile2")
+            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,disable"
+            ;;
+        "profile3")
+            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,disable"
+            ;;
+        *)
+            echo "[error] unknown profile: $profile"
+            return 1
+            ;;
+    esac
+}
+
+if [ $# -eq 0 ]; then
+    if [ -f "$STATE_FILE" ]; then
+        profile=$(cat "$STATE_FILE")
+        apply_profile "$profile"
+    else
+        apply_profile "profile1"
+        echo "profile1" > "$STATE_FILE"
+    fi
+else
+    apply_profile "$1"
+    echo "$1" > "$STATE_FILE"
+fi
