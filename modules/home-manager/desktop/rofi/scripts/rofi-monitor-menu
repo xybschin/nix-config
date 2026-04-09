@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+options=("Profile 1: Dual 2560x1440@120" "Profile 2: Single 5120x1440@144" "Profile 3: Single 2560x1440@120")
+
+selected=$(printf "%s\n" "${options[@]}" | rofi -dmenu -p "Monitor Configuration" -no-custom)
+
+# Handle selection
+case "$selected" in
+    "${options[0]}")
+        "$SCRIPT_DIR/monitor-config" "profile1"
+        ;;
+    "${options[1]}")
+        "$SCRIPT_DIR/monitor-config" "profile2"
+        ;;
+    "${options[2]}")
+        "$SCRIPT_DIR/monitor-config" "profile3"
+        ;;
+    *)
+        # User cancelled or selected nothing
+        exit 0
+        ;;
+esac
