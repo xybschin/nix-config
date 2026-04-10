@@ -11,7 +11,7 @@ in
 {
   imports = [
     ./env.nix
-    ./binds.nix
+    (import ./binds.nix { inherit scripts; })
     ./rules.nix
     (import ./settings.nix { inherit scripts; })
     ./hyprpaper

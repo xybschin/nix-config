@@ -31,19 +31,30 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+
+    # Wayland core
     XDG_SESSION_TYPE = "wayland";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
     GDK_BACKEND = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-    OZONE_PLATFORM = "wayland";
     SDL_VIDEODRIVER = "wayland";
+    OZONE_PLATFORM = "wayland";
+
+    # Electron apps
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+
+    # Mozilla
+    MOZ_ENABLE_WAYLAND = "1";
+
+    # Qt
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+
+    # Nvidia
+    LIBVA_DRIVER_NAME = "nvidia";
+    NVD_BACKEND = "direct";
+    __GL_GSYNC_ALLOWED = "0";
+    __GL_SYNC_TO_VBLANK = "0";
+
+    # Proton/Gaming
     PROTON_ENABLE_WAYLAND = "1";
-    PROTON_USE_WINED3D = "1";
-    GSK_RENDERER = "gl";
   };
 
   imports = [
