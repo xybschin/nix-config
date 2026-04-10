@@ -1,5 +1,7 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  home.packages = with pkgs; [ playerctl ];
+
   programs.waybar = {
     systemd.enable = true;
     enable = true;
@@ -83,12 +85,8 @@
           tooltip-format = "{}";
         };
         tray = {
-          icon-size = 21;
+          icon-size = 16;
           spacing = 10;
-          icons = {
-            blueman = "bluetooth";
-            TelegramDesktop = "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png";
-          };
         };
       }
     ];
