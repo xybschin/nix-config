@@ -4,8 +4,6 @@
     monitor = [ ];
 
     exec = [
-      "sleep 3; uwsm-app -- 1password --silent"
-      "${scripts}/auto-hide-wine-trays"
       "${scripts}/monitor-config"
     ];
 
