@@ -21,7 +21,6 @@ check_and_close() {
 
     echo "$class $width $height"
 
-
     if [[ "$class" == "$TARGET_CLASS" && \
 
           "$width" -eq "$TARGET_WIDTH"  && \
