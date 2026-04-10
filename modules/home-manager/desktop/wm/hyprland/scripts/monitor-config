@@ -40,13 +40,11 @@ apply_profile() {
             hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,disable"
             assign_all_workspaces_to "DP-1"
-            hyprctl dispatch workspace 1
             ;;
         "profile4")
             hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,disable"
             assign_all_workspaces_to "DP-1"
-            hyprctl dispatch workspace 1
             ;;
         *)
             echo "[error] unknown profile: $profile"
@@ -59,7 +57,6 @@ if [ $# -eq 0 ]; then
     if [ -f "$STATE_FILE" ]; then
         profile=$(cat "$STATE_FILE")
         apply_profile "$profile"
-        hyprctl dispatch workspace 1
     else
         apply_profile "profile1"
         echo "profile1" > "$STATE_FILE"
