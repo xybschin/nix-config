@@ -20,6 +20,7 @@
           "memory"
           "cpu"
           "clock"
+          "tray"
         ];
         "hyprland/workspaces" = {
           all-outputs = true;
@@ -80,6 +81,14 @@
           escape = true;
           tooltip = true;
           tooltip-format = "{}";
+        };
+        tray = {
+          icon-size = 21;
+          spacing = 10;
+          icons = {
+            blueman = "bluetooth";
+            TelegramDesktop = "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png";
+          };
         };
       }
     ];

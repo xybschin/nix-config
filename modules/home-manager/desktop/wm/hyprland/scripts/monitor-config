@@ -14,11 +14,15 @@ apply_profile() {
             hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
             ;;
         "profile2")
-            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
-            hyprctl keyword "monitor" "HDMI-A-1,disable"
+            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "DP-1,disable"
             ;;
         "profile3")
             hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,disable"
+            ;;
+        "profile4")
+            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,disable"
             ;;
         *)

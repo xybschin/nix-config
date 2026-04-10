@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-options=("Dual 2560x1440@120" "Single 5120x1440@144" "Single 2560x1440@120")
+options=("DP-1|HDMI-A-1:2560x1440@120" "HDMI-A-1:2560x1440@120" "DP-1:2560x1440@120" "DP-1:5120x1440@144")
 selected=$(printf "%s\n" "${options[@]}" | rofi -dmenu -p "DISPLAY PROFILES" -no-custom)
 
 case "$selected" in
@@ -13,6 +13,9 @@ case "$selected" in
         ;;
     "${options[2]}")
         "$SCRIPT_DIR/monitor-config" "profile3"
+        ;;
+    "${options[3]}")
+        "$SCRIPT_DIR/monitor-config" "profile4"
         ;;
     *)
         exit 0
