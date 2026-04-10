@@ -15,6 +15,11 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -23,11 +28,12 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      nur,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ ];
+      overlays = [ nur.overlays.default ];
       specialArgs = {
         inherit
           inputs
