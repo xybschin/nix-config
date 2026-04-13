@@ -1,18 +1,6 @@
-{ scripts, ... }:
+{ ... }:
 {
   wayland.windowManager.hyprland.settings = {
-    monitor = [ ];
-
-    exec = [
-      "${scripts}/monitor-config"
-    ];
-
-    exec-once = [
-      "sleep 3; uwsm-app -- 1password --silent"
-      "${scripts}/auto-hide-wine-trays"
-      "${scripts}/monitor-config"
-    ];
-
     general = {
       gaps_in = 0;
       gaps_out = 0;

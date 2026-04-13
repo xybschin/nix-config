@@ -1,4 +1,4 @@
-{ scripts, ... }:
+{ ... }:
 
 {
   wayland.windowManager.hyprland.settings = {
@@ -41,7 +41,6 @@
       "$mod, Q, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
       "$mod, E, exec, ghostty -e ranger ~"
-      "$mod SHIFT, d, exec, ${scripts}/rofi-monitor-menu"
       "CONTROL SHIFT, Space, exec, 1password --quick-access"
 
       # Special workspace

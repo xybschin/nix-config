@@ -43,26 +43,23 @@
           home-manager
           nixos-wsl
           ;
+        lib = nixpkgs.lib;
       };
 
       mkSystem = import ./lib/mksystem.nix specialArgs;
       mkStandalone = import ./lib/mkstandalone.nix specialArgs;
     in
     {
-      nixosConfigurations.nixvidia = mkSystem "nixvidia" {
+      nixosConfigurations."bjarne@nixvidia" = mkSystem "nixvidia" "bjarne" {
         system = "x86_64-linux";
-        user = "bjarne";
       };
 
-      nixosConfigurations.nixvm = mkSystem "nixvm" {
+      nixosConfigurations."dev@nixvm" = mkSystem "nixvm" "dev" {
         system = "x86_64-linux";
-        user = "bjarne";
       };
 
-
-      nixosConfigurations.nixwsl = mkSystem "wsl" {
+      nixosConfigurations."dev@nixwsl" = mkSystem "wsl" "dev" {
         system = "x86_64-linux";
-        user = "dev";
       };
 
       homeConfigurations.dev = mkStandalone {

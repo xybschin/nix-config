@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}"
+STATE_FILE="$STATE_DIR/hyprland-monitor-profile"
+mkdir -p "$STATE_DIR"
+
+assign_all_workspaces_to() {
+    local monitor=$1
+    hyprctl keyword workspace "1, monitor:${monitor}, default:true"
+    for i in {2..10}; do
+        hyprctl keyword workspace "${i}, monitor:${monitor}"
+    done
+}
+
+apply_profile() {
+    local profile=$1
+    case "$profile" in
+        "profile1")
+            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
+            hyprctl keyword workspace "1, monitor:DP-1, default:true"
+            hyprctl keyword workspace "2, monitor:HDMI-A-1, default:true"
+            hyprctl keyword workspace "3, monitor:DP-1"
+            hyprctl keyword workspace "4, monitor:HDMI-A-1"
+            hyprctl keyword workspace "5, monitor:DP-1"
+            hyprctl keyword workspace "6, monitor:HDMI-A-1"
+            hyprctl keyword workspace "7, monitor:DP-1"
+            hyprctl keyword workspace "8, monitor:HDMI-A-1"
+            hyprctl keyword workspace "9, monitor:DP-1"
+            hyprctl keyword workspace "10, monitor:HDMI-A-1"
+            ;;
+        "profile2")
+            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "DP-1,disable"
+            assign_all_workspaces_to "HDMI-A-1"
+            ;;
+        "profile3")
+            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,disable"
+            assign_all_workspaces_to "DP-1"
+            ;;
+        "profile4")
+            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
+            hyprctl keyword "monitor" "HDMI-A-1,disable"
+            assign_all_workspaces_to "DP-1"
+            ;;
+        "profile5")
+            hyprctl keyword "monitor" "Virtual-1,1920x1080@2560,0x0,1"
+            assign_all_workspaces_to "Virtual-1"
+            ;;
+        *)
+            echo "[error] unknown profile: $profile"
+            return 1
+            ;;
+    esac
+}
+
+if [ $# -eq 0 ]; then
+    if [ -f "$STATE_FILE" ]; then
+        profile=$(cat "$STATE_FILE")
+        apply_profile "$profile"
+    else
+        apply_profile "profile1"
+        echo "profile1" > "$STATE_FILE"
+    fi
+else
+    apply_profile "$1"
+    echo "$1" > "$STATE_FILE"
+fi
