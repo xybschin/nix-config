@@ -18,7 +18,7 @@
           path = "~/wallpapers/right.jpg";
         }
         {
-          monitor = "Virtual-1";
+          monitor = "";
           path = "~/wallpapers/left.jpg";
         }
       ];
