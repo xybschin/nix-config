@@ -10,14 +10,11 @@
   };
 
   home.packages = with pkgs; [
-    htop
-    ducker
+    git
+    systemctl-tui
     tree
     unzip
     gnumake
-    git
-    devenv
-    systemctl-tui
   ];
 
   imports = [

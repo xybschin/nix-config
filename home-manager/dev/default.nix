@@ -1,5 +1,11 @@
-{ ... }:
 {
-  imports = [ ./shared.nix ];
-  programs.home-manager.enable = true;
+  pkgs,
+  ...
+}:
+{
+  home.packages = with pkgs; [
+    devenv
+    ducker
+    htop
+  ];
 }

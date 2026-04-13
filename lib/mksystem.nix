@@ -5,22 +5,25 @@
   nixpkgs,
   overlays,
   configRoot,
+  lib,
   ...
 }:
 
-name:
-{
-  system,
-  user,
-}:
+host: user:
+{ system, ... }:
 
 let
-  isWsl = nixpkgs.lib.strings.hasInfix "wsl" name;
+  isWsl = nixpkgs.lib.strings.hasInfix "wsl" host;
 
-  hostConfig = ../hosts/${if isWsl then "wsl" else name};
-
+  hostConfig = ../hosts/${if isWsl then "wsl" else host};
   userSystemConfig = ../hosts/users/${user};
-  userHomeConfig = import ../home-manager/${user};
+
+  hmGlobalPath = ../home-manager/global;
+  hmUserPath = ../home-manager/${user};
+  hmHostPath = ../home-manager/${user}/${host};
+
+  hmGlobal = import hmGlobalPath;
+  hmUser = import hmUserPath;
 
   specialArgs = {
     inherit
@@ -31,6 +34,7 @@ let
       nixos-wsl
       inputs
       overlays
+      host
       ;
   };
 in
@@ -40,16 +44,19 @@ nixpkgs.lib.nixosSystem rec {
   modules = [
     hostConfig
     userSystemConfig
-
     { nixpkgs.overlays = overlays; }
-
     (if isWsl then nixos-wsl.nixosModules.wsl else { })
-
     home-manager.nixosModules.home-manager
     {
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
-      home-manager.users.${user} = userHomeConfig;
+      home-manager.users.${user} = {
+        imports = [
+          hmGlobal
+          hmUser
+        ]
+        ++ (lib.optional (builtins.pathExists hmHostPath) (import hmHostPath));
+      };
     }
   ];
 }
