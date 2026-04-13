@@ -46,6 +46,10 @@ apply_profile() {
             hyprctl keyword "monitor" "HDMI-A-1,disable"
             assign_all_workspaces_to "DP-1"
             ;;
+        "profile5")
+            hyprctl keyword "monitor" "Virtual-1,1920x1080@2560,0x0,1"
+            assign_all_workspaces_to "Virtual-1"
+            ;;
         *)
             echo "[error] unknown profile: $profile"
             return 1

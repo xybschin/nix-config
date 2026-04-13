@@ -54,6 +54,12 @@
         user = "bjarne";
       };
 
+      nixosConfigurations.nixvm = mkSystem "nixvm" {
+        system = "x86_64-linux";
+        user = "bjarne";
+      };
+
+
       nixosConfigurations.nixwsl = mkSystem "wsl" {
         system = "x86_64-linux";
         user = "dev";

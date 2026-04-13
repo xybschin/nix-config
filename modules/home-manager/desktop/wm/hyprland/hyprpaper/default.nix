@@ -17,6 +17,10 @@
           monitor = "HDMI-A-1";
           path = "~/wallpapers/right.jpg";
         }
+        {
+          monitor = "Virtual-1";
+          path = "~/wallpapers/left.jpg";
+        }
       ];
     };
   };
