@@ -2,19 +2,13 @@
   pkgs,
   ...
 }:
-let
-  scripts = builtins.path {
-    path = ./scripts;
-    name = "hprland-scripts";
-  };
-in
 {
   imports = [
     ./env.nix
     ./binds.nix
     ./rules.nix
-    (import ./settings.nix { inherit scripts; })
-    ./hyprpaper
+    ./settings.nix
+    ../../hyprpaper
   ];
 
   home.packages = with pkgs; [

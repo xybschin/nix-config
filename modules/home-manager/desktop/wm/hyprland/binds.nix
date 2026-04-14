@@ -13,10 +13,6 @@
     binde = [
       ", XF86AudioRaiseVolume, exec, pulsemixer --change-volume +2"
       ", XF86AudioLowerVolume, exec, pulsemixer --change-volume -2"
-      ", XF86MonBrightnessUp, exec, brightnessctl s +5%"
-      ", XF86MonBrightnessDown, exec, brightnessctl s 5%-"
-      "$mod ALT, k, exec, pulsemixer --change-volume +5"
-      "$mod ALT, j, exec, pulsemixer --change-volume -5"
     ];
 
     bind = [
@@ -45,7 +41,7 @@
       "$mod, Q, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
       "$mod, E, exec, ghostty -e ranger ~"
-      "$mod SHIFT, d, exec, $HOME/.config/rofi/scripts/rofi-monitor-menu"
+      "CONTROL SHIFT, Space, exec, 1password --quick-access"
 
       # Special workspace
       "$mod, S, togglespecialworkspace"

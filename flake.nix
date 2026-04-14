@@ -15,6 +15,11 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -23,11 +28,12 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      nur,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ ];
+      overlays = [ nur.overlays.default ];
       specialArgs = {
         inherit
           inputs
@@ -37,20 +43,23 @@
           home-manager
           nixos-wsl
           ;
+        lib = nixpkgs.lib;
       };
 
       mkSystem = import ./lib/mksystem.nix specialArgs;
       mkStandalone = import ./lib/mkstandalone.nix specialArgs;
     in
     {
-      nixosConfigurations.nixvidia = mkSystem "nixvidia" {
+      nixosConfigurations."bjarne@nixvidia" = mkSystem "nixvidia" "bjarne" {
         system = "x86_64-linux";
-        user = "bjarne";
       };
 
-      nixosConfigurations.nixwsl = mkSystem "wsl" {
+      nixosConfigurations."dev@nixvm" = mkSystem "nixvm" "dev" {
         system = "x86_64-linux";
-        user = "dev";
+      };
+
+      nixosConfigurations."dev@nixwsl" = mkSystem "wsl" "dev" {
+        system = "x86_64-linux";
       };
 
       homeConfigurations.dev = mkStandalone {

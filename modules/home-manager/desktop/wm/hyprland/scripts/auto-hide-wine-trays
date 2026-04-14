@@ -21,7 +21,6 @@ check_and_close() {
 
     echo "$class $width $height"
 
-
     if [[ "$class" == "$TARGET_CLASS" && \
 
           "$width" -eq "$TARGET_WIDTH"  && \
@@ -31,10 +30,17 @@ check_and_close() {
     fi
 }
 
+SOCKET="/run/user/1000/hypr/$(ls -t /run/user/1000/hypr/ | head -1)/.socket2.sock"
+
+while [[ ! -S "$SOCKET" ]]; do
+    echo "[info][$(date '+%T')] waiting for Hyprland socket '$SOCKETR'..."
+    sleep 1
+done
+
 echo "[info][$(date '+%T')] listening for Hyprland openwindow events..."
 echo "[info][$(date '+%T')] target: class='${TARGET_CLASS}', size=${TARGET_WIDTH}x${TARGET_HEIGHT}"
 
-socat - "UNIX-CONNECT:${XDG_RUNTIME_DIR}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/.socket2.sock" | \
+socat - "UNIX-CONNECT:${SOCKET}" | \
 while IFS= read -r line; do
     case "$line" in
         openwindow*)
