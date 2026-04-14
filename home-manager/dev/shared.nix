@@ -18,6 +18,8 @@
     git
     devenv
     systemctl-tui
+    gh
+    jq
   ];
 
   imports = [
