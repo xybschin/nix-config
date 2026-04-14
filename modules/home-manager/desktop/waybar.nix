@@ -1,5 +1,7 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  home.packages = with pkgs; [ playerctl ];
+
   programs.waybar = {
     systemd.enable = true;
     enable = true;
@@ -20,6 +22,7 @@
           "memory"
           "cpu"
           "clock"
+          "tray"
         ];
         "hyprland/workspaces" = {
           all-outputs = true;
@@ -80,6 +83,10 @@
           escape = true;
           tooltip = true;
           tooltip-format = "{}";
+        };
+        tray = {
+          icon-size = 16;
+          spacing = 10;
         };
       }
     ];

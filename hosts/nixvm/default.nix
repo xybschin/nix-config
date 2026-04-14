@@ -9,13 +9,10 @@
     ./hardware-configuration.nix
     ../../modules/nixos/1password.nix
     ../../modules/nixos/boot.nix
-    ../../modules/nixos/nvidia.nix
     ../../modules/nixos/desktop.nix
     ../../modules/nixos/greetd.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/bluetooth.nix
-    ../../modules/nixos/razer.nix
-    ../../modules/nixos/gaming.nix
   ];
 
   time.timeZone = "Europe/Berlin";
@@ -38,7 +35,7 @@
   };
 
   console.keyMap = "us";
-  networking.hostName = "nixvidia";
+  networking.hostName = "nixvm";
   networking.networkmanager.enable = true;
 
   environment.systemPackages = with pkgs; [
