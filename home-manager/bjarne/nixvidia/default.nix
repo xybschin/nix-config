@@ -10,21 +10,6 @@ in
     ../../../modules/home-manager/desktop/wm/hyprland
   ];
 
-  services.hyprpaper.wallpaper = [
-    {
-      monitor = "DP-1";
-      path = "/home/bjarne/wallpapers/left.jpg";
-    }
-    {
-      monitor = "HDMI-A-1";
-      path = "/home/bjarne/wallpapers/right.jpg";
-    }
-    {
-      monitor = "Virtual-1";
-      path = "/home/bjarne/wallpapers/left.jpg";
-    }
-  ];
-
   wayland.windowManager.hyprland.settings = {
     monitor = [ ];
 
