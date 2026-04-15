@@ -30,6 +30,7 @@ in
 
     windowrule = [
       "match:title = 'World of Warcraft' border_size 0 float off"
+      "match:title = 'Diablo IV' border_size 0 float off fullscreen on"
       "match:class = steam_app_default match:float 1 float off"
       "match:xwayland true, match:title ^$, match:class ^$, match:initial_class ^$, match:initial_title ^$, opacity 0.0, float true, no_blur on"
     ];
