@@ -12,14 +12,17 @@
         {
           monitor = "DP-1";
           path = "~/wallpapers/left.jpg";
+          fit_mode = "contain";
         }
         {
           monitor = "HDMI-A-1";
           path = "~/wallpapers/right.jpg";
+          fit_mode = "contain";
         }
         {
           monitor = "";
           path = "~/wallpapers/left.jpg";
+          fit_mode = "contain";
         }
       ];
     };
