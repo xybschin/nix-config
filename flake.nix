@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode-flake.url = "github:aodhanhayter/opencode-flake";
+    opencode.url = "github:dan-online/opencode-nix";
   };
 
   outputs =
@@ -30,11 +30,12 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      opencode,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ ];
+      overlays = [ opencode.overlays.default ];
       specialArgs = {
         inherit
           inputs
