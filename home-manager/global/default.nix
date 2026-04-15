@@ -15,6 +15,8 @@
     tree
     unzip
     gnumake
+    gh
+    jq
   ];
 
   imports = [
