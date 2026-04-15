@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    inputs.opencode-flake.url = "github:aodhanhayter/opencode-flake";
+    opencode-flake.url = "github:aodhanhayter/opencode-flake";
   };
 
   outputs =
