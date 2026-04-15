@@ -44,6 +44,7 @@ nixpkgs.lib.nixosSystem rec {
   modules = [
     hostConfig
     userSystemConfig
+    { networking.hostName = host; }
     { nixpkgs.overlays = overlays; }
     (if isWsl then nixos-wsl.nixosModules.wsl else { })
     home-manager.nixosModules.home-manager
