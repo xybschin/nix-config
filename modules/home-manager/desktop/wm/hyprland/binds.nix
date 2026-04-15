@@ -20,7 +20,7 @@
       "$mod CTRL, r, exec, hyprshutdown --post-cmd 'reboot'"
 
       # Window/Session actions.
-      "$mod, C, killactive,"
+      "$mod, Q, killactive,"
       "$mod, F, fullscreen,"
       "$mod, T, togglefloating,"
       "$mod, M, exit,"
@@ -38,7 +38,7 @@
       "$mod SHIFT, P, exec, hyprpicker --autocopy"
 
       # Application shortcuts.
-      "$mod, Q, exec, ghostty"
+      "$mod, Return, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
       "$mod, E, exec, ghostty -e ranger ~"
       "CONTROL SHIFT, Space, exec, 1password --quick-access"
