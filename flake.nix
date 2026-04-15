@@ -20,6 +20,8 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    inputs.opencode-flake.url = "github:aodhanhayter/opencode-flake";
   };
 
   outputs =
