@@ -18,6 +18,8 @@ apply_profile() {
     local profile=$1
     case "$profile" in
         "profile1")
+            hyprctl keyword "monitor" "DP-1,disable"
+            hyprctl keyword "monitor" "HDMI-A-1,disable"
             hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
             hyprctl keyword workspace "1, monitor:DP-1, default:true"
@@ -32,18 +34,18 @@ apply_profile() {
             hyprctl keyword workspace "10, monitor:HDMI-A-1"
             ;;
         "profile2")
-            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,0x0,1"
             hyprctl keyword "monitor" "DP-1,disable"
+            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,0x0,1"
             assign_all_workspaces_to "HDMI-A-1"
             ;;
         "profile3")
-            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,disable"
+            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
             assign_all_workspaces_to "DP-1"
             ;;
         "profile4")
-            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,disable"
+            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
             assign_all_workspaces_to "DP-1"
             ;;
         "profile5")

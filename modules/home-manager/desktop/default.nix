@@ -13,5 +13,6 @@
     ./zen-browser.nix
     ./rofi
     ./wayland-env.nix
+    ./hyprpaper
   ];
 }
