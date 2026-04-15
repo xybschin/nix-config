@@ -45,6 +45,7 @@
     gparted
     gnumake
     wl-clipboard
+    kdePackages.plasma-workspace
   ];
 
   nixpkgs.config.allowUnfree = true;
