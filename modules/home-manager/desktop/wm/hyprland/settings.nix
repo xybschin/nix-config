@@ -1,6 +1,10 @@
 { ... }:
 {
   wayland.windowManager.hyprland.settings = {
+    exec-once = [
+      "sleep 3; 1password --silent"
+    ];
+
     general = {
       gaps_in = 0;
       gaps_out = 0;
