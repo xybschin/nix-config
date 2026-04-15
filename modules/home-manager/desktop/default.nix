@@ -12,5 +12,6 @@
     ./cursor.nix
     ./zen-browser.nix
     ./rofi
+    ./wayland-env.nix
   ];
 }

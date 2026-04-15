@@ -28,12 +28,11 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
-      nur,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ nur.overlays.default ];
+      overlays = [ ];
       specialArgs = {
         inherit
           inputs
@@ -58,7 +57,7 @@
         system = "x86_64-linux";
       };
 
-      nixosConfigurations."dev@nixwsl" = mkSystem "wsl" "dev" {
+      nixosConfigurations."dev@nixwsl" = mkSystem "nixwsl" "dev" {
         system = "x86_64-linux";
       };
 

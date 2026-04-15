@@ -20,8 +20,9 @@
   environment.variables = {
     LIBVA_DRIVER_NAME = "nvidia";
     MOZ_DISABLE_RDD_SANDBOX = "1";
-    MOZ_ENABLE_WAYLAND = "1";
     NVD_BACKEND = "direct";
+    __GL_GSYNC_ALLOWED = "0";
+    __GL_SYNC_TO_VBLANK = "0";
   };
 
   environment.systemPackages = with pkgs; [
