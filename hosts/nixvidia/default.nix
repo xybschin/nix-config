@@ -1,4 +1,5 @@
 {
+  pkgs,
   ...
 }:
 
@@ -16,5 +17,9 @@
     ../../modules/nixos/bluetooth.nix
     ../../modules/nixos/razer.nix
     ../../modules/nixos/gaming.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    kdePackages.plasma-workspace
   ];
 }
