@@ -32,7 +32,7 @@
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ ];
+      overlays = import ./overlays;
       specialArgs = {
         inherit
           inputs
