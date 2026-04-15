@@ -2,14 +2,13 @@
   pkgs,
   lib,
   config,
-  inputs,
   ...
 }:
 let
   providersFilePath = "${config.home.homeDirectory}/opencode-providers.json";
 in
 {
-  home.packages = [ inputs.opencode-flake.packages.${pkgs.system}.default ];
+  home.packages = with pkgs; [ opencode ];
   home.shellAliases.oc = "opencode";
 
   programs.opencode = {
