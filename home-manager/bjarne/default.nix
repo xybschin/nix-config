@@ -3,6 +3,7 @@
   home.packages = with pkgs; [
     vscode
     google-chrome
+    zathura
   ];
 
   programs.git = {
