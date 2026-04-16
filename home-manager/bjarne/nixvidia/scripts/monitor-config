@@ -22,6 +22,7 @@ apply_profile() {
             hyprctl keyword "monitor" "HDMI-A-1,disable"
             hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
             hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
+
             hyprctl keyword workspace "1, monitor:DP-1, default:true"
             hyprctl keyword workspace "2, monitor:HDMI-A-1, default:true"
             hyprctl keyword workspace "3, monitor:DP-1"
@@ -59,6 +60,8 @@ apply_profile() {
     esac
 }
 
+active_workspace=$(hyprctl activeworkspace -j | jq '.id')
+
 if [ $# -eq 0 ]; then
     if [ -f "$STATE_FILE" ]; then
         profile=$(cat "$STATE_FILE")
@@ -71,3 +74,5 @@ else
     apply_profile "$1"
     echo "$1" > "$STATE_FILE"
 fi
+
+hyprctl dispatch workspace "$active_workspace"
