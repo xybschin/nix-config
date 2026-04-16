@@ -5,7 +5,7 @@
   ...
 }:
 let
-  # providersFilePath = "${config.home.homeDirectory}/opencode-providers.json";
+  providersFilePath = "${config.home.homeDirectory}/opencode-providers.json";
 in
 {
   home.packages = with pkgs; [ opencode ];
@@ -14,9 +14,9 @@ in
   programs.opencode = {
     enable = true;
     settings = lib.mkMerge [
-      # (lib.mkIf (builtins.pathExists providersFilePath) {
-      #   # provider = builtins.fromJSON (builtins.readFile providersFilePath);
-      # })
+      (lib.mkIf (builtins.pathExists providersFilePath) {
+        provider = builtins.fromJSON (builtins.readFile providersFilePath);
+      })
     ];
   };
 

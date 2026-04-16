@@ -20,6 +20,8 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    opencode.url = "github:dan-online/opencode-nix";
   };
 
   outputs =
@@ -28,11 +30,12 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      opencode,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ ];
+      overlays = [ opencode.overlays.default ];
       specialArgs = {
         inherit
           inputs
