@@ -17,6 +17,7 @@
     gnumake
     gh
     jq
+    htop
   ];
 
   imports = [
