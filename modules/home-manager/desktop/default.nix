@@ -5,6 +5,12 @@
     feh
   ];
 
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
+
   imports = [
     ./ghostty.nix
     ./waybar.nix
