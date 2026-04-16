@@ -22,14 +22,18 @@
       theme = "";
       plugins = [
         "git"
-        "tmux"
       ];
     };
 
     initContent = lib.mkBefore ''
       [ -f ~/.zshrc.local ] && source ~/.zshrc.local
-      ZSH_TMUX_AUTOSTART=true
-      ZSH_TMUX_AUTOQUIT=true
+
+      if [[ -z "$TMUX" ]]; then
+        SESSION_NAME="$$"
+        tmux new-session -d -s "$SESSION_NAME" 2>/dev/null || tmux new-session -s "$SESSION_NAME"
+        exec tmux attach -t "$SESSION_NAME"
+      fi
+
       PROMPT="[%n@%F{red}%m%f %1~] "
 
       function gcap() {
