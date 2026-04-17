@@ -56,7 +56,7 @@
         "pulseaudio#source" = {
           format = "{format_source}";
           format-source = "SRC {volume}%";
-          format-muted = "SRC 0%";
+          format-source-muted = "SRC 0%";
           on-click = "pavucontrol --tab 4";
           on-click-right = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
           on-scroll-up = "pactl set-source-volume @DEFAULT_SOURCE@ +1%";
@@ -67,6 +67,7 @@
           exec = "${config.xdg.configHome}/waybar/scripts/scrolling-playerctl";
           tooltip = true;
           tooltip-format = "{}";
+          on-click = "playerctl play-pause";
         };
         tray = {
           icon-size = 16;
