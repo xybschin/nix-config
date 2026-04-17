@@ -1,22 +1,25 @@
 #!/usr/bin/env bash
+
+SLEEP_MS=.5
+LEN=30
+
+reset() { start=0; echo ""; sleep "$SLEEP_MS"; }
+
 start=0
 while :; do
-    status=$(playerctl status 2>/dev/null) || { sleep 1; continue; }
-    if [[ "$status" != "Playing" ]]; then
-        start=0
-        echo ""
-        sleep 0.5
-        continue
+    status=$(playerctl status 2>/dev/null) || { reset; continue; }
+    if [[ "$status" != "Playing" && "$status" != "Paused" ]]; then
+        reset; continue
     fi
 
     out="  $(playerctl metadata --format '{{title}} - {{artist}}')  "
-    echo "${out:$start:30}"
-    if [[ 30 -gt ${#out} ]]; then :;
+    echo "${out:$start:LEN}"
+    if [[ $LEN -gt ${#out} ]]; then :;
     else
-        if (( start + 30 == ${#out} )); then start=0;
+        if (( start + LEN == ${#out} )); then start=0;
         else
             (( start++ ))
         fi;
     fi
-    sleep .5
+    sleep $SLEEP_MS
 done
