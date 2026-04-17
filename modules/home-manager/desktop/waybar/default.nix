@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   home.packages = with pkgs; [ playerctl ];
 
@@ -17,6 +17,7 @@
           "hyprland/window"
         ];
         modules-right = [
+          "pulseaudio#source"
           "pulseaudio"
           "network"
           "memory"
@@ -27,14 +28,9 @@
         "hyprland/workspaces" = {
           all-outputs = true;
           warp-on-scroll = false;
-          format = "{icon}";
-          format-icons = {
-            "6" = "G";
-          };
         };
         clock = {
           format = "{:%Y-%d-%m %H:%M}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           format-alt = "{:%Y-%m-%d}";
         };
         cpu = {
@@ -45,42 +41,30 @@
           format = "MEM {}%";
         };
         network = {
-          format-wifi = "{essid} ({signalStrength}%) ";
-          format-ethernet = "({ifname}) {ipaddr}/{cidr} DOWN {bandwidthDownBits} UP {bandwidthUpBits}";
+          format-ethernet = "({ifname}) DOWN {bandwidthDownBits} UP {bandwidthUpBits}";
           tooltip-format = "{ifname} via {gwaddr}";
-          format-linked = "{ifname} (No IP) ";
-          format-disconnected = "Disconnected ⚠";
-          format-alt = "{ifname}: {ipaddr}/{cidr}";
+          format-linked = "{ifname} NO IP";
+          format-disconnected = "DISCONNECTED";
           interval = 4;
         };
         pulseaudio = {
-          format = "VOL {volume}%";
-          format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = " {icon} {format_source}";
-          format-muted = " {format_source}";
-          format-source = "{volume}% ";
-          format-source-muted = "";
-          format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [
-              ""
-              ""
-              ""
-            ];
-          };
-          on-click = "pavucontrol";
+          format = "SNK {volume}%";
+          format-muted = "SNK 0%";
+          on-click = "pavucontrol --tab 3";
+          on-click-right = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        };
+        "pulseaudio#source" = {
+          format = "{format_source}";
+          format-source = "SRC {volume}%";
+          format-muted = "SRC 0%";
+          on-click = "pavucontrol --tab 4";
+          on-click-right = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+          on-scroll-up = "pactl set-source-volume @DEFAULT_SOURCE@ +1%";
+          on-scroll-down = "pactl set-source-volume @DEFAULT_SOURCE@ -1%";
         };
         "custom/media" = {
           format = "NOW PLAYING: {}";
-          exec = "playerctl metadata --format '{{title}} - {{artist}}'";
-          interval = 5;
-          max-length = 80;
-          escape = true;
+          exec = "${config.xdg.configHome}/waybar/scripts/scrolling-playerctl";
           tooltip = true;
           tooltip-format = "{}";
         };
@@ -151,4 +135,6 @@
       }
     '';
   };
+
+  xdg.configFile."waybar/scripts".source = config.lib.file.mkOutOfStoreSymlink ./scripts;
 }

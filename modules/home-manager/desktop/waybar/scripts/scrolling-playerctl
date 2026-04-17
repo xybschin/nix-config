@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+start=0
+while :; do
+    out="  $(playerctl metadata --format '{{title}} - {{artist}}')  "
+    echo "${out:$start:30}"
+    if [[ 30 -gt ${#out} ]]; then :;
+    else
+        if (( start + 30 == ${#out} )); then start=0;
+        else
+            (( start++ ))
+        fi;
+    fi
+    sleep .5
+done
