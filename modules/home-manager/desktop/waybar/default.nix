@@ -13,9 +13,6 @@
           "hyprland/workspaces"
           "custom/media"
         ];
-        modules-center = [
-          "hyprland/window"
-        ];
         modules-right = [
           "pulseaudio#source"
           "pulseaudio"
