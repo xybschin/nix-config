@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
     pavucontrol
     easyeffects
-    pulsemixer
+    pulseaudio
   ];
 
   security.rtkit.enable = true;

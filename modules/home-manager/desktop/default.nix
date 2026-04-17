@@ -13,7 +13,7 @@
 
   imports = [
     ./ghostty.nix
-    ./waybar.nix
+    ./waybar
     ./font.nix
     ./cursor.nix
     ./zen-browser.nix
