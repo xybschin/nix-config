@@ -21,7 +21,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode.url = "github:dan-online/opencode-nix";
+    opencode = {
+      url = "github:dan-online/opencode-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
