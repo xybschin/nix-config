@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -18,11 +19,13 @@ let
   bindings = ''
     unbind-key -a
 
-    bind ^W run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/window.sh switch"
-    bind ^S run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/session.sh switch"
+    bind-key -T find-table w run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/window.sh switch"
+    bind-key -T find-table s run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/session.sh switch"
+    bind-key -T find-table q switch-client -T root
+    bind-key f switch-client -T find-table
 
     bind ^C new-window -c "$HOME"
-    bind R source-file ~/.config/tmux/tmux.conf
+    bind R source-file ${config.xdg.configHome}/tmux/tmux.conf
 
     bind 0 select-window -t :0
     bind 1 select-window -t :1
