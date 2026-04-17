@@ -94,7 +94,7 @@ let
   '';
 
   hooks = ''
-    set-hook -g client-detached 'if -F "#{==:#{session_attached},0}" "run-shell \"tmux kill-session -t #{session_id}\""'
+    set-hook -g client-detached 'if -F "#{==:#{session_attached},0}" "run-shell \"tmux kill-session -t #{session_name}\""'
   '';
 in
 {

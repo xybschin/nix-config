@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 start=0
 while :; do
+    status=$(playerctl status 2>/dev/null) || { sleep 1; continue; }
+    if [[ "$status" != "Playing" ]]; then
+        start=0
+        echo ""
+        sleep 0.5
+        continue
+    fi
+
     out="  $(playerctl metadata --format '{{title}} - {{artist}}')  "
     echo "${out:$start:30}"
     if [[ 30 -gt ${#out} ]]; then :;
