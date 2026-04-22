@@ -7,6 +7,10 @@
     pkgs.zathura
   ];
 
+  imports = [
+    ../../modules/home-manager/ghostty.nix
+  ];
+
   programs.git = {
     enable = true;
     settings = {
