@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     opencode = {
       url = "github:dan-online/opencode-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +38,7 @@
       nixpkgs,
       home-manager,
       nixos-wsl,
+      nix-darwin,
       opencode,
       ...
     }@inputs:
@@ -47,6 +53,7 @@
           configRoot
           home-manager
           nixos-wsl
+          nix-darwin
           ;
         lib = nixpkgs.lib;
       };
@@ -69,6 +76,10 @@
 
       homeConfigurations.dev = mkStandalone {
         user = "dev";
+      };
+
+      darwinConfigurations."bjarne@macbook" = mkSystem "macbook" "bjarne" {
+        system = "aarch64-darwin";
       };
     };
 }

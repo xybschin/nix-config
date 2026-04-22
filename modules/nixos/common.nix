@@ -35,5 +35,8 @@
     };
   };
 
+  environment.localBinInPath = true;
+  programs.zsh.enable = true;
+
   system.stateVersion = "25.11";
 }

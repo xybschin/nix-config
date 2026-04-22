@@ -6,6 +6,7 @@ let
 in
 {
   imports = [
+    ../../../modules/home-manager/desktop
     ../../../modules/home-manager/desktop/wm/hyprland
   ];
 

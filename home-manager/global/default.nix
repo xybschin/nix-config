@@ -1,6 +1,7 @@
 {
   overlays,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -11,13 +12,14 @@
 
   home.packages = with pkgs; [
     git
-    systemctl-tui
     tree
     unzip
     gnumake
     gh
     jq
     htop
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+    pkgs.systemctl-tui
   ];
 
   imports = [

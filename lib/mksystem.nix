@@ -2,6 +2,7 @@
   home-manager,
   inputs,
   nixos-wsl,
+  nix-darwin,
   nixpkgs,
   overlays,
   configRoot,
@@ -13,7 +14,8 @@ host: user:
 { system, ... }:
 
 let
-  isWsl = nixpkgs.lib.strings.hasInfix "wsl" host;
+  isDarwin = nixpkgs.lib.strings.hasSuffix "darwin" system;
+  isWsl = !isDarwin && nixpkgs.lib.strings.hasInfix "wsl" host;
 
   hostConfig = ../hosts/${if isWsl then "wsl" else host};
   userSystemConfig = ../hosts/users/${user};
@@ -37,17 +39,17 @@ let
       host
       ;
   };
+
+  mkSystemFn = if isDarwin then nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
+  hmModule = if isDarwin then home-manager.darwinModules.home-manager else home-manager.nixosModules.home-manager;
 in
-nixpkgs.lib.nixosSystem rec {
+mkSystemFn rec {
   inherit system specialArgs;
 
   modules = [
     hostConfig
-    userSystemConfig
-    { networking.hostName = host; }
     { nixpkgs.overlays = overlays; }
-    (if isWsl then nixos-wsl.nixosModules.wsl else { })
-    home-manager.nixosModules.home-manager
+    hmModule
     {
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
@@ -59,5 +61,10 @@ nixpkgs.lib.nixosSystem rec {
         ++ (lib.optional (builtins.pathExists hmHostPath) (import hmHostPath));
       };
     }
-  ];
+  ]
+  ++ (lib.optionals (!isDarwin) [
+    userSystemConfig
+    { networking.hostName = host; }
+    (if isWsl then nixos-wsl.nixosModules.wsl else { })
+  ]);
 }
