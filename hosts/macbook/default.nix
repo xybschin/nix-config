@@ -8,4 +8,8 @@
   ];
 
   networking.hostName = "macbook";
+
+  homebrew.casks = [
+    "zen-browser"
+  ];
 }

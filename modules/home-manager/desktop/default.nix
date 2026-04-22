@@ -12,7 +12,6 @@
   };
 
   imports = [
-    ./ghostty.nix
     ./waybar
     ./font.nix
     ./cursor.nix
