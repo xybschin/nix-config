@@ -2,8 +2,9 @@
 {
   home.packages = with pkgs; [
     vscode
-    google-chrome
-    zathura
+  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+    pkgs.google-chrome
+    pkgs.zathura
   ];
 
   programs.git = {
@@ -17,7 +18,4 @@
     };
   };
 
-  imports = [
-    ../../modules/home-manager/desktop
-  ];
 }

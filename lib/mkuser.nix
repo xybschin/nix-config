@@ -5,9 +5,6 @@
 }:
 
 {
-  environment.localBinInPath = true;
-  programs.zsh.enable = true;
-
   users.users.${name} = {
     isNormalUser = true;
     home = "/home/${name}";
