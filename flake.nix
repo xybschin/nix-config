@@ -30,6 +30,11 @@
       url = "github:dan-online/opencode-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -40,11 +45,15 @@
       nixos-wsl,
       nix-darwin,
       opencode,
+      claude-code,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
-      overlays = [ opencode.overlays.default ];
+      overlays = [
+        opencode.overlays.default
+        claude-code.overlays.default
+      ];
       specialArgs = {
         inherit
           inputs
