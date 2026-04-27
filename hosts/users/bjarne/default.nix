@@ -3,7 +3,14 @@
   users.users.bjarne = {
     isNormalUser = true;
     home = "/home/bjarne";
-    extraGroups = [ "wheel" "docker" "networkmanager" "openrazer" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "networkmanager"
+      "openrazer"
+      "kvm"
+      "libvirtd"
+    ];
     shell = pkgs.zsh;
     hashedPassword = "$y$j9T$NUUdJqm0TLbeSko6tfPww1$RQXYJ.jM17uWDkwmtlssASXcthw4MUo2Y9t.ixw63F9";
   };
