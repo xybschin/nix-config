@@ -10,6 +10,7 @@
     ../../modules/nixos/common-desktop.nix
     ../../modules/nixos/1password.nix
     ../../modules/nixos/boot.nix
+    ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/nvidia.nix
     ../../modules/nixos/desktop.nix
     ../../modules/nixos/greetd.nix

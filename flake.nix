@@ -26,13 +26,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode = {
-      url = "github:dan-online/opencode-nix";
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
+    apple-fonts = {
+      url = "github:Lyndeno/apple-fonts.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -44,14 +44,13 @@
       home-manager,
       nixos-wsl,
       nix-darwin,
-      opencode,
       claude-code,
+      apple-fonts,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
       overlays = [
-        opencode.overlays.default
         claude-code.overlays.default
       ];
       specialArgs = {
@@ -63,6 +62,7 @@
           home-manager
           nixos-wsl
           nix-darwin
+          apple-fonts
           ;
         lib = nixpkgs.lib;
       };

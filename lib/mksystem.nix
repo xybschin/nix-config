@@ -7,6 +7,7 @@
   overlays,
   configRoot,
   lib,
+  apple-fonts,
   ...
 }:
 
@@ -30,6 +31,7 @@ let
   specialArgs = {
     inherit
       isWsl
+      isDarwin
       configRoot
       user
       home-manager
@@ -37,11 +39,16 @@ let
       inputs
       overlays
       host
+      apple-fonts
       ;
   };
 
   mkSystemFn = if isDarwin then nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-  hmModule = if isDarwin then home-manager.darwinModules.home-manager else home-manager.nixosModules.home-manager;
+  hmModule =
+    if isDarwin then
+      home-manager.darwinModules.home-manager
+    else
+      home-manager.nixosModules.home-manager;
 in
 mkSystemFn rec {
   inherit system specialArgs;
