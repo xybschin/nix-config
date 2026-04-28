@@ -31,6 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    opencode = {
+      url = "github:dan-online/opencode-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     apple-fonts = {
       url = "github:Lyndeno/apple-fonts.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,6 +50,7 @@
       nixos-wsl,
       nix-darwin,
       claude-code,
+      opencode,
       apple-fonts,
       ...
     }@inputs:
@@ -52,6 +58,7 @@
       configRoot = builtins.getEnv "CONFIG_ROOT";
       overlays = [
         claude-code.overlays.default
+        opencode.overlays.default
       ];
       specialArgs = {
         inherit
