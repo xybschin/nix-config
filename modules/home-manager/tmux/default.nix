@@ -9,9 +9,9 @@ let
     set -g @mode_indicator_copy_prompt ' COPY '
     set -g @mode_indicator_sync_prompt ' SYNC '
     set -g @mode_indicator_empty_prompt ' NORM '
-    set -g @mode_indicator_prefix_mode_style 'bg=#701516,fg=black'
+    set -g @mode_indicator_prefix_mode_style 'bg=red,fg=black'
     set -g @mode_indicator_copy_mode_style 'bg=#d9ba73,fg=black'
-    set -g @mode_indicator_sync_mode_style 'bg=#701516,fg=black'
+    set -g @mode_indicator_sync_mode_style 'bg=red,fg=black'
     set -g @mode_indicator_empty_mode_style 'bg=#272727,fg=#777777'
     run-shell ${pkgs.tmuxPlugins.mode-indicator}/share/tmux-plugins/mode-indicator/mode_indicator.tmux
   '';
@@ -81,16 +81,16 @@ let
     set -g status-left-length 100
     set -g status-right-length 100
     set -g status-position bottom
-    set -g status-style "fg=#b0b0b0,bg=#101010"
-    set -g status-left '#{tmux_mode_indicator}#[bg=#14ba19]#[fg=black] #{user}@#H '
-    set -g status-right '#[fg=#14ba19]%Y-%m-%d #[fg=#ffffff]%H:%M'
+    set -g status-style "fg=red,bg=#101010"
+    set -g status-left '#{tmux_mode_indicator}#[bg=green]#[fg=black] #{user}@#H #[fg=#{@LGRAY} #[bg=magenta]#[fg=black]'
+    set -g status-right '#[fg=green]%Y-%m-%d #[fg=#ffffff]%H:%M'
     set -g status-justify absolute-centre
-    set -g @prefix_highlight_output_prefix "#[fg=#101010]#[bg=#d9ba73]"
+    set -g @prefix_highlight_output_prefix "#[fg=#252530]#[bg=#d9ba73]"
     set -g @prefix_highlight_output_suffix ""
 
     setw -g window-status-separator " - "
-    setw -g window-status-format "#[fg=#777777,bg=#272727] #I #[fg=#777777,bg=#101010] #W "
-    setw -g window-status-current-format "#[fg=#ffffff,bg=#701516] #I #[fg=#ffffff,bg=#101010] #W "
+    setw -g window-status-format "#[fg=#777777,bg=#272727] #I #[fg=#777777,bg=black] #W "
+    setw -g window-status-current-format "#[fg=black,bg=red] #I #[fg=#ffffff,bg=black] #W "
   '';
 
   hooks = ''
