@@ -150,6 +150,11 @@ let
       };
 
       alwaysThinkingEnabled = true;
+      effortLevel = "high";
+      theme = "dark-ansi";
+      editorMode = "normal";
+      terminalProgressBarEnabled = false;
+      teammateMode = "tmux";
 
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
@@ -158,6 +163,7 @@ let
   );
 in
 {
+  home.packages = [ pkgs.claude-code ];
   home.file = {
     ".claude/CLAUDE.md".source = ./config/CLAUDE.md;
   }
