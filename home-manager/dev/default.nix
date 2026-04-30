@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ../../modules/home-manager/claude-code.nix
+    ../../modules/home-manager/claude
     ../../modules/home-manager/github-copilot.nix
   ];
 

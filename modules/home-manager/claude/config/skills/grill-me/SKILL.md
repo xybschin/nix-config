@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Interview the user relentlessly about a plan or design until reaching shared understanding, resolving each branch of the decision tree. Use when user wants to stress-test a plan, get grilled on their design, or mentions "grill me".
+description: Interview the user relentlessly about a plan or design until reaching shared understanding, resolving each branch of the decision tree. Use proactively whenever the user is planning, designing, or proposing an approach (including any plan-mode session), unless the user explicitly opts out (e.g. "don't grill me", "skip grill", "no grilling"). Also use when the user says "grill me" or asks to stress-test a plan.
 ---
 
 ## What I do
@@ -24,7 +24,7 @@ I conduct a rigorous, structured interrogation of a plan, design, or architectur
 
 4. **Push back on weak answers** -- Do not accept vague or hand-wavy responses. If the user says "it should be fine" or "we'll figure it out later," press harder. Ask for specifics, evidence, or concrete plans.
 
-5. **Track resolved vs. unresolved items** -- Use the TodoWrite tool to maintain a visible list of open questions and resolved decisions. Mark items as completed only when the user has given a concrete, satisfying answer.
+5. **Track resolved vs. unresolved items** -- Maintain a visible list of open questions and resolved decisions (use a todo tool if available). Mark items as resolved only when the user has given a concrete, satisfying answer.
 
 6. **Summarize findings** -- Once all branches are explored, provide a structured summary:
    - Decisions that are well-justified and ready to execute

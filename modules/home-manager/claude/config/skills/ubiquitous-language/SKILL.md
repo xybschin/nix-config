@@ -9,7 +9,7 @@ Extract and formalize domain terminology from the current conversation into a co
 
 ## Process
 
-1. **Scan the conversation** for domain-relevant nouns, verbs, and concepts
+1. **Scan the conversation** for domain-relevant nouns, verbs, and concepts. If no domain context exists yet, ask the user to describe the domain or share the source material before proceeding.
 2. **Identify problems**:
    - Same word used for different concepts (ambiguity)
    - Different words used for the same concept (synonyms)
@@ -20,7 +20,7 @@ Extract and formalize domain terminology from the current conversation into a co
 
 ## Output Format
 
-Write a `UBIQUITOUS_LANGUAGE.md` file with this structure:
+Write a `UBIQUITOUS_LANGUAGE.md` file with this structure. The order/customer example below is **illustrative only** — replace with the actual domain. Group headings and term tables by whatever clusters emerge naturally.
 
 ```md
 # Ubiquitous Language
@@ -79,6 +79,4 @@ When invoked again in the same conversation:
 
 ## Post-output instruction
 
-After writing the file, state:
-
-> I've written/updated `UBIQUITOUS_LANGUAGE.md`. From this point forward I will use these terms consistently. If I drift from this language or you notice a term that should be added, let me know.
+After writing the file, briefly tell the user the file was written/updated and that you will use these terms consistently going forward. Invite them to flag any drift or missing terms.
