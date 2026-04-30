@@ -164,6 +164,8 @@ let
 in
 {
   home.packages = [ pkgs.claude-code ];
+  home.shellAliases.cc = "claude";
+
   home.file = {
     ".claude/CLAUDE.md".source = ./config/CLAUDE.md;
   }
