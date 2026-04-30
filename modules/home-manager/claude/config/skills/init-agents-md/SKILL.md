@@ -1,15 +1,15 @@
 ---
-name: init-skill
-description: Generate an AGENTS.md file in the project root that describes the project's purpose, structure, and conventions. Use when user wants to initialize a project for agent use, create an AGENTS.md, bootstrap agent context, or mentions "init skill", "init project", or "agents.md".
+name: init-agents-md
+description: Generate an AGENTS.md file in the project root that describes the project's purpose, structure, and conventions. Use when the user wants to bootstrap agent context for a project, create or refresh an AGENTS.md, or mentions "init agents", "init project", or "agents.md".
 ---
 
-# Init Skill
+# Init AGENTS.md
 
 Generate an `AGENTS.md` file in the project root that gives any agent (or new contributor) a fast, accurate overview of the project.
 
 ## Process
 
-1. **Explore the project** -- Use the Task tool with the `explore` agent to survey the project root. Gather:
+1. **Explore the project** -- Survey the project root using available exploration tools. Prefer an `explore` subagent if one is configured; otherwise use grep/glob/view directly. Gather:
    - Top-level directory structure (one level deep)
    - Key config files (package.json, Cargo.toml, go.mod, flake.nix, pyproject.toml, etc.)
    - README or existing documentation
@@ -77,7 +77,7 @@ Omit any section where the information is not available or not applicable. Do no
 - **Be concise.** The file should be scannable in under 30 seconds. Aim for under 60 lines.
 - **No opinions.** Describe what IS, not what should be.
 - **Respect existing files.** If an `AGENTS.md` already exists, read it first and ask the user whether to overwrite or update it.
-- **Use the Task tool.** Exploration must go through the `explore` agent to keep context lean.
+- **Use exploration efficiently.** If an `explore` subagent is available, prefer it to keep context lean; otherwise batch grep/glob/view calls.
 
 ## Re-running
 

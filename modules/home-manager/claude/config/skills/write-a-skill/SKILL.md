@@ -1,11 +1,11 @@
 ---
 name: write-a-skill
-description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
+description: Create new Claude Code agent skills with proper structure, progressive disclosure, and bundled resources. Use when the user wants to create, write, or build a new skill.
 ---
 
 # Write a Skill
 
-Create OpenCode agent skills that enable specialized workflows for specific domains or tasks.
+Create Claude Code agent skills that enable specialized workflows for specific domains or tasks.
 
 ## Quick Start
 
@@ -18,9 +18,9 @@ To create a skill:
 1. Understand the task/domain the skill will cover
 2. Draft SKILL.md with quick start + workflows
 3. Add scripts or reference files if content exceeds ~100 lines
-4. Place skill folder at `~/.config/opencode/skills/<skill-name>/`
+4. Place skill folder at `~/.claude/skills/<skill-name>/`
 
-OpenCode loads skills automatically when their trigger conditions match the user's request.
+Claude Code loads skills automatically when their trigger conditions match the user's request.
 
 ## Skill Anatomy
 
@@ -55,7 +55,7 @@ description: One sentence what it does. Use when [specific triggers].
 Define workflows for complex multi-step tasks. Structure as:
 
 1. **Gather information** - what questions to ask the user
-2. **Plan the work** - use TodoWrite to track steps
+2. **Plan the work** - track steps with a todo tool if available
 3. **Execute systematically** - complete tasks in priority order
 4. **Verify completion** - confirm all requirements met
 
