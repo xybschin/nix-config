@@ -30,7 +30,8 @@
 
       if [[ -z "$TMUX" ]]; then
         SESSION_NAME="$$"
-        tmux new-session -d -s "$SESSION_NAME" 2>/dev/null && tmux attach -t "$SESSION_NAME"
+        tmux new-session -d -s "$SESSION_NAME" 2>/dev/null
+        exec tmux attach -t "$SESSION_NAME"
       fi
 
       PROMPT="[%n@%F{red}%m%f %1~] "
