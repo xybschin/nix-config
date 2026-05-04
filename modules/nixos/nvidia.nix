@@ -29,5 +29,6 @@
     libva
     libva-utils
     nvidia-vaapi-driver
+    nvtopPackages.nvidia
   ];
 }
