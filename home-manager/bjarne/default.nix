@@ -1,14 +1,18 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    vscode
-  ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
-    pkgs.google-chrome
-    pkgs.zathura
-  ];
+  home.packages =
+    with pkgs;
+    [
+      vscode
+    ]
+    ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+      pkgs.google-chrome
+      pkgs.zathura
+    ];
 
   imports = [
     ../../modules/home-manager/ghostty.nix
+    ../../modules/home-manager/kitty.nix
   ];
 
   programs.git = {

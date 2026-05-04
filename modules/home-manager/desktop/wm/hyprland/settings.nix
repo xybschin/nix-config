@@ -9,7 +9,7 @@
       gaps_in = 0;
       gaps_out = 0;
       border_size = 1;
-      "col.active_border" = "rgb(b0b0b0)";
+      "col.active_border" = "rgb(458ee6)";
       "col.inactive_border" = "rgb(272727)";
       resize_on_border = true;
       allow_tearing = false;
