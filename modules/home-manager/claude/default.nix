@@ -149,6 +149,19 @@ let
         "learning-output-style@claude-plugins-official" = true;
       };
 
+      SessionStart = [
+        {
+          matcher = "*";
+          hooks = [
+            {
+              type = "command";
+              command = "bash ${config.home.homeDirectory}/.claude/hooks/merge-models.sh";
+              timeout = 10;
+            }
+          ];
+        }
+      ];
+
       alwaysThinkingEnabled = true;
       effortLevel = "high";
       theme = "dark-ansi";
@@ -169,6 +182,7 @@ in
 
   home.file = {
     ".claude/CLAUDE.md".source = ./config/CLAUDE.md;
+    ".claude/hooks".source = ./config/hooks;
   }
   //
     # Link each skill directory individually, keeping the parent writable
@@ -197,7 +211,8 @@ in
           .permissions.deny  = ((.permissions.deny  // []) + ($mine[0].permissions.deny // []) | unique) |
           .enabledPlugins = ($mine[0].enabledPlugins * (.enabledPlugins // {})) |
           .alwaysThinkingEnabled = $mine[0].alwaysThinkingEnabled |
-          .env = ($mine[0].env * (.env // {}))
+          .env = ($mine[0].env * (.env // {})) |
+          .SessionStart = ((.SessionStart // []) + ($mine[0].SessionStart // []))
         ' "$SETTINGS" > "''${SETTINGS}.tmp" \
         && mv "''${SETTINGS}.tmp" "$SETTINGS"
     fi

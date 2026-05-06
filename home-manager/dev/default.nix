@@ -11,5 +11,7 @@
     devenv
     ducker
     htop
+    python3
+    nodejs
   ];
 }
