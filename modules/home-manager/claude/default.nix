@@ -158,6 +158,7 @@ let
 
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+        CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY = "1";
       };
     }
   );
