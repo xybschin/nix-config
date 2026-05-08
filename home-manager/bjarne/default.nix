@@ -14,6 +14,7 @@
   imports = [
     ../../modules/home-manager/ghostty.nix
     ../../modules/home-manager/kitty.nix
+    ../../modules/home-manager/claude
   ];
 
   programs.git = {
