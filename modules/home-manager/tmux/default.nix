@@ -88,7 +88,7 @@ let
     set -g @prefix_highlight_output_prefix "#[fg=#252530]#[bg=#d9ba73]"
     set -g @prefix_highlight_output_suffix ""
 
-    set -g pane-border-style 'fg=black'
+    set -g pane-border-style 'fg=#272727'
     set -g pane-active-border-style 'fg=#d9ba73'
     set -g pane-border-lines heavy
 
