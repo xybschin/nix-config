@@ -5,6 +5,8 @@
     [
       vscode
       obsidian
+      python3
+      nodejs
     ]
     ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       pkgs.google-chrome
