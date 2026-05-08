@@ -41,6 +41,7 @@
       "$mod, Return, exec, ghostty"
       "$mod, R, exec, rofi -show drun"
       "$mod, E, exec, ghostty -e ranger ~"
+      "$mod, Z, exec, zen-twilight"
       "CONTROL SHIFT, Space, exec, 1password --quick-access"
 
       # Special workspace

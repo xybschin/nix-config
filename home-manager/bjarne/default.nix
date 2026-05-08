@@ -4,6 +4,7 @@
     with pkgs;
     [
       vscode
+      obsidian
     ]
     ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       pkgs.google-chrome
