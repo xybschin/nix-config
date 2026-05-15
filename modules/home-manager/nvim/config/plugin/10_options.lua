@@ -138,3 +138,6 @@ vim.filetype.add({
 		["docker%-compose%.ya?ml"] = "yaml.docker-compose",
 	},
 })
+
+vim.o.exrc = true
+vim.o.secure = true
