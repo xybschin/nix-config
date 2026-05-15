@@ -46,33 +46,14 @@ apply_profile() {
     # Get active workspace before switch
     local active_ws=$(hyprctl activeworkspace -j | jq -r '.id')
 
-    case "$profile" in
-        "profile1")
-            hyprctl eval 'monitor = "DP-1,disable"'
-            hyprctl eval 'monitor = "HDMI-A-1,disable"'
-            hyprctl eval 'monitor = "DP-1,2560x1440@120,0x0,1"'
-            hyprctl eval 'monitor = "HDMI-A-1,2560x1440@120,2560x0,1"'
-            ;;
-        "profile2")
-            hyprctl eval 'monitor = "DP-1,disable"'
-            hyprctl eval 'monitor = "HDMI-A-1,2560x1440@120,0x0,1"'
-            ;;
-        "profile3")
-            hyprctl eval 'monitor = "HDMI-A-1,disable"'
-            hyprctl eval 'monitor = "DP-1,2560x1440@120,0x0,1"'
-            ;;
-        "profile4")
-            hyprctl eval 'monitor = "HDMI-A-1,disable"'
-            hyprctl eval 'monitor = "DP-1,5120x1440@144,0x0,1"'
-            ;;
-        *)
-            echo "[error] unknown profile: $profile"
-            return 1
-            ;;
-    esac
+    # Save profile (monitor config is applied via settings.user.lua on reload)
+    echo "$profile" > "$STATE_FILE"
 
-    # Small delay to let monitors settle
-    sleep 0.5
+    # Reload Hyprland config to apply new monitor configuration
+    hyprctl reload
+
+    # Small delay for monitors to settle
+    sleep 1
 
     # Assign workspaces to correct monitors
     assign_workspaces "$profile"
@@ -89,13 +70,9 @@ if [ $# -eq 0 ]; then
         apply_profile "$profile"
     else
         apply_profile "profile1"
-        echo "profile1" > "$STATE_FILE"
         hyprctl dispatch workspace 1
         systemctl restart --user hyprpaper.service
-        systemctl restart --user waybar.service
     fi
 else
     apply_profile "$1"
-    echo "$1" > "$STATE_FILE"
 fi
-
