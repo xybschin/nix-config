@@ -1,13 +1,15 @@
 {
+  config,
+  configRoot,
   pkgs,
   ...
 }:
+let
+  hyprDir = "${configRoot}/modules/home-manager/desktop/wm/hyprland/config";
+in
 {
   imports = [
-    ./env.nix
-    ./binds.nix
-    ./rules.nix
-    ./settings.nix
+    ./hyprlock.nix
     ../../hyprpaper
   ];
 
@@ -26,6 +28,8 @@
     portalPackage = null;
     systemd.enable = false;
   };
+
+  xdg.configFile."hypr".source = config.lib.file.mkOutOfStoreSymlink hyprDir;
 
   services.hyprpolkitagent.enable = true;
 }
