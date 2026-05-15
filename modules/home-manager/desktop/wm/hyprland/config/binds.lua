@@ -32,10 +32,10 @@ hl.bind("SUPER + s", hl.dsp.workspace.focus({ id = "special" }))
 hl.bind("SUPER + SHIFT + s", hl.dsp.window.move({ workspace = "special" }))
 
 -- Move window focus with vim keys
-hl.bind("SUPER + h", hl.dsp.focus({ direction = "l" }))
-hl.bind("SUPER + l", hl.dsp.focus({ direction = "r" }))
-hl.bind("SUPER + k", hl.dsp.focus({ direction = "u" }))
-hl.bind("SUPER + j", hl.dsp.focus({ direction = "d" }))
+hl.bind("SUPER + h", hl.dsp.window.focus({ direction = "l" }))
+hl.bind("SUPER + l", hl.dsp.window.focus({ direction = "r" }))
+hl.bind("SUPER + k", hl.dsp.window.focus({ direction = "u" }))
+hl.bind("SUPER + j", hl.dsp.window.focus({ direction = "d" }))
 
 -- Swap windows with vim keys
 hl.bind("SUPER + SHIFT + h", hl.dsp.window.move({ direction = "l" }))
