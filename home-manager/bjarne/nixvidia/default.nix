@@ -11,7 +11,7 @@ in
     ../../../modules/home-manager/desktop/wm/hyprland
   ];
 
-  xdg.configFile."hypr/binds.nixvidia.lua".source = ./binds.nixvidia.lua;
+  xdg.configFile."hypr/binds.user.lua".source = ./binds.user.lua;
   xdg.configFile."hypr/scripts/rofi-monitor-menu".source = "${scripts}/rofi-monitor-menu";
   xdg.configFile."hypr/scripts/monitor-config".source = "${scripts}/monitor-config";
 

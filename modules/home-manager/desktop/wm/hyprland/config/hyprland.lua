@@ -3,10 +3,10 @@ require("settings")
 require("binds")
 require("rules")
 
--- Load host-specific bindings if available
-local hostBindsPath = os.getenv("HOME") .. "/.config/hypr/binds.nixvidia.lua"
-if io.open(hostBindsPath, "r") then
-  dofile(hostBindsPath)
+-- Load user-specific bindings if available
+local userBindsPath = os.getenv("HOME") .. "/.config/hypr/binds.user.lua"
+if io.open(userBindsPath, "r") then
+  dofile(userBindsPath)
 end
 
 hl.on("hyprland.start", function()
