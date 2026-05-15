@@ -9,7 +9,6 @@ let
 in
 {
   imports = [
-    ./hyprlock.nix
     ../../hyprpaper
   ];
 
