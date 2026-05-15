@@ -12,8 +12,11 @@ in
   ];
 
   xdg.configFile."hypr/binds.user.lua".source = ./binds.user.lua;
+  xdg.configFile."hypr/rules.user.lua".source = ./rules.user.lua;
+  xdg.configFile."hypr/autostart.user.lua".source = ./autostart.user.lua;
   xdg.configFile."hypr/scripts/rofi-monitor-menu".source = "${scripts}/rofi-monitor-menu";
   xdg.configFile."hypr/scripts/monitor-config".source = "${scripts}/monitor-config";
+  xdg.configFile."hypr/scripts/auto-hide-wine-trays".source = "${scripts}/auto-hide-wine-trays";
 
   # Cap VRAM reported to DXVK games, leaving ~512 MiB for compositor and other GPU apps.
   # RTX 2070 Super has 8192 MiB total; 7680 = 7.5 GB.
