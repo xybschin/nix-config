@@ -91,6 +91,7 @@ let
     set -g pane-border-style 'fg=#272727'
     set -g pane-active-border-style 'fg=#d9ba73'
     set -g pane-border-lines heavy
+    set -g pane-border-indicators both
 
     setw -g window-status-separator " - "
     setw -g window-status-format "#[fg=#777777,bg=#272727] #I #[fg=#777777,bg=black] #W "

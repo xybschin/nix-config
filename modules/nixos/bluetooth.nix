@@ -10,18 +10,23 @@
     powerOnBoot = true;
     settings = {
       General = {
-        # Allow BT classic + LE dual mode
         ControllerMode = "dual";
-        # Faster reconnection for paired devices (uses more power)
         FastConnectable = true;
-        # Enable battery reporting and experimental codec support
         Experimental = true;
+        # Re-pair silently without prompting the user
+        JustWorksRepairing = "always";
+      };
+      Policy = {
+        # Retry reconnection up to 7 times with exponential backoff (seconds)
+        ReconnectAttempts = 7;
+        ReconnectIntervals = "1,2,4,8,16,32,64";
       };
       LE = {
-        # Tighter connection interval for lower HID latency (in ms)
-        MinConnectionInterval = 7;
-        MaxConnectionInterval = 9;
+        MinConnectionInterval = 6;
+        MaxConnectionInterval = 12;
         ConnectionLatency = 0;
+        # Detect dropped connections in ~2s instead of the default 32s
+        ConnectionSupervisionTimeout = 200;
       };
     };
   };

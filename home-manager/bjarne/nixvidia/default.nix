@@ -34,4 +34,10 @@ in
       "match:xwayland true, match:title ^$, match:class ^$, match:initial_class ^$, match:initial_title ^$, opacity 0.0, float true, no_blur on"
     ];
   };
+
+  # Cap VRAM reported to DXVK games, leaving ~512 MiB for compositor and other GPU apps.
+  # RTX 2070 Super has 8192 MiB total; 7680 = 7.5 GB.
+  home.file.".config/dxvk.conf".text = ''
+    dxgi.maxDeviceMemory = 7680
+  '';
 }

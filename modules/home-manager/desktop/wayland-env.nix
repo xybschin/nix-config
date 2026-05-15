@@ -15,6 +15,5 @@
 
     QT_QPA_PLATFORMTHEME = "qt5ct";
 
-    PROTON_ENABLE_WAYLAND = "1";
   };
 }

@@ -5,7 +5,7 @@
     nvidia = {
       open = true;
       modesetting.enable = true;
-      powerManagement.enable = false;
+      powerManagement.enable = true;
       nvidiaSettings = true;
     };
 
@@ -19,6 +19,7 @@
 
   environment.variables = {
     LIBVA_DRIVER_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     MOZ_DISABLE_RDD_SANDBOX = "1";
     NVD_BACKEND = "direct";
     __GL_GSYNC_ALLOWED = "0";

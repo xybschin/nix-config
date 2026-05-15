@@ -26,7 +26,6 @@
       settings = {
         "media.ffmpeg.vaapi.enabled" = lib.mkForce true;
         "media.hardware-video-decoding.force-enabled" = true;
-        "gfx.x11-egl.force-enabled" = true;
         "widget.dmabuf.force-enabled" = true;
         "media.rdd-vpx.enabled" = true;
         "gfx.webrender.all" = true;
