@@ -7,21 +7,51 @@ STATE_FILE="$STATE_DIR/hyprland-monitor-profile"
 mkdir -p "$STATE_DIR"
 
 assign_workspaces() {
-    # TODO: Workspace assignment to monitors via Lua API
-    # This requires using the Lua eval API with hl.dsp.workspace functions
-    # For now, workspaces will default to their current monitor assignment
-    return 0
+    local profile=$1
+
+    case "$profile" in
+        "profile1")
+            # Dual monitor: odds on HDMI-A-1, evens on DP-1
+            for ws in 1 3 5 7 9; do
+                hyprctl eval "hl.dsp.workspace.move({id = $ws, monitor = \"HDMI-A-1\"})" 2>/dev/null || true
+            done
+            for ws in 2 4 6 8 10; do
+                hyprctl eval "hl.dsp.workspace.move({id = $ws, monitor = \"DP-1\"})" 2>/dev/null || true
+            done
+            ;;
+        "profile2")
+            # Single HDMI: all on HDMI-A-1
+            for ws in 1 2 3 4 5 6 7 8 9 10; do
+                hyprctl eval "hl.dsp.workspace.move({id = $ws, monitor = \"HDMI-A-1\"})" 2>/dev/null || true
+            done
+            ;;
+        "profile3")
+            # Single DP-1: all on DP-1
+            for ws in 1 2 3 4 5 6 7 8 9 10; do
+                hyprctl eval "hl.dsp.workspace.move({id = $ws, monitor = \"DP-1\"})" 2>/dev/null || true
+            done
+            ;;
+        "profile4")
+            # Ultrawide DP-1: all on DP-1
+            for ws in 1 2 3 4 5 6 7 8 9 10; do
+                hyprctl eval "hl.dsp.workspace.move({id = $ws, monitor = \"DP-1\"})" 2>/dev/null || true
+            done
+            ;;
+    esac
 }
 
 apply_profile() {
     local profile=$1
+
+    # Get active workspace before switch
+    local active_ws=$(hyprctl activeworkspace -j | jq -r '.id')
+
     case "$profile" in
         "profile1")
             hyprctl eval 'monitor = "DP-1,disable"'
             hyprctl eval 'monitor = "HDMI-A-1,disable"'
             hyprctl eval 'monitor = "DP-1,2560x1440@120,0x0,1"'
             hyprctl eval 'monitor = "HDMI-A-1,2560x1440@120,2560x0,1"'
-            assign_workspaces
             ;;
         "profile2")
             hyprctl eval 'monitor = "DP-1,disable"'
@@ -40,6 +70,17 @@ apply_profile() {
             return 1
             ;;
     esac
+
+    # Small delay to let monitors settle
+    sleep 0.5
+
+    # Assign workspaces to correct monitors
+    assign_workspaces "$profile"
+
+    # Restore active workspace
+    if [ "$active_ws" != "-1" ]; then
+        hyprctl eval "hl.dsp.focus({workspace = $active_ws})" 2>/dev/null || true
+    fi
 }
 
 if [ $# -eq 0 ]; then
