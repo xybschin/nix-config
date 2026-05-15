@@ -17,15 +17,12 @@ if profile == "profile1" then
   hl.monitor({output = "DP-1", mode = "2560x1440@120", position = "0x0", scale = 1})
   hl.monitor({output = "HDMI-A-1", mode = "2560x1440@120", position = "2560x0", scale = 1})
 elseif profile == "profile2" then
-  -- Single HDMI
-  hl.monitor({output = "DP-1", enabled = false})
+  -- Single HDMI (disable DP-1 by not configuring it)
   hl.monitor({output = "HDMI-A-1", mode = "2560x1440@120", position = "0x0", scale = 1})
 elseif profile == "profile3" then
-  -- Single DP-1
-  hl.monitor({output = "HDMI-A-1", enabled = false})
+  -- Single DP-1 (disable HDMI-A-1 by not configuring it)
   hl.monitor({output = "DP-1", mode = "2560x1440@120", position = "0x0", scale = 1})
 elseif profile == "profile4" then
-  -- Ultrawide DP-1
-  hl.monitor({output = "HDMI-A-1", enabled = false})
+  -- Ultrawide DP-1 (disable HDMI-A-1 by not configuring it)
   hl.monitor({output = "DP-1", mode = "5120x1440@144", position = "0x0", scale = 1})
 end
