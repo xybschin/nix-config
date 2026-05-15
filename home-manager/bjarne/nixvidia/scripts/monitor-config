@@ -7,40 +7,33 @@ STATE_FILE="$STATE_DIR/hyprland-monitor-profile"
 mkdir -p "$STATE_DIR"
 
 assign_workspaces() {
-    local left="DP-1"
-    local right="HDMI-A-1"
-
-    for ws in 2 4 6 8 10; do
-        hyprctl dispatch moveworkspacetomonitor "$ws" "$left"
-    done
-
-    for ws in 1 3 5 7 9; do
-        hyprctl dispatch moveworkspacetomonitor "$ws" "$right"
-    done
-
+    # TODO: Workspace assignment to monitors via Lua API
+    # This requires using the Lua eval API with hl.dsp.workspace functions
+    # For now, workspaces will default to their current monitor assignment
+    return 0
 }
 
 apply_profile() {
     local profile=$1
     case "$profile" in
         "profile1")
-            hyprctl keyword "monitor" "DP-1,disable"
-            hyprctl keyword "monitor" "HDMI-A-1,disable"
-            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
-            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,2560x0,1"
+            hyprctl eval 'monitor = "DP-1,disable"'
+            hyprctl eval 'monitor = "HDMI-A-1,disable"'
+            hyprctl eval 'monitor = "DP-1,2560x1440@120,0x0,1"'
+            hyprctl eval 'monitor = "HDMI-A-1,2560x1440@120,2560x0,1"'
             assign_workspaces
             ;;
         "profile2")
-            hyprctl keyword "monitor" "DP-1,disable"
-            hyprctl keyword "monitor" "HDMI-A-1,2560x1440@120,0x0,1"
+            hyprctl eval 'monitor = "DP-1,disable"'
+            hyprctl eval 'monitor = "HDMI-A-1,2560x1440@120,0x0,1"'
             ;;
         "profile3")
-            hyprctl keyword "monitor" "HDMI-A-1,disable"
-            hyprctl keyword "monitor" "DP-1,2560x1440@120,0x0,1"
+            hyprctl eval 'monitor = "HDMI-A-1,disable"'
+            hyprctl eval 'monitor = "DP-1,2560x1440@120,0x0,1"'
             ;;
         "profile4")
-            hyprctl keyword "monitor" "HDMI-A-1,disable"
-            hyprctl keyword "monitor" "DP-1,5120x1440@144,0x0,1"
+            hyprctl eval 'monitor = "HDMI-A-1,disable"'
+            hyprctl eval 'monitor = "DP-1,5120x1440@144,0x0,1"'
             ;;
         *)
             echo "[error] unknown profile: $profile"
