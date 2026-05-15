@@ -1,9 +1,9 @@
 {
-  config,
   ...
 }:
 let
   scripts = ./scripts;
+  hyprlandUser = ./hyprland-user;
 in
 {
   imports = [
@@ -11,10 +11,10 @@ in
     ../../../modules/home-manager/desktop/wm/hyprland
   ];
 
-  xdg.configFile."hypr/binds.user.lua".source = ./binds.user.lua;
-  xdg.configFile."hypr/rules.user.lua".source = ./rules.user.lua;
-  xdg.configFile."hypr/autostart.user.lua".source = ./autostart.user.lua;
-  xdg.configFile."hypr/settings.user.lua".source = ./settings.user.lua;
+  xdg.configFile."hypr/binds.user.lua".source = "${hyprlandUser}/binds.user.lua";
+  xdg.configFile."hypr/rules.user.lua".source = "${hyprlandUser}/rules.user.lua";
+  xdg.configFile."hypr/autostart.user.lua".source = "${hyprlandUser}/autostart.user.lua";
+  xdg.configFile."hypr/settings.user.lua".source = "${hyprlandUser}/settings.user.lua";
   xdg.configFile."hypr/scripts/rofi-monitor-menu".source = "${scripts}/rofi-monitor-menu";
   xdg.configFile."hypr/scripts/monitor-config".source = "${scripts}/monitor-config";
   xdg.configFile."hypr/scripts/auto-hide-wine-trays".source = "${scripts}/auto-hide-wine-trays";
