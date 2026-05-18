@@ -33,6 +33,7 @@
         "media.ffmpeg.vaapi-drm-display.enabled" = true;
         "gfx.blacklist.dmabuf" = 0;
         "media.rdd-ffmpeg.enabled" = true;
+        "general.autoScroll" = true;
       };
     };
   };
