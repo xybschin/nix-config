@@ -32,9 +32,9 @@ if profile == "profile1" then
 	-- Odd workspaces on HDMI-A-1, even on DP-1
 	for i = 1, 10 do
 		if i % 2 == 1 then
-			hl.workspace_rule({ workspace = tostring(i), monitor = "HDMI-A-1" })
-		else
 			hl.workspace_rule({ workspace = tostring(i), monitor = "DP-1" })
+		else
+			hl.workspace_rule({ workspace = tostring(i), monitor = "HDMI-A-1" })
 		end
 	end
 else
