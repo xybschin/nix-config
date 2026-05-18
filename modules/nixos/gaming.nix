@@ -37,6 +37,7 @@
     steam = {
       enable = true;
     };
+    gamemode.enable = true;
   };
 
   networking.firewall.allowedUDPPorts = [ 5353 ];

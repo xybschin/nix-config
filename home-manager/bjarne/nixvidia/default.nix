@@ -3,6 +3,7 @@
 }:
 let
   scripts = ./scripts;
+  hyprlandUser = ./hyprland-user;
 in
 {
   imports = [
@@ -10,28 +11,17 @@ in
     ../../../modules/home-manager/desktop/wm/hyprland
   ];
 
-  wayland.windowManager.hyprland.settings = {
-    monitor = [ ];
+  xdg.configFile."hypr/binds.user.lua".source = "${hyprlandUser}/binds.user.lua";
+  xdg.configFile."hypr/rules.user.lua".source = "${hyprlandUser}/rules.user.lua";
+  xdg.configFile."hypr/autostart.user.lua".source = "${hyprlandUser}/autostart.user.lua";
+  xdg.configFile."hypr/settings.user.lua".source = "${hyprlandUser}/settings.user.lua";
+  xdg.configFile."hypr/scripts/rofi-monitor-menu".source = "${scripts}/rofi-monitor-menu";
+  xdg.configFile."hypr/scripts/monitor-config".source = "${scripts}/monitor-config";
+  xdg.configFile."hypr/scripts/auto-hide-wine-trays".source = "${scripts}/auto-hide-wine-trays";
 
-    exec = [
-      "${scripts}/monitor-config"
-    ];
-
-    exec-once = [
-      "xembedsniproxy"
-      "sleep 3; uwsm-app -- 1password --silent"
-      "${scripts}/auto-hide-wine-trays"
-      "${scripts}/monitor-config"
-    ];
-
-    bind = [
-      "$mod SHIFT, d, exec, ${scripts}/rofi-monitor-menu"
-    ];
-
-    windowrule = [
-      "match:title = 'World of Warcraft' border_size 0 float off"
-      "match:title = 'Diablo IV' border_size 0 float off"
-      "match:xwayland true, match:title ^$, match:class ^$, match:initial_class ^$, match:initial_title ^$, opacity 0.0, float true, no_blur on"
-    ];
-  };
+  # Cap VRAM reported to DXVK games, leaving ~512 MiB for compositor and other GPU apps.
+  # RTX 2070 Super has 8192 MiB total; 7680 = 7.5 GB.
+  home.file.".config/dxvk.conf".text = ''
+    dxgi.maxDeviceMemory = 7680
+  '';
 }

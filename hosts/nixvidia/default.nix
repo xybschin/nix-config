@@ -4,6 +4,8 @@
 }:
 
 {
+  boot.kernelParams = [ "amd_pstate=active" ];
+
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos/common.nix
