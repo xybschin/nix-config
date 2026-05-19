@@ -14,6 +14,7 @@
     defaultUser = user;
   };
 
+  services.logind.enable = true;
   virtualisation.docker.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
