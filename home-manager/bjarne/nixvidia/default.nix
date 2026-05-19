@@ -9,6 +9,7 @@ in
   imports = [
     ../../../modules/home-manager/desktop
     ../../../modules/home-manager/desktop/wm/hyprland
+    ../../../modules/home-manager/waybar-audio-control.nix
   ];
 
   xdg.configFile."hypr/binds.user.lua".source = "${hyprlandUser}/binds.user.lua";
