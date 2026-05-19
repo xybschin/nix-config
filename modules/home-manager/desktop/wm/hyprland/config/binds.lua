@@ -6,7 +6,7 @@ hl.bind(mainMod .. " + CTRL + r", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'rebo
 
 -- Window/Session actions
 hl.bind(mainMod .. " + q", hl.dsp.window.close())
-hl.bind(mainMod .. " + f", hl.dsp.window.fullscreen({action = "toggle"}))
+hl.bind(mainMod .. " + f", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + t", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + m", hl.dsp.exit())
 
@@ -50,11 +50,10 @@ hl.bind(mainMod .. " + SHIFT + c", hl.dsp.window.center())
 
 -- Switch workspaces
 for i = 1, 10 do
-  local key = i % 10
-  hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
-  hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+	local key = i % 10
+	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
-
 
 -- Mouse bindings
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
