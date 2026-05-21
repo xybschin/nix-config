@@ -29,6 +29,7 @@
         "widget.dmabuf.force-enabled" = true;
         "media.rdd-vpx.enabled" = true;
         "gfx.webrender.all" = true;
+        "gfx.webrender.compositor" = true;
         "layers.acceleration.force-enabled" = true;
         "media.ffmpeg.vaapi-drm-display.enabled" = true;
         "gfx.blacklist.dmabuf" = 0;
