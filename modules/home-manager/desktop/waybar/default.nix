@@ -56,6 +56,7 @@
           format-source = "SRC {volume}%";
           format-source-muted = "SRC 0%";
           on-click = "pavucontrol --tab 4";
+          on-click-right = "audio-control";
           on-click-middle = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
           on-scroll-up = "pactl set-source-volume @DEFAULT_SOURCE@ +1%";
           on-scroll-down = "pactl set-source-volume @DEFAULT_SOURCE@ -1%";
