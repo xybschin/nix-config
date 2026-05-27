@@ -1,154 +1,188 @@
 {
   lib,
   pkgs,
+  copilot-cli,
   ...
 }:
 
 let
-  myConfig = builtins.toFile "claude-config.json" (
+  # ──────────────────────────────────────────────
+  # Shared source-of-truth values
+  # ──────────────────────────────────────────────
+
+  # Tools both CLIs should be able to run without prompting.
+  # Claude Code uses "Bash(tool:*)" syntax; Copilot CLI uses bare tool names.
+  sharedAllowedTools = [
+    # VCS
+    "git"
+    "gh"
+    # Nix
+    "nix"
+    "nix-build"
+    "nix-instantiate"
+    "nix-locate"
+    "nix-prefetch-url"
+    "nix-shell"
+    "nix-store"
+    "nixos-option"
+    "nixos-rebuild"
+    "nixpkgs-fmt"
+    "alejandra"
+    "devenv"
+    "direnv"
+    "home-manager"
+    "nom"
+    "nvd"
+    "statix"
+    # .NET
+    "dotnet"
+    "dotnet-script"
+    "nuget"
+    "msbuild"
+    "csharp"
+    "paket"
+    # Node / JS
+    "node"
+    "npm"
+    "npx"
+    "bun"
+    # Python
+    "python"
+    "python3"
+    "pytest"
+    "uv"
+    "uvx"
+    # Linters / formatters
+    "gitleaks"
+    "pre-commit"
+    "ruff"
+    "shellcheck"
+    "shfmt"
+    # Core Unix utilities
+    "awk"
+    "basename"
+    "bat"
+    "cat"
+    "cloc"
+    "command"
+    "cp"
+    "cut"
+    "delta"
+    "df"
+    "diff"
+    "dig"
+    "dirname"
+    "du"
+    "dust"
+    "echo"
+    "env"
+    "eza"
+    "fastfetch"
+    "fd"
+    "file"
+    "find"
+    "getconf"
+    "glow"
+    "grep"
+    "head"
+    "host"
+    "hyperfine"
+    "jless"
+    "jq"
+    "journalctl"
+    "kill"
+    "ldd"
+    "lizard"
+    "ls"
+    "lsblk"
+    "lscpu"
+    "lsof"
+    "lspci"
+    "lsusb"
+    "mkdir"
+    "mv"
+    "pgrep"
+    "ping"
+    "printenv"
+    "printf"
+    "procs"
+    "ps"
+    "pwd"
+    "readlink"
+    "rg"
+    "sed"
+    "sleep"
+    "sort"
+    "ss"
+    "stat"
+    "tail"
+    "tee"
+    "test"
+    "tokei"
+    "touch"
+    "tr"
+    "tree"
+    "uname"
+    "uniq"
+    "unzip"
+    "wc"
+    "which"
+    "who"
+    "xargs"
+    "xxd"
+    "yq"
+    "curl"
+  ];
+
+  sharedTheme = "dark";
+  sharedReasoningEffort = "high"; # maps to effortLevel in Claude, reasoning_effort in Copilot
+
+  # Trusted home directories for Copilot CLI's workspace trust system
+  copilotTrustedFolders = [
+    "~" # trust the whole home directory (matches Claude's Read(/**))
+  ];
+
+  # ──────────────────────────────────────────────
+  # Claude Code settings.json
+  # ──────────────────────────────────────────────
+  claudeConfig = builtins.toFile "claude-config.json" (
     builtins.toJSON {
+      "$schema" = "https://json.schemastore.org/claude-code-settings.json";
+
       permissions = {
-        allow = [
-          "Bash(git:*)"
-          "Bash(gh:*)"
-          "Bash(nix:*)"
-          "Bash(nix-build:*)"
-          "Bash(nix-instantiate:*)"
-          "Bash(nix-locate:*)"
-          "Bash(nix-prefetch-url:*)"
-          "Bash(nix-shell:*)"
-          "Bash(nix-store:*)"
-          "Bash(nixos-option:*)"
-          "Bash(nixos-rebuild list-generations:*)"
-          "Bash(nixpkgs-fmt:*)"
-          "Bash(alejandra:*)"
-          "Bash(devenv:*)"
-          "Bash(direnv:*)"
-          "Bash(home-manager:*)"
-          "Bash(nom:*)"
-          "Bash(nvd:*)"
-          "Bash(statix:*)"
-          "Bash(node:*)"
-          "Bash(npm:*)"
-          "Bash(npx:*)"
-          "Bash(bun:*)"
-          "Bash(python:*)"
-          "Bash(python3:*)"
-          "Bash(pytest:*)"
-          "Bash(uv:*)"
-          "Bash(uvx:*)"
-          "Bash(gitleaks detect:*)"
-          "Bash(pre-commit:*)"
-          "Bash(ruff:*)"
-          "Bash(shellcheck:*)"
-          "Bash(shfmt:*)"
-          "Bash(awk:*)"
-          "Bash(basename:*)"
-          "Bash(bat:*)"
-          "Bash(cat:*)"
-          "Bash(cd:*)"
-          "Bash(cloc:*)"
-          "Bash(command:*)"
-          "Bash(cp:*)"
-          "Bash(cut:*)"
-          "Bash(delta:*)"
-          "Bash(df:*)"
-          "Bash(diff:*)"
-          "Bash(dig:*)"
-          "Bash(dirname:*)"
-          "Bash(du:*)"
-          "Bash(dust:*)"
-          "Bash(echo:*)"
-          "Bash(env:*)"
-          "Bash(eza:*)"
-          "Bash(fastfetch:*)"
-          "Bash(fd:*)"
-          "Bash(file:*)"
-          "Bash(find:*)"
-          "Bash(getconf:*)"
-          "Bash(glow:*)"
-          "Bash(grep:*)"
-          "Bash(head:*)"
-          "Bash(host:*)"
-          "Bash(hyperfine:*)"
-          "Bash(jless:*)"
-          "Bash(jq:*)"
-          "Bash(journalctl:*)"
-          "Bash(kill:*)"
-          "Bash(ldd:*)"
-          "Bash(lizard:*)"
-          "Bash(ls:*)"
-          "Bash(lsblk:*)"
-          "Bash(lscpu:*)"
-          "Bash(lsof:*)"
-          "Bash(lspci:*)"
-          "Bash(lsusb:*)"
-          "Bash(mkdir:*)"
-          "Bash(mv:*)"
-          "Bash(pgrep:*)"
-          "Bash(ping:*)"
-          "Bash(printenv:*)"
-          "Bash(printf:*)"
-          "Bash(procs:*)"
-          "Bash(ps:*)"
-          "Bash(pwd:*)"
-          "Bash(readlink:*)"
-          "Bash(rg:*)"
-          "Bash(sed:*)"
-          "Bash(sleep:*)"
-          "Bash(sort:*)"
-          "Bash(ss:*)"
-          "Bash(stat:*)"
-          "Bash(tail:*)"
-          "Bash(tee:*)"
-          "Bash(test:*)"
-          "Bash(tokei:*)"
-          "Bash(touch:*)"
-          "Bash(tr:*)"
-          "Bash(tree:*)"
-          "Bash(uname:*)"
-          "Bash(uniq:*)"
-          "Bash(unzip:*)"
-          "Bash(wc:*)"
-          "Bash(which:*)"
-          "Bash(who:*)"
-          "Bash(xargs:*)"
-          "Bash(xxd:*)"
-          "Bash(yq:*)"
-          "Bash(curl:*)"
-          "Bash(claude:*)"
-          "Read(/**)"
-          "Write(/**)"
-          "Edit(/**)"
-          "Glob(**)"
-          "Grep"
-          "WebFetch"
-          "WebSearch"
+        allow =
+          # Convert bare tool names → Claude's "Bash(tool:*)" syntax
+          (map (t: "Bash(${t}:*)") sharedAllowedTools) ++ [
+            # Claude agent self-invocation (required for CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS)
+            "Bash(claude:*)"
+            # File system (broad — personal machine)
+            "Read(/**)"
+            "Write(/**)"
+            "Edit(/**)"
+            "Glob(**)"
+            "Grep"
+            "WebFetch"
+            "WebSearch"
+          ];
+
+        # Credentials that should never be touched
+        deny = [
+          "Read(~/.ssh/**)"
+          "Write(~/.ssh/**)"
+          "Edit(~/.ssh/**)"
+          "Read(~/.gnupg/**)"
+          "Write(~/.gnupg/**)"
+          "Edit(~/.gnupg/**)"
         ];
       };
 
-      enabledPlugins = {
-        "context7@claude-plugins-official" = true;
-        "code-review@claude-plugins-official" = true;
-        "commit-commands@claude-plugins-official" = true;
-        "pr-review-toolkit@claude-plugins-official" = true;
-        "plugin-dev@claude-plugins-official" = true;
-        "feature-dev@claude-plugins-official" = true;
-        "document-skills@anthropic-agent-skills" = true;
-        "code-simplifier@claude-plugins-official" = true;
-        "superpowers@claude-plugins-official" = true;
-        "claude-md-management@claude-plugins-official" = true;
-        "explanatory-output-style@claude-plugins-official" = true;
-        "claude-code-setup@claude-plugins-official" = true;
-        "hookify@claude-plugins-official" = true;
-        "learning-output-style@claude-plugins-official" = true;
-      };
-
       alwaysThinkingEnabled = true;
-      effortLevel = "high";
-      theme = "dark-ansi";
+      effortLevel = sharedReasoningEffort;
+      theme = "${sharedTheme}-ansi";
       editorMode = "normal";
       terminalProgressBarEnabled = false;
+      autoUpdatesChannel = "stable";
+      autoMemoryEnabled = true;
       teammateMode = "tmux";
 
       env = {
@@ -157,46 +191,105 @@ let
       };
     }
   );
-in
-{
-  home.packages = [ pkgs.claude-code ];
-  home.shellAliases.cc = "claude";
 
-  home.file = {
-    ".claude/CLAUDE.md".source = ./config/CLAUDE.md;
-    ".claude/hooks".source = ./config/hooks;
-  }
-  //
-    # Link each skill directory individually, keeping the parent writable
+  # ──────────────────────────────────────────────
+  # Copilot CLI settings.json
+  # ──────────────────────────────────────────────
+  copilotConfig = builtins.toFile "copilot-config.json" (
+    builtins.toJSON {
+      # Model: Claude Sonnet 4.6 is a good default; change to claude-opus-4-6
+      # or gpt-4.1 (no premium cost) as needed. Use /model in-session to switch.
+      model = "claude-sonnet-4-6";
+      reasoning_effort = sharedReasoningEffort;
+      theme = sharedTheme;
+      render_markdown = true;
+      banner = false;
+
+      # Pre-approve the same tool set so Copilot doesn't prompt for each one.
+      # Copilot uses bare tool names (no glob syntax).
+      allowedTools = sharedAllowedTools;
+
+      # Workspace trust: directories Copilot can access without prompting.
+      trusted_folders = copilotTrustedFolders;
+    }
+  );
+
+  skillDirs = builtins.attrNames (builtins.readDir ./config/skills);
+  skillLinks =
+    prefix:
     lib.listToAttrs (
       map (skill: {
-        name = ".claude/skills/${skill}";
-        value = {
-          source = ./config/skills/${skill};
-        };
-      }) (builtins.attrNames (builtins.readDir ./config/skills))
+        name = "${prefix}/${skill}";
+        value.source = ./config/skills/${skill};
+      }) skillDirs
     );
+in
+{
+  home.packages = [
+    pkgs.claude-code
+    pkgs.github-copilot-cli
+  ];
 
-  home.activation.claude-settings-merge = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    SETTINGS="$HOME/.claude/settings.json"
-    MY_CONFIG="${myConfig}"
+  home.shellAliases = {
+    cc = "claude";
+    cop = "copilot"; # adjust if the binary name differs
+  };
 
-    $DRY_RUN_CMD mkdir -p "$HOME/.claude"
+  # ── Claude Code files ──────────────────────────
+  home.file = {
+    ".claude/CLAUDE.md".source = ./config/CLAUDE.md;
+    ".copilot/instructions.md".source = ./config/CLAUDE.md;
+  }
+  // skillLinks ".claude/skills"
+  // skillLinks ".copilot/skills";
 
-    if [ ! -f "$SETTINGS" ]; then
-      $DRY_RUN_CMD cp "$MY_CONFIG" "$SETTINGS"
+  # ── Activation: merge both settings files ──────
+  home.activation.ai-cli-settings-merge = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    CLAUDE_SETTINGS="$HOME/.claude/settings.json"
+    COPILOT_SETTINGS="$HOME/.copilot/settings.json"
+    CLAUDE_CONFIG="${claudeConfig}"
+    COPILOT_CONFIG="${copilotConfig}"
+    JQ="${pkgs.jq}/bin/jq"
+
+    $DRY_RUN_CMD mkdir -p "$HOME/.claude" "$HOME/.copilot"
+
+    # ── Claude Code ──────────────────────────────
+    if [ ! -f "$CLAUDE_SETTINGS" ]; then
+      $DRY_RUN_CMD cp "$CLAUDE_CONFIG" "$CLAUDE_SETTINGS"
     else
-      $DRY_RUN_CMD ${pkgs.jq}/bin/jq \
-        --slurpfile mine "$MY_CONFIG" \
+      $DRY_RUN_CMD $JQ \
+        --slurpfile mine "$CLAUDE_CONFIG" \
         '
-          .permissions.allow = ((.permissions.allow // []) + $mine[0].permissions.allow | unique) |
-          .permissions.deny  = ((.permissions.deny  // []) + ($mine[0].permissions.deny // []) | unique) |
-          .enabledPlugins = ($mine[0].enabledPlugins * (.enabledPlugins // {})) |
-          .alwaysThinkingEnabled = $mine[0].alwaysThinkingEnabled |
-          .env = ($mine[0].env * (.env // {})) |
-          .SessionStart = ((.SessionStart // []) + ($mine[0].SessionStart // []))
-        ' "$SETTINGS" > "''${SETTINGS}.tmp" \
-        && mv "''${SETTINGS}.tmp" "$SETTINGS"
+          # Nix-managed scalars win; arrays are unioned to preserve user additions.
+          ($mine[0] * .) |
+          .permissions.allow = (
+            (($mine[0].permissions.allow // []) + (.permissions.allow // [])) | unique
+          ) |
+          .permissions.deny = (
+            (($mine[0].permissions.deny // []) + (.permissions.deny // [])) | unique
+          ) |
+          .env = ($mine[0].env * (.env // {}))
+        ' "$CLAUDE_SETTINGS" > "''${CLAUDE_SETTINGS}.tmp" \
+        && mv "''${CLAUDE_SETTINGS}.tmp" "$CLAUDE_SETTINGS"
+    fi
+
+    # ── Copilot CLI ──────────────────────────────
+    if [ ! -f "$COPILOT_SETTINGS" ]; then
+      $DRY_RUN_CMD cp "$COPILOT_CONFIG" "$COPILOT_SETTINGS"
+    else
+      $DRY_RUN_CMD $JQ \
+        --slurpfile mine "$COPILOT_CONFIG" \
+        '
+          # Nix-managed scalars win; allowedTools and trusted_folders are unioned.
+          ($mine[0] * .) |
+          .allowedTools = (
+            (($mine[0].allowedTools // []) + (.allowedTools // [])) | unique
+          ) |
+          .trusted_folders = (
+            (($mine[0].trusted_folders // []) + (.trusted_folders // [])) | unique
+          )
+        ' "$COPILOT_SETTINGS" > "''${COPILOT_SETTINGS}.tmp" \
+        && mv "''${COPILOT_SETTINGS}.tmp" "$COPILOT_SETTINGS"
     fi
   '';
 }

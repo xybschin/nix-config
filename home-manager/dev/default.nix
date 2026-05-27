@@ -5,7 +5,6 @@
 {
   imports = [
     ../../modules/home-manager/claude
-    ../../modules/home-manager/copilot
   ];
 
   home.packages = with pkgs; [
