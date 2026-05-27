@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -135,12 +134,8 @@ let
         "pr-review-toolkit@claude-plugins-official" = true;
         "plugin-dev@claude-plugins-official" = true;
         "feature-dev@claude-plugins-official" = true;
-        "frontend-design@claude-plugins-official" = true;
         "document-skills@anthropic-agent-skills" = true;
         "code-simplifier@claude-plugins-official" = true;
-        "typescript-lsp@claude-plugins-official" = true;
-        "pyright-lsp@claude-plugins-official" = true;
-        "ralph-loop@claude-plugins-official" = true;
         "superpowers@claude-plugins-official" = true;
         "claude-md-management@claude-plugins-official" = true;
         "explanatory-output-style@claude-plugins-official" = true;
@@ -148,19 +143,6 @@ let
         "hookify@claude-plugins-official" = true;
         "learning-output-style@claude-plugins-official" = true;
       };
-
-      SessionStart = [
-        {
-          matcher = "*";
-          hooks = [
-            {
-              type = "command";
-              command = "bash ${config.home.homeDirectory}/.claude/hooks/merge-models.sh";
-              timeout = 10;
-            }
-          ];
-        }
-      ];
 
       alwaysThinkingEnabled = true;
       effortLevel = "high";

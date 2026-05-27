@@ -14,26 +14,24 @@
 - NEVER create false or placeholder data — only real data.
 - Claude CAN: edit nix configs, `nix flake check`, `nix build .#pkg`, `git add`
 
+## Communication
+- Be precise and concise in all responses.
+- Omit unnecessary context, preamble, and filler.
+
 ## Documentation
-- ALWAYS ask before creating .md files. Propose: filename, purpose, alternative (existing file?)
 - No temporal markers (NEW, Phase 2, Week 1). No hyperbole (enterprise-grade, robust, powerful)
 - No emojis in docs, PR titles, PR descriptions, or commit messages. Keep tone strictly professional.
 - Factual, technical, present tense, imperative mood
+- Follow general communication rules as stated above.
 
 ## Development
-- Run tests before commits. Python: pytest. TypeScript: npm test. Nix: nix flake check
+- Run tests before commits.
 - Find root cause before fixing bugs — don't apply random fixes
 - Read project files before making changes
 - Before proposing new code: search the codebase first to verify it doesn't already exist
-- Use devenv when project has devenv.nix; prefer system-level tools if devenv is heavy
 
 ## Git
-- All changes via PRs. Review with `/review-pr` before merging.
 - Commit messages follow Conventional Commits (`<type>(<scope>)?: <subject>`; types: feat, fix, refactor, docs, test, chore, build, ci, perf, style, revert). Subject in imperative mood, no trailing period, no emojis.
 - Before composing a commit message, inspect `git status`/`git diff --staged` AND the current branch name (`git rev-parse --abbrev-ref HEAD`); use the branch name for issue/scope hints (e.g. `feat/<scope>-...`, `fix/<issue>-...`) but never invent a scope that isn't supported by the diff.
-- Evaluate whether the staged changes belong in one commit. If they span multiple concerns (different scopes, mixing refactor + feature, unrelated files), split into smaller logical commits using `git add -p` or per-path `git add`. One commit = one coherent change.
-- Amend previous commit only for small follow-up fixes on the same branch.
-- Commit and push before testing deployed applications.
+- Evaluate whether the staged changes belong in one commit. If they span multiple concerns (different scopes, mixing refactor + feature, unrelated files), split into smaller logical commits using `git add -p` or per-path `git add`. One commit = one coherent change. 
 
-## Self-Improvement
-After every correction or mistake, update the relevant CLAUDE.md or `.claude/rules/` file to prevent repeating it.
