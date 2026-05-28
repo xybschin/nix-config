@@ -1,11 +1,11 @@
 ---
 name: to-prd
-description: Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context.
+description: Turn the current conversation context into a PRD and save it to your Obsidian vault. Use when user wants to create a PRD from the current context.
 ---
 
 This skill takes the current conversation context and codebase understanding and produces a PRD. Do NOT interview the user — just synthesize what you already know.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+The PRD will be written to your Obsidian vault using the Obsidian MCP. Ensure you have the Obsidian MCP configured in your Claude settings.
 
 ## Process
 
@@ -17,7 +17,7 @@ A deep module (as opposed to a shallow module) is one which encapsulates a lot o
 
 Check with the user that these modules match their expectations. Check with the user which modules they want tests written for.
 
-3. Write the PRD using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. Write the PRD using the template below, then save it to your Obsidian vault using the Obsidian MCP. The file path should inferred from the project name as `/<PROJECT_NAME>/PRDs/<prd-title>.md`. If you're unsure about the project name or location, ask the user. The Obsidian MCP will create parent directories as needed if they don't exist.
 
 <prd-template>
 
