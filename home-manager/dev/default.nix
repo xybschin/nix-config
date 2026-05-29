@@ -4,7 +4,7 @@
 }:
 {
   imports = [
-    ../../modules/home-manager/claude
+    ../../modules/home-manager/coding-agents
   ];
 
   home.packages = with pkgs; [
