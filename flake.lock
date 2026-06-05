@@ -123,6 +123,11 @@
         "owner": "sadjow",
         "repo": "claude-code-nix",
         "rev": "dd4b0a31f01cca5ebaaeffa5acdb593ba96df788",
+        "lastModified": 1780524100,
+        "narHash": "sha256-aI9BuXyq7/MNAhSGaQ3i6nTz9bovfvAxj7cndY5UMPU=",
+        "owner": "sadjow",
+        "repo": "claude-code-nix",
+        "rev": "cc0c3dbca8490169974f03fe7feb4e362dfcca89",
         "type": "github"
       },
       "original": {
@@ -144,6 +149,11 @@
         "owner": "rycee",
         "repo": "nur-expressions",
         "rev": "79a54775d2f4dcb24a792784496af73acf7cfd23",
+        "lastModified": 1780545772,
+        "narHash": "sha256-U+9vHXr8IitVuQ78yhZclUGgmwLnaBIRAPQlw44y8bU=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "89c5264d8ee0d69abc87723ae238563e5c3355c0",
         "type": "gitlab"
       },
       "original": {
@@ -255,6 +265,11 @@
         "owner": "nix-community",
         "repo": "home-manager",
         "rev": "447fd9ff62501dae7206dfe180ee89f8de27b7d5",
+        "lastModified": 1780515920,
+        "narHash": "sha256-8KX2hEeOX6KP3hBBJJI8dGWVrzbOOf1rBPmg/GUG24U=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "4c5c1e8ba14f1c7475fa31ff11bc1c19cd220974",
         "type": "github"
       },
       "original": {
@@ -277,6 +292,11 @@
         "owner": "nix-community",
         "repo": "home-manager",
         "rev": "4c5c1e8ba14f1c7475fa31ff11bc1c19cd220974",
+        "lastModified": 1780099287,
+        "narHash": "sha256-efIPwVGtIWIjWcznhaop6XN6HxnOL8800hF6CBNvlqQ=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "7d8127d308c3fb9664f7e643eec944be74ebb37d",
         "type": "github"
       },
       "original": {
@@ -365,6 +385,11 @@
         "owner": "hyprwm",
         "repo": "Hyprland",
         "rev": "7b422dd2b822ab3859cf8b7171e1e0f98cd22e4b",
+        "lastModified": 1780519208,
+        "narHash": "sha256-Ic3I/mnmsT1HPew7owqDsJ8NxRV9HOWu8zpG6aeKH78=",
+        "owner": "hyprwm",
+        "repo": "Hyprland",
+        "rev": "04435fb857d4e3c5845bc43b077568d28e048c54",
         "type": "github"
       },
       "original": {
@@ -958,6 +983,11 @@
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
         "rev": "eea9ae34eb9011aee9b8ce8ee2bc2dd111ee8285",
+        "lastModified": 1780512239,
+        "narHash": "sha256-hRHaK71WF/UK2ka6uoHPXmbUPNh8pUf+Da47134O348=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "735371d9ccc5c9bd7981df54fe9adbb6be666965",
         "type": "github"
       },
       "original": {
