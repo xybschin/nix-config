@@ -10,7 +10,6 @@
     ../../modules/nixos/1password.nix
     ../../modules/nixos/boot.nix
     ../../modules/nixos/desktop.nix
-    ../../modules/nixos/greetd.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/bluetooth.nix
   ];

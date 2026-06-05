@@ -1,5 +1,7 @@
 { inputs, pkgs, ... }:
-
+let
+  hyprlandPkg = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+in
 {
   programs.dconf.enable = true;
   programs.thunderbird.enable = true;
@@ -7,10 +9,29 @@
     enable = true;
     withUWSM = true;
     xwayland.enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # make sure to also set the portal package, so that they are in sync
+    package = hyprlandPkg;
+    # portal package must stay in sync with the compositor package
     portalPackage =
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
 
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --asterisks --remember --remember-session --sessions ${hyprlandPkg}/share/wayland-sessions";
+        user = "greeter";
+      };
+    };
+  };
+
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOutput = "tty";
+    StandardError = "journal";
+    TTYReset = true;
+    TTYVHangup = true;
+    TTYVTDisallocate = true;
   };
 }

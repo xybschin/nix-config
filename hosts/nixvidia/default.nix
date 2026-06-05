@@ -15,7 +15,6 @@
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/nvidia.nix
     ../../modules/nixos/desktop.nix
-    ../../modules/nixos/greetd.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/bluetooth.nix
     ../../modules/nixos/razer.nix
