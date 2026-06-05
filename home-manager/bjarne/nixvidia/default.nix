@@ -10,6 +10,7 @@ in
     ../../../modules/home-manager/desktop
     ../../../modules/home-manager/desktop/wm/hyprland
     ../../../modules/home-manager/waybar-audio-control.nix
+    ./hypridle.nix
   ];
 
   xdg.configFile."hypr/binds.user.lua".source = "${hyprlandUser}/binds.user.lua";

@@ -10,6 +10,7 @@ in
 {
   imports = [
     ../../hyprpaper
+    ./hyprlock.nix
   ];
 
   home.packages = with pkgs; [
