@@ -23,6 +23,7 @@ let
       inputs
       ;
     isWsl = true;
+    isDarwin = false;
   };
 in
 home-manager.lib.homeManagerConfiguration {

@@ -2,6 +2,8 @@
   overlays,
   pkgs,
   lib,
+  isWsl ? false,
+  isDarwin ? false,
   ...
 }:
 {
@@ -33,8 +35,11 @@
     ../../modules/home-manager/lazygit.nix
     ../../modules/home-manager/direnv.nix
     ../../modules/home-manager/ranger.nix
-    ../../modules/home-manager/1password.nix
-  ];
+  ] ++ (
+    if isWsl then [ ../../modules/home-manager/1password-wsl.nix ]
+    else if isDarwin then [ ../../../modules/darwin/1password.nix ]
+    else [ ../../modules/home-manager/1password-native.nix ]
+  );
 
   home.stateVersion = "26.05";
 }
