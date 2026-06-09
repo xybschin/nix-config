@@ -1,0 +1,279 @@
+" ╔══════════════════════════════════════════════════════════════════════════╗
+" ║         IdeaVim config mirroring my NeoVim (MiniMax) config             ║
+" ╚══════════════════════════════════════════════════════════════════════════╝
+"
+" Requires the IdeaVim plugin in any JetBrains IDE.
+"
+" Plugins used (install via IDE Settings > Plugins):
+"   IdeaVim-EasyMotion  – mirrors mini.jump2d
+"   IdeaVim-Sneak       – optional extra jump
+"
+" Key conventions (matching nvim config):
+"   <Leader>  = <Space>
+"   <Leader>b = Buffer actions
+"   <Leader>e = Explore / Edit
+"   <Leader>f = Find (fuzzy)
+"   <Leader>g = Git
+"   <Leader>l = Language / LSP
+"   <Leader>m = Map  (structure view ≈ mini.map)
+"   <Leader>o = Other utilities
+"   <Leader>s = Session / project
+"   <Leader>t = Terminal
+
+" ── Leader ────────────────────────────────────────────────────────────────────
+let mapleader = " "
+
+" ── Options (plugin/10_options.lua) ───────────────────────────────────────────
+
+" vim.o.number = true, vim.o.relativenumber = true
+set number
+set relativenumber
+
+" vim.o.wrap = false
+set nowrap
+
+" vim.o.expandtab = true, vim.o.tabstop = 2, vim.o.shiftwidth = 2
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
+" vim.o.ignorecase = true, vim.o.smartcase = true
+set ignorecase
+set smartcase
+
+" vim.o.incsearch = true
+set incsearch
+
+" vim.o.hlsearch
+set hlsearch
+
+" vim.o.cursorline = true
+set cursorline
+
+" vim.o.virtualedit = "block"
+set virtualedit=block
+
+" vim.o.iskeyword += "-"
+set iskeyword+=-
+
+" vim.o.timeoutlen = 300
+set timeoutlen=300
+
+" Good default not in original but pairs well with the config
+set scrolloff=5
+
+" vim.o.splitbelow = true, vim.o.splitright = true
+set splitbelow
+set splitright
+
+" clipboard = "unnamedplus"
+set clipboard+=unnamed
+
+" ── IdeaVim-specific options ───────────────────────────────────────────────────
+
+" Show Vim mode icon in the IDE status bar
+set ideastatusicon=gray
+
+" Use IntelliJ's join (J) for smarter line joining (like gJ in nvim)
+set ideajoin
+
+" Keep current mode after refactor actions (rename, extract, etc.)
+set idearefactormode=keep
+
+" Sync IdeaVim marks with IntelliJ bookmarks
+set ideamarks
+
+" ── Plugins (built-in IdeaVim plugin system) ──────────────────────────────────
+
+" mini.surround → vim-surround style (sa/sd/sr → ys/ds/cs)
+set surround
+
+" mini.comment (gc operator)
+set commentary
+
+" mini.jump2d – requires IdeaVim-EasyMotion IDE plugin
+set easymotion
+
+" argtextobj – a/i textobjects for arguments (mirrors mini.ai arg textobj `a`)
+set argtextobj
+
+" mini.operators: replace operator (gr)
+set ReplaceWithRegister
+
+" mini.operators: exchange operator (gx)
+set exchange
+
+" textobj-entire: aE/iE for whole buffer (mirrors mini.ai buffer textobj `B`)
+set textobj-entire
+
+" highlighted yank feedback (mirrors vim.highlightedyank.enable)
+set highlightedyank
+
+" ── General mappings (plugin/20_keymaps.lua) ──────────────────────────────────
+
+" nmap("<Esc>", "<cmd>nohlsearch<CR>")
+nnoremap <Esc> :nohlsearch<CR>
+
+" nmap("[p") / nmap("]p") – paste linewise above / below
+nnoremap [p :pu!<CR>
+nnoremap ]p :pu<CR>
+
+" ── mini.basics: windows = true  (<C-hjkl> window navigation) ────────────────
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" mini.basics: <C-s> – save
+nnoremap <C-s> :w<CR>
+inoremap <C-s> <Esc>:w<CR>
+
+" mini.basics: \w – toggle word wrap
+nnoremap \w :set wrap!<CR>
+
+" mini.basics: \h – toggle search highlight
+nnoremap \h :set hlsearch!<CR>
+
+" ── mini.bracketed: buffer / tab navigation ───────────────────────────────────
+nnoremap ]b <Action>(NextTab)
+nnoremap [b <Action>(PreviousTab)
+
+" ── mini.bracketed: diagnostic / error navigation ────────────────────────────
+nnoremap ]d <Action>(GotoNextError)
+nnoremap [d <Action>(GotoPreviousError)
+nnoremap ]e <Action>(GotoNextError)
+nnoremap [e <Action>(GotoPreviousError)
+
+" ── mini.bracketed: diff hunk navigation ──────────────────────────────────────
+nnoremap ]q <Action>(VcsShowNextChangeMarker)
+nnoremap [q <Action>(VcsShowPrevChangeMarker)
+nnoremap ]Q <Action>(VcsShowLastChangeMarker)
+nnoremap [Q <Action>(VcsShowFirstChangeMarker)
+
+" ── <Leader>b : Buffer ────────────────────────────────────────────────────────
+" nmap_leader("ba") – alternate buffer (Switcher)
+nnoremap <Leader>ba <Action>(Switcher)
+" nmap_leader("bd") – delete / close buffer
+nnoremap <Leader>bd <Action>(CloseContent)
+nnoremap <Leader>bD <Action>(CloseContent)
+" nmap_leader("bw") – wipeout buffer
+nnoremap <Leader>bw <Action>(CloseContent)
+nnoremap <Leader>bW <Action>(CloseContent)
+
+" ── <Leader>e : Explore / Edit ────────────────────────────────────────────────
+" nmap_leader("ed") – open project view (explorer at cwd)
+nnoremap <Leader>ed <Action>(ActivateProjectToolWindow)
+" nmap_leader("ef") – reveal current file in project view
+nnoremap <Leader>ef <Action>(SelectInProjectView)
+" nmap_leader("en") – notifications / event log
+nnoremap <Leader>en <Action>(ActivateEventLogToolWindow)
+" nmap_leader("eq") – problems / quickfix panel
+nnoremap <Leader>eq <Action>(ActivateProblemsViewToolWindow)
+
+" ── <Leader>f : Find ──────────────────────────────────────────────────────────
+" nmap_leader("ff") – find files (:Pick files)
+nnoremap <Leader>ff <Action>(GotoFile)
+" nmap_leader("fg") – grep live (:Pick grep_live)
+nnoremap <Leader>fg <Action>(FindInPath)
+" nmap_leader("fG") – grep current word
+nnoremap <Leader>fG <Action>(FindInPath)
+" nmap_leader("fb") – pick buffers (recent files)
+nnoremap <Leader>fb <Action>(RecentFiles)
+" nmap_leader("fd") – diagnostics workspace
+nnoremap <Leader>fd <Action>(ActivateProblemsViewToolWindow)
+" nmap_leader("fD") – diagnostics buffer
+nnoremap <Leader>fD <Action>(ActivateProblemsViewToolWindow)
+" nmap_leader("fr") – resume / recent locations
+nnoremap <Leader>fr <Action>(RecentLocations)
+" nmap_leader("fR") – references (LSP)
+nnoremap <Leader>fR <Action>(FindUsages)
+" nmap_leader("fs") – workspace symbols
+nnoremap <Leader>fs <Action>(GotoSymbol)
+" nmap_leader("fS") – document symbols (file structure popup)
+nnoremap <Leader>fS <Action>(FileStructurePopup)
+
+" ── <Leader>g : Git ───────────────────────────────────────────────────────────
+" nmap_leader("ga") – staged diff (all)
+nnoremap <Leader>ga <Action>(CheckinProject)
+" nmap_leader("gA") – staged diff (buffer)
+nnoremap <Leader>gA <Action>(Compare.SameVersion)
+" nmap_leader("gc") – commit
+nnoremap <Leader>gc <Action>(CheckinProject)
+" nmap_leader("gC") – commit amend
+nnoremap <Leader>gC <Action>(CheckinProject)
+" nmap_leader("gd") – diff unstaged (all)
+nnoremap <Leader>gd <Action>(Compare.SameVersion)
+" nmap_leader("gD") – diff buffer
+nnoremap <Leader>gD <Action>(Compare.SameVersion)
+" nmap_leader("gl") – git log
+nnoremap <Leader>gl <Action>(Vcs.Show.Log)
+" nmap_leader("gL") – git log buffer
+nnoremap <Leader>gL <Action>(Vcs.ShowTabbedFileHistory)
+" nmap_leader("go") – show current diff hunk (toggle overlay)
+nnoremap <Leader>go <Action>(VcsShowCurrentChangeMarker)
+" nmap_leader("gs") – show at cursor (git blame / annotate)
+nnoremap <Leader>gs <Action>(Annotate)
+xnoremap <Leader>gs <Action>(Annotate)
+
+" ── <Leader>l : Language / LSP ────────────────────────────────────────────────
+" nmap_leader("la") – code actions
+nnoremap <Leader>la <Action>(ShowIntentionActions)
+" nmap_leader("ld") – diagnostic popup
+nnoremap <Leader>ld <Action>(ShowErrorDescription)
+" nmap_leader("lf") – format document
+nnoremap <Leader>lf <Action>(ReformatCode)
+xnoremap <Leader>lf <Action>(ReformatCode)
+" nmap_leader("li") – go to implementation
+nnoremap <Leader>li <Action>(GotoImplementation)
+" nmap_leader("lh") – hover (quick documentation)
+nnoremap <Leader>lh <Action>(QuickJavaDoc)
+" nmap_leader("lr") – rename
+nnoremap <Leader>lr <Action>(RenameElement)
+" nmap_leader("lR") – references / find usages
+nnoremap <Leader>lR <Action>(FindUsages)
+" nmap_leader("ls") – go to definition (source)
+nnoremap <Leader>ls <Action>(GotoDeclaration)
+" nmap_leader("lt") – go to type definition
+nnoremap <Leader>lt <Action>(GotoTypeDeclaration)
+
+" ── <Leader>m : Map (Structure view ≈ mini.map) ───────────────────────────────
+" nmap_leader("mt") – toggle structure / overview panel
+nnoremap <Leader>mt <Action>(ActivateStructureToolWindow)
+" nmap_leader("mf") – focus structure panel
+nnoremap <Leader>mf <Action>(ActivateStructureToolWindow)
+
+" ── <Leader>o : Other ─────────────────────────────────────────────────────────
+" nmap_leader("or") – even editor widths
+nnoremap <Leader>or <Action>(MaximizeEditorInSplit)
+" nmap_leader("ot") – trim trailing whitespace (MiniTrailspace.trim)
+nnoremap <Leader>ot <Action>(EditorTrimTrailingSpaces)
+" nmap_leader("oz") – zoom toggle (hide all windows)
+nnoremap <Leader>oz <Action>(HideAllWindows)
+
+" ── <Leader>s : Session / project ─────────────────────────────────────────────
+" nmap_leader("sr") – open recent project
+nnoremap <Leader>sr <Action>(ManageRecentProjects)
+
+" ── <Leader>t : Terminal ──────────────────────────────────────────────────────
+" nmap_leader("tt") – open / toggle terminal
+nnoremap <Leader>tt <Action>(ActivateTerminalToolWindow)
+" nmap_leader("tT") – new terminal at current file location
+nnoremap <Leader>tT <Action>(Terminal.OpenInTerminal)
+
+" ── mini.move: move lines / selection ─────────────────────────────────────────
+" Normal mode: <M-j>/<M-k> move current line (mirrors mini.move line_down/up)
+nnoremap <M-j> <Action>(MoveStatementDown)
+nnoremap <M-k> <Action>(MoveStatementUp)
+
+" Visual mode: <M-j>/<M-k> move selection, <M-h>/<M-l> indent/outdent
+vnoremap <M-j> <Action>(MoveStatementDown)
+vnoremap <M-k> <Action>(MoveStatementUp)
+vnoremap <M-h> <Action>(EditorUnindentSelection)
+vnoremap <M-l> <Action>(EditorIndentSelection)
+
+" ── Insert mode ───────────────────────────────────────────────────────────────
+" mini.basics: move_with_alt = true (<M-hjkl> navigation in Insert mode)
+inoremap <M-h> <Left>
+inoremap <M-j> <Down>
+inoremap <M-k> <Up>
+inoremap <M-l> <Right>
