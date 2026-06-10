@@ -6,6 +6,8 @@
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
 
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
