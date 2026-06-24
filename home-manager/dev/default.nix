@@ -17,4 +17,8 @@
   ];
 
   home.sessionPath = [ "$HOME/.bun/bin" ];
+
+  home.sessionVariables = {
+    NODE_USE_SYSTEM_CA = "1";
+  };
 }

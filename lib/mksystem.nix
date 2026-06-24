@@ -59,6 +59,7 @@ mkSystemFn rec {
     hmModule
     {
       home-manager.useUserPackages = true;
+      home-manager.backupFileExtension = "backup";
       home-manager.extraSpecialArgs = specialArgs;
       home-manager.users.${user} = {
         imports = [
