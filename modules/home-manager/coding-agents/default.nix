@@ -37,7 +37,7 @@ in
       # Symlink each skill dir into all tool locations
       for skillDir in "$SKILLS_DIR"/*/; do
         skill="$(basename "$skillDir")"
-        for dest in "$HOME/.claude" "$HOME/.copilot" "$HOME/.opencode" "$HOME/.agents/skills"; do
+        for dest in "$HOME/.copilot/skills" "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
           $DRY_RUN_CMD mkdir -p "$dest"
           if [ -L "$dest/$skill" ] || [ -e "$dest/$skill" ]; then
             $DRY_RUN_CMD rm -rf "$dest/$skill"
