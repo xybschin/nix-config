@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  opencode,
   ...
 }:
 
@@ -35,10 +34,10 @@ in
         $DRY_RUN_CMD $GIT clone --depth=1 --quiet "${skillsRepo}" "$SKILLS_DIR"
       fi
 
-      # Symlink each skill dir into all three tool locations
+      # Symlink each skill dir into all tool locations
       for skillDir in "$SKILLS_DIR"/*/; do
         skill="$(basename "$skillDir")"
-        for dest in "$HOME/.claude" "$HOME/.copilot" "$HOME/.opencode"; do
+        for dest in "$HOME/.claude" "$HOME/.copilot" "$HOME/.opencode" "$HOME/.agents/skills"; do
           $DRY_RUN_CMD mkdir -p "$dest"
           if [ -L "$dest/$skill" ] || [ -e "$dest/$skill" ]; then
             $DRY_RUN_CMD rm -rf "$dest/$skill"
