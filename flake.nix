@@ -45,6 +45,11 @@
     waybar-audio-control = {
       url = "github:xybschin/waybar-audio-control";
     };
+
+    opencode = {
+      url = "github:anomalyco/opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -56,12 +61,14 @@
       nix-darwin,
       claude-code,
       apple-fonts,
+      opencode,
       ...
     }@inputs:
     let
       configRoot = builtins.getEnv "CONFIG_ROOT";
       overlays = [
         claude-code.overlays.default
+        opencode.overlays.default
       ];
       specialArgs = {
         inherit
@@ -73,6 +80,7 @@
           nixos-wsl
           nix-darwin
           apple-fonts
+          opencode
           ;
         lib = nixpkgs.lib;
       };

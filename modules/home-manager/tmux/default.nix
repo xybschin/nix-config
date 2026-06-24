@@ -93,8 +93,6 @@ let
     set -g pane-border-lines heavy
     set -g pane-border-indicators both
 
-    set -ga update-environment "PATH"
-
     setw -g window-status-separator " - "
     setw -g window-status-format "#[fg=#777777,bg=#272727] #I #[fg=#777777,bg=black] #W "
     setw -g window-status-current-format "#[fg=black,bg=red] #I #[fg=#ffffff,bg=black] #W "

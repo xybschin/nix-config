@@ -13,5 +13,8 @@
     htop
     python3
     nodejs
+    bun
   ];
+
+  home.sessionPath = [ "$HOME/.bun/bin" ];
 }
