@@ -16,6 +16,7 @@
     enable = true;
     wslConf.automount.root = "/mnt";
     defaultUser = user;
+    interop.register = true;
   };
 
   services.logind.enable = true;

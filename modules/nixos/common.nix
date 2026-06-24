@@ -49,6 +49,7 @@
   };
 
   environment.localBinInPath = true;
+  environment.systemPackages = [ pkgs.mcp-nixos ];
   programs.zsh.enable = true;
 
   system.stateVersion = "25.11";
