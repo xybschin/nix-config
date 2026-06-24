@@ -5,7 +5,7 @@
 }:
 
 let
-  skillsRepo = "https://github.com/xybschin/agent-skills.git";
+  skillsRepo = "https://github.com/xybschin/skills.git";
   skillsLocalPath = "$HOME/.local/share/agent-skills";
 in
 {
@@ -34,11 +34,10 @@ in
         $DRY_RUN_CMD $GIT clone --depth=1 --quiet "${skillsRepo}" "$SKILLS_DIR"
       fi
 
-      # Symlink each skill dir into all tool locations
-      for skillDir in "$SKILLS_DIR"/*/; do
-        skill="$(basename "$skillDir")"
-        for dest in "$HOME/.copilot/skills" "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
-          $DRY_RUN_CMD mkdir -p "$dest"
+      for dest in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+        $DRY_RUN_CMD mkdir -p "$dest"
+        for skillDir in "$SKILLS_DIR"/*/; do
+          skill="$(basename "$skillDir")"
           if [ -L "$dest/$skill" ] || [ -e "$dest/$skill" ]; then
             $DRY_RUN_CMD rm -rf "$dest/$skill"
           fi
