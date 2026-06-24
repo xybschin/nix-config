@@ -751,26 +751,6 @@
         "url": "https://devimages-cdn.apple.com/design/resources/download/NY.dmg"
       }
     },
-    "opencode": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1782287433,
-        "narHash": "sha256-qMlj+fRos0RZ/9o0ug1Y36BrH4nR8IzcXp1MxsklnCk=",
-        "owner": "anomalyco",
-        "repo": "opencode",
-        "rev": "d465cd476ad7aa0adfc524be3e42ce4a132c3bca",
-        "type": "github"
-      },
-      "original": {
-        "owner": "anomalyco",
-        "repo": "opencode",
-        "type": "github"
-      }
-    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -804,7 +784,6 @@
         "nix-darwin": "nix-darwin",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_3",
-        "opencode": "opencode",
         "vscode-server": "vscode-server",
         "waybar-audio-control": "waybar-audio-control",
         "zen-browser": "zen-browser"
