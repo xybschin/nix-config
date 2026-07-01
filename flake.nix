@@ -46,6 +46,10 @@
       url = "github:xybschin/waybar-audio-control";
     };
 
+    rvm-webcam = {
+      url = "github:xybschin/rvm-webcam";
+    };
+
   };
 
   outputs =

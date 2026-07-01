@@ -35,7 +35,7 @@
   };
 
   boot.extraModprobeConfig = ''
-    options v4l2loopback devices=1 video_nr=10 card_label="RVM Webcam" exclusive_caps=1
+    options v4l2loopback devices=1 video_nr=10 card_label="rvm-webcam" exclusive_caps=1
   '';
 
   fileSystems."/games" = {
