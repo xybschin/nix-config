@@ -27,6 +27,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    glibc
     libva
     libva-utils
     nvidia-vaapi-driver
