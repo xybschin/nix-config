@@ -830,11 +830,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1782913564,
-        "narHash": "sha256-gfkJdBYcCUGahHtIW2ujfcm4WlKfMnPKgylPMpaX4YA=",
+        "lastModified": 1782914833,
+        "narHash": "sha256-10lnlaic47kTKQwN47RSu4ZLgEJlFreUgrpZhhGoZh0=",
         "owner": "xybschin",
         "repo": "rvm-webcam",
-        "rev": "8aecbb5a7f6a5bd3c3568f68ed7425933de3edba",
+        "rev": "a30908ec2ddf18af1fe0887438890781d7e220ed",
         "type": "github"
       },
       "original": {
