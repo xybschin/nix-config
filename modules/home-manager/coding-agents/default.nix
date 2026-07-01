@@ -41,7 +41,7 @@ in
           if [ -L "$dest/$skill" ] || [ -e "$dest/$skill" ]; then
             $DRY_RUN_CMD rm -rf "$dest/$skill"
           fi
-          $DRY_RUN_CMD ln -s "$skillDir" "$dest/$skill"
+          $DRY_RUN_CMD ln -s "''${skillDir%/}" "$dest/$skill"
         done
       done
     '';
