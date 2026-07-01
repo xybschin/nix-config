@@ -31,5 +31,6 @@
     libva-utils
     nvidia-vaapi-driver
     nvtopPackages.nvidia
+    cudaPackages.cudatoolkit
   ];
 }

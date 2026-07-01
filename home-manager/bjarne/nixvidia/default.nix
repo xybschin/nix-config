@@ -1,4 +1,5 @@
 {
+  pkgs,
   ...
 }:
 let
@@ -12,7 +13,6 @@ in
     ../../../modules/home-manager/waybar-audio-control.nix
     ./hypridle.nix
   ];
-
   xdg.configFile."hypr/binds.user.lua".source = "${hyprlandUser}/binds.user.lua";
   xdg.configFile."hypr/rules.user.lua".source = "${hyprlandUser}/rules.user.lua";
   xdg.configFile."hypr/autostart.user.lua".source = "${hyprlandUser}/autostart.user.lua";
