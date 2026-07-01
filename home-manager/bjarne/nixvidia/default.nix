@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 let
@@ -15,18 +14,6 @@ in
     ../../../modules/home-manager/rvm-webcam.nix
     ./hypridle.nix
   ];
-
-  services.rvm-webcam = {
-    enable = true;
-    backbone = "resnet50";
-    extraConfig = {
-      bg_image = "/home/bjarne/wallpapers/single/artemis-ii-earth-peek.jpg";
-      downsample_ratio = 0.25;
-      precision = "auto";
-      on_demand = true;
-      compile = true;
-    };
-  };
   xdg.configFile."hypr/binds.user.lua".source = "${hyprlandUser}/binds.user.lua";
   xdg.configFile."hypr/rules.user.lua".source = "${hyprlandUser}/rules.user.lua";
   xdg.configFile."hypr/autostart.user.lua".source = "${hyprlandUser}/autostart.user.lua";
