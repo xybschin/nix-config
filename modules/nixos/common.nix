@@ -18,7 +18,9 @@
     LC_TELEPHONE = "de_DE.UTF-8";
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
 
   nix = {
     package = pkgs.nix;

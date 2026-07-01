@@ -8,7 +8,10 @@
 }:
 {
   nixpkgs = {
-    config.allowUnfree = true;
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [ ];
+    };
     overlays = overlays;
   };
 
