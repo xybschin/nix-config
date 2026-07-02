@@ -36,7 +36,6 @@ home-manager.lib.homeManagerConfiguration {
     {
       home.username = user;
       home.homeDirectory = "/home/${user}";
-      home-manager.backupFileExtension = "backup";
       programs.home-manager.enable = true;
       imports = [
         hmGlobalPath
