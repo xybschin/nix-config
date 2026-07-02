@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  onePassPath = "${config.home.homeDirectory}/.1password/agent.sock";
+  onePassPath = "${config.home.homeDirectory}/.ssh/ssh-agent.sock";
 
   # Sourced in every interactive shell. Checks if the bridge is healthy via
   # ssh-add, restarts socat if broken. Uses setsid so it outlives the shell.
