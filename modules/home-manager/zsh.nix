@@ -34,6 +34,10 @@
         exec tmux attach -t "$SESSION_NAME"
       fi
 
+      if [ -n "$TMUX" ]; then
+        tmux set-environment -g PATH "$PATH" >/dev/null 2>&1
+      fi
+
       PROMPT="[%n@%F{red}%m%f %1~] "
 
       function gcap() {
