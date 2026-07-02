@@ -2,28 +2,39 @@
 let
   onePassPath = "${config.home.homeDirectory}/.1password/agent.sock";
 
-  # Sourced in every interactive shell. Starts the socat bridge in the background
-  # using setsid so it outlives the shell. Running from the shell (not systemd)
-  # gives it access to the full WSL PATH, including Windows interop paths where
-  # npiperelay.exe lives.
-  #
-  # ssh-add exit codes: 0 = ok+identities, 1 = ok+no identities (vault locked), 2 = no socket
-  # We only restart on exit code 2 (broken/missing socket); exit 1 is healthy.
+  # Sourced in every interactive shell. Checks if the bridge is healthy via
+  # ssh-add, restarts socat if broken. Uses setsid so it outlives the shell.
   startScript = pkgs.writeShellScript "1password-ssh-bridge" ''
-    mkdir -p ~/.1password
+    # Code extracted from https://stuartleeks.com/posts/wsl-ssh-key-forward-to-windows/ 
+    # (IMPORTANT) Create the folder on your root for the `agent.sock` (As mentioned by @rfay and @Lochnair in the comments)
+    # mkdir -p ~/.1password
 
-    ALREADY_RUNNING=$(ps -auxww | grep -c "[s]ocat.*${onePassPath}")
-    if [[ $ALREADY_RUNNING -gt 0 ]]; then
-      exit 0
+    # Configure ssh forwarding
+    export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
+
+    # need `ps -ww` to get non-truncated command for matching
+    # use square brackets to generate a regex match for the process we want but that doesn't match the grep command running it!
+
+    # Contribution below made by @SJ50 (in the comments)
+    SSH_AGENT_WORKING=$(ssh-add -l >/dev/null 2>&1; echo $?)
+    if [[ $SSH_AGENT_WORKING != "0" ]]; then
+        # echo "ssh agent not working, killing npiperelay.exe"
+        kill $(ps -auxww | grep "[n]piperelay.exe -ei -s //./pipe/openssh-ssh-agent" | awk '{print $2}') >/dev/null 2>&1
+    fi	
+
+    ALREADY_RUNNING=$(ps -auxww | grep -q "[n]piperelay.exe -ei -s //./pipe/openssh-ssh-agent"; echo $?)
+    if [[ $ALREADY_RUNNING != "0" ]]; then	
+
+        if [[ -S $SSH_AUTH_SOCK ]]; then
+            # not expecting the socket to exist as the forwarding command isn't running (http://www.tldp.org/LDP/abs/html/fto.html)
+            # echo "removing previous socket..."
+            rm $SSH_AUTH_SOCK >/dev/null 2>&1
+        fi
+        # echo "Starting SSH-Agent relay..."
+        # setsid to force new session to keep running
+        # set socat to listen on $SSH_AUTH_SOCK and forward to npiperelay which then forwards to openssh-ssh-agent on windows
+        (setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork &) >/dev/null 2>&1
     fi
-
-    # Remove stale socket if present
-    rm -f ${onePassPath}
-
-    (setsid ${pkgs.socat}/bin/socat \
-      UNIX-LISTEN:${onePassPath},fork \
-      EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork \
-      </dev/null >/dev/null 2>&1 &)
   '';
 in
 {
@@ -40,6 +51,6 @@ in
   home.sessionVariables.SSH_AUTH_SOCK = onePassPath;
 
   programs.zsh.initContent = ''
-    ${startScript}
+    source ${startScript}
   '';
 }
