@@ -10,6 +10,7 @@ in
   imports = [
     ../../../modules/home-manager/desktop
     ../../../modules/home-manager/desktop/wm/hyprland
+    ../../../modules/home-manager/vscode
     ../../../modules/home-manager/waybar-audio-control.nix
     ../../../modules/home-manager/rvm-webcam.nix
     ./hypridle.nix

@@ -19,6 +19,7 @@
     ../../modules/nixos/bluetooth.nix
     ../../modules/nixos/razer.nix
     ../../modules/nixos/gaming.nix
+    ../../modules/nixos/gnome-keyring.nix
   ];
 
   environment.systemPackages = with pkgs; [

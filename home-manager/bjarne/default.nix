@@ -3,7 +3,6 @@
   home.packages =
     with pkgs;
     [
-      vscode
       obsidian
       python3
       nodejs

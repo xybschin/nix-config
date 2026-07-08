@@ -164,7 +164,26 @@
     { "before": ["\\", "w"], "commands": ["editor.action.toggleWordWrap"] },
 
     // mini.basics: \h – toggle search highlight
-    { "before": ["\\", "h"], "after": [":", "s", "e", "t", " ", "h", "l", "s", "e", "a", "r", "c", "h", "!", "<Enter>"] },
+    {
+      "before": ["\\", "h"],
+      "after": [
+        ":",
+        "s",
+        "e",
+        "t",
+        " ",
+        "h",
+        "l",
+        "s",
+        "e",
+        "a",
+        "r",
+        "c",
+        "h",
+        "!",
+        "<Enter>"
+      ]
+    },
 
     // ── mini.bracketed: buffer navigation ───────────────────────────────────
     { "before": ["]", "b"], "commands": ["workbench.action.nextEditor"] },
@@ -177,54 +196,123 @@
     { "before": ["[", "e"], "commands": ["editor.action.marker.prevInFiles"] },
 
     // ── mini.bracketed: quickfix / diff-hunk navigation ─────────────────────
-    { "before": ["]", "q"], "commands": ["workbench.action.editor.nextChange"] },
-    { "before": ["[", "q"], "commands": ["workbench.action.editor.previousChange"] },
-    { "before": ["]", "Q"], "commands": ["workbench.action.moveToLastChangeInEditor"] },
-    { "before": ["[", "Q"], "commands": ["workbench.action.moveToFirstChangeInEditor"] },
+    {
+      "before": ["]", "q"],
+      "commands": ["workbench.action.editor.nextChange"]
+    },
+    {
+      "before": ["[", "q"],
+      "commands": ["workbench.action.editor.previousChange"]
+    },
+    {
+      "before": ["]", "Q"],
+      "commands": ["workbench.action.moveToLastChangeInEditor"]
+    },
+    {
+      "before": ["[", "Q"],
+      "commands": ["workbench.action.moveToFirstChangeInEditor"]
+    },
 
     // ── <Leader>b : Buffer ────────────────────────────────────────────────────
     // nmap_leader("ba") – alternate buffer
-    { "before": ["<leader>", "b", "a"], "commands": ["workbench.action.openPreviousRecentlyUsedEditorInGroup"] },
+    {
+      "before": ["<leader>", "b", "a"],
+      "commands": ["workbench.action.openPreviousRecentlyUsedEditorInGroup"]
+    },
     // nmap_leader("bd") – delete buffer
-    { "before": ["<leader>", "b", "d"], "commands": ["workbench.action.closeActiveEditor"] },
+    {
+      "before": ["<leader>", "b", "d"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
     // nmap_leader("bD") – force delete (discard changes)
-    { "before": ["<leader>", "b", "D"], "commands": ["workbench.action.revertAndCloseActiveEditor"] },
+    {
+      "before": ["<leader>", "b", "D"],
+      "commands": ["workbench.action.revertAndCloseActiveEditor"]
+    },
     // nmap_leader("bw") – wipeout buffer
-    { "before": ["<leader>", "b", "w"], "commands": ["workbench.action.closeActiveEditor"] },
+    {
+      "before": ["<leader>", "b", "w"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
     // nmap_leader("bW") – force wipeout
-    { "before": ["<leader>", "b", "W"], "commands": ["workbench.action.revertAndCloseActiveEditor"] },
+    {
+      "before": ["<leader>", "b", "W"],
+      "commands": ["workbench.action.revertAndCloseActiveEditor"]
+    },
 
     // ── <Leader>e : Explore / Edit ────────────────────────────────────────────
     // nmap_leader("ed") – open explorer at cwd
-    { "before": ["<leader>", "e", "d"], "commands": ["workbench.view.explorer"] },
+    {
+      "before": ["<leader>", "e", "d"],
+      "commands": ["workbench.view.explorer"]
+    },
     // nmap_leader("ef") – reveal current file in explorer
-    { "before": ["<leader>", "e", "f"], "commands": ["workbench.files.action.showActiveFileInExplorer"] },
+    {
+      "before": ["<leader>", "e", "f"],
+      "commands": ["workbench.files.action.showActiveFileInExplorer"]
+    },
     // nmap_leader("en") – show notifications (MiniNotify.show_history)
-    { "before": ["<leader>", "e", "n"], "commands": ["workbench.action.showNotifications"] },
+    {
+      "before": ["<leader>", "e", "n"],
+      "commands": ["workbench.action.showNotifications"]
+    },
     // nmap_leader("eq") – toggle problems / quickfix panel
-    { "before": ["<leader>", "e", "q"], "commands": ["workbench.actions.view.problems"] },
+    {
+      "before": ["<leader>", "e", "q"],
+      "commands": ["workbench.actions.view.problems"]
+    },
 
     // ── <Leader>f : Find (mini.pick / mini.extra pickers) ─────────────────────
     // nmap_leader("ff") – find files (:Pick files)
-    { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+    {
+      "before": ["<leader>", "f", "f"],
+      "commands": ["workbench.action.quickOpen"]
+    },
     // nmap_leader("fg") – grep live (:Pick grep_live)
-    { "before": ["<leader>", "f", "g"], "commands": ["workbench.action.findInFiles"] },
+    {
+      "before": ["<leader>", "f", "g"],
+      "commands": ["workbench.action.findInFiles"]
+    },
     // nmap_leader("fG") – grep current word
-    { "before": ["<leader>", "f", "G"], "commands": ["workbench.action.findInFiles"] },
+    {
+      "before": ["<leader>", "f", "G"],
+      "commands": ["workbench.action.findInFiles"]
+    },
     // nmap_leader("fb") – pick buffers
-    { "before": ["<leader>", "f", "b"], "commands": ["workbench.action.showAllEditors"] },
+    {
+      "before": ["<leader>", "f", "b"],
+      "commands": ["workbench.action.showAllEditors"]
+    },
     // nmap_leader("fd") – diagnostics workspace
-    { "before": ["<leader>", "f", "d"], "commands": ["workbench.actions.view.problems"] },
+    {
+      "before": ["<leader>", "f", "d"],
+      "commands": ["workbench.actions.view.problems"]
+    },
     // nmap_leader("fD") – diagnostics buffer
-    { "before": ["<leader>", "f", "D"], "commands": ["workbench.action.problems.focus"] },
+    {
+      "before": ["<leader>", "f", "D"],
+      "commands": ["workbench.action.problems.focus"]
+    },
     // nmap_leader("fr") – resume / recent
-    { "before": ["<leader>", "f", "r"], "commands": ["workbench.action.openRecent"] },
+    {
+      "before": ["<leader>", "f", "r"],
+      "commands": ["workbench.action.openRecent"]
+    },
     // nmap_leader("fR") – references (LSP)
-    { "before": ["<leader>", "f", "R"], "commands": ["editor.action.goToReferences"] },
+    {
+      "before": ["<leader>", "f", "R"],
+      "commands": ["editor.action.goToReferences"]
+    },
     // nmap_leader("fs") – workspace symbols live
-    { "before": ["<leader>", "f", "s"], "commands": ["workbench.action.showAllSymbols"] },
+    {
+      "before": ["<leader>", "f", "s"],
+      "commands": ["workbench.action.showAllSymbols"]
+    },
     // nmap_leader("fS") – document symbols
-    { "before": ["<leader>", "f", "S"], "commands": ["workbench.action.gotoSymbol"] },
+    {
+      "before": ["<leader>", "f", "S"],
+      "commands": ["workbench.action.gotoSymbol"]
+    },
 
     // ── <Leader>g : Git (mini.git / mini.diff) ───────────────────────────────
     // nmap_leader("ga") – staged diff (all)
@@ -246,47 +334,95 @@
 
     // ── <Leader>l : Language / LSP ────────────────────────────────────────────
     // nmap_leader("la") – code actions
-    { "before": ["<leader>", "l", "a"], "commands": ["editor.action.quickFix"] },
+    {
+      "before": ["<leader>", "l", "a"],
+      "commands": ["editor.action.quickFix"]
+    },
     // nmap_leader("ld") – diagnostic popup (vim.diagnostic.open_float)
-    { "before": ["<leader>", "l", "d"], "commands": ["editor.action.showHover"] },
+    {
+      "before": ["<leader>", "l", "d"],
+      "commands": ["editor.action.showHover"]
+    },
     // nmap_leader("lf") – format document (conform.format)
-    { "before": ["<leader>", "l", "f"], "commands": ["editor.action.formatDocument"] },
+    {
+      "before": ["<leader>", "l", "f"],
+      "commands": ["editor.action.formatDocument"]
+    },
     // nmap_leader("li") – go to implementation
-    { "before": ["<leader>", "l", "i"], "commands": ["editor.action.goToImplementation"] },
+    {
+      "before": ["<leader>", "l", "i"],
+      "commands": ["editor.action.goToImplementation"]
+    },
     // nmap_leader("lh") – hover (vim.lsp.buf.hover)
-    { "before": ["<leader>", "l", "h"], "commands": ["editor.action.showHover"] },
+    {
+      "before": ["<leader>", "l", "h"],
+      "commands": ["editor.action.showHover"]
+    },
     // nmap_leader("lr") – rename
     { "before": ["<leader>", "l", "r"], "commands": ["editor.action.rename"] },
     // nmap_leader("lR") – references
-    { "before": ["<leader>", "l", "R"], "commands": ["editor.action.goToReferences"] },
+    {
+      "before": ["<leader>", "l", "R"],
+      "commands": ["editor.action.goToReferences"]
+    },
     // nmap_leader("ls") – go to definition (source)
-    { "before": ["<leader>", "l", "s"], "commands": ["editor.action.revealDefinition"] },
+    {
+      "before": ["<leader>", "l", "s"],
+      "commands": ["editor.action.revealDefinition"]
+    },
     // nmap_leader("lt") – go to type definition
-    { "before": ["<leader>", "l", "t"], "commands": ["editor.action.goToTypeDefinition"] },
+    {
+      "before": ["<leader>", "l", "t"],
+      "commands": ["editor.action.goToTypeDefinition"]
+    },
 
     // ── <Leader>m : Map (mini.map ≈ VS Code minimap) ─────────────────────────
     // nmap_leader("mt") – toggle minimap
-    { "before": ["<leader>", "m", "t"], "commands": ["editor.action.toggleMinimap"] },
+    {
+      "before": ["<leader>", "m", "t"],
+      "commands": ["editor.action.toggleMinimap"]
+    },
 
     // ── <Leader>o : Other ─────────────────────────────────────────────────────
     // nmap_leader("or") – resize to default width
-    { "before": ["<leader>", "o", "r"], "commands": ["workbench.action.evenEditorWidths"] },
+    {
+      "before": ["<leader>", "o", "r"],
+      "commands": ["workbench.action.evenEditorWidths"]
+    },
     // nmap_leader("ot") – trim trailing whitespace (MiniTrailspace.trim)
-    { "before": ["<leader>", "o", "t"], "commands": ["editor.action.trimTrailingWhitespace"] },
+    {
+      "before": ["<leader>", "o", "t"],
+      "commands": ["editor.action.trimTrailingWhitespace"]
+    },
     // nmap_leader("oz") – zoom toggle (MiniMisc.zoom)
-    { "before": ["<leader>", "o", "z"], "commands": ["workbench.action.toggleMaximizeEditorGroup"] },
+    {
+      "before": ["<leader>", "o", "z"],
+      "commands": ["workbench.action.toggleMaximizeEditorGroup"]
+    },
 
     // ── <Leader>s : Session / workspace ──────────────────────────────────────
     // nmap_leader("sn") – new session → save workspace as
-    { "before": ["<leader>", "s", "n"], "commands": ["workbench.action.saveWorkspaceAs"] },
+    {
+      "before": ["<leader>", "s", "n"],
+      "commands": ["workbench.action.saveWorkspaceAs"]
+    },
     // nmap_leader("sr") – read session → open recent
-    { "before": ["<leader>", "s", "r"], "commands": ["workbench.action.openRecent"] },
+    {
+      "before": ["<leader>", "s", "r"],
+      "commands": ["workbench.action.openRecent"]
+    },
 
     // ── <Leader>t : Terminal ──────────────────────────────────────────────────
     // nmap_leader("tt") – new terminal (vertical in nvim)
-    { "before": ["<leader>", "t", "t"], "commands": ["workbench.action.terminal.newInActiveWorkspace"] },
+    {
+      "before": ["<leader>", "t", "t"],
+      "commands": ["workbench.action.terminal.newInActiveWorkspace"]
+    },
     // nmap_leader("tT") – split terminal (horizontal in nvim)
-    { "before": ["<leader>", "t", "T"], "commands": ["workbench.action.terminal.split"] }
+    {
+      "before": ["<leader>", "t", "T"],
+      "commands": ["workbench.action.terminal.split"]
+    }
   ],
 
   // ── Vim: Visual mode ──────────────────────────────────────────────────────
@@ -307,7 +443,10 @@
     { "before": ["<M-l>"], "commands": ["editor.action.indentLines"] },
 
     // xmap_leader("lf") – format selection
-    { "before": ["<leader>", "l", "f"], "commands": ["editor.action.formatSelection"] },
+    {
+      "before": ["<leader>", "l", "f"],
+      "commands": ["editor.action.formatSelection"]
+    },
 
     // xmap_leader("gs") – git show at selection
     { "before": ["<leader>", "g", "s"], "commands": ["git.openChange"] }
