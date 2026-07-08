@@ -5,13 +5,8 @@
     feh
   ];
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
-  };
-
   imports = [
+    ../stylix
     ./waybar
     ./font.nix
     ./cursor.nix

@@ -76,22 +76,8 @@
     ];
 
     style = ''
-      @define-color background                #101010;
-      @define-color selection-background      #272727;
-      @define-color foreground                #ffffff;
-      @define-color selection-foreground      #b0b0b0;
-      @define-color divider                   #878787;
-      @define-color highlight                 #d9ba73;
-
       * {
-          font-family: FontAwesome, "Terminess Nerd Font";
-          font-size: 16px;
           font-weight: 700;
-      }
-
-      window#waybar {
-          background-color: alpha(@background, 0.85);
-          color: @foreground;
       }
 
       button {
@@ -105,28 +91,16 @@
 
       #custom-arch {
           min-width: 52px;
-          background-color: @selection-background;
-          color: @arch-brand;
       }
 
       #custom-media {
           margin-left: 24px;
       }
 
-      #workspaces button {
-          background-color: @selection-background;
-          color: @selection-foreground;
-      }
-
-      #workspaces button.active {
-          background-color: @highlight;
-          color: @selection-background;
-      }
-
       .modules-right > widget > * {
           margin: 8px 0;
           padding: 0px 1rem;
-          border-right: 1px solid @divider;
+          border-right: 1px solid @base03;
       }
 
       .modules-right > widget:last-child > * {

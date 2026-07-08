@@ -15,29 +15,13 @@ let
   };
 in
 {
-  fonts = {
-    fontconfig = {
-      enable = true;
-      defaultFonts = {
-        sansSerif = [
-          "Segoe UI"
-          "SF Pro"
-          "Inter"
-          "Noto Sans"
-        ];
-        monospace = [ "SF Mono" ];
-      };
-    };
-  };
   home.packages = with pkgs; [
     segoe-ui
     fontpreview
-    nerd-fonts.jetbrains-mono
     nerd-fonts.terminess-ttf
     maple-mono.truetype
     corefonts
     vista-fonts
-    inter
     noto-fonts
     inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-pro
     inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-mono

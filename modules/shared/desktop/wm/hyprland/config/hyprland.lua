@@ -1,3 +1,4 @@
+require("colors")
 require("env")
 require("settings")
 require("binds")

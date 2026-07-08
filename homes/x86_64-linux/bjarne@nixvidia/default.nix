@@ -9,8 +9,7 @@ let
 in
 {
   imports = [
-    ../../../modules/home/ghostty.nix
-    ../../../modules/home/kitty.nix
+    ../../../modules/home/terminals.nix
     ../../../modules/home/coding-agents
     ../../../modules/shared/desktop
     ../../../modules/shared/desktop/wm/hyprland

@@ -55,6 +55,11 @@
       url = "github:xybschin/rvm-webcam";
     };
 
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs = inputs:
@@ -70,6 +75,7 @@
 
       systems.modules.nixos = [
         inputs.home-manager.nixosModules.home-manager
+        inputs.stylix.nixosModules.stylix
         {
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
@@ -79,6 +85,7 @@
 
       systems.modules.darwin = [
         inputs.home-manager.darwinModules.home-manager
+        inputs.stylix.darwinModules.stylix
         {
           home-manager.extraSpecialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
         }
@@ -105,6 +112,10 @@
       systems.hosts.macbook.specialArgs.configRoot  = builtins.getEnv "CONFIG_ROOT";
 
       # configRoot and isWsl for standalone home configurations
+      homes.modules = [
+        inputs.stylix.homeModules.stylix
+      ];
+
       homes.users."bjarne@nixvidia".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."bjarne@macbook".specialArgs.configRoot  = builtins.getEnv "CONFIG_ROOT";
       homes.users."dev@nixvm".specialArgs.configRoot       = builtins.getEnv "CONFIG_ROOT";

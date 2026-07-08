@@ -1,11 +1,13 @@
+local C = require("colors")
+
 hl.config({
 	general = {
 		gaps_in = 0,
 		gaps_out = 0,
 		border_size = 1,
 		col = {
-			active_border = "rgb(d9ba73)",
-			inactive_border = "rgb(272727)",
+			active_border = C.base0D,
+			inactive_border = C.base01,
 		},
 		resize_on_border = false,
 		allow_tearing = false,

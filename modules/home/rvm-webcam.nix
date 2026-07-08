@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 let
   rvmModel = pkgs.fetchurl {
     url = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_resnet50.pth";
@@ -13,7 +18,7 @@ in
     modelPath = "${rvmModel}";
     backbone = "resnet50";
     extraConfig = {
-      bg_image = "/home/bjarne/wallpapers/single/artemis-ii-earth-peek.jpg";
+      bg_image = "${config.home.homeDirectory}/wallpapers/single/artemis-ii-earth-peek.jpg";
       downsample_ratio = 0.25;
       precision = "auto";
       on_demand = true;

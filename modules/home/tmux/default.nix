@@ -3,6 +3,7 @@
   pkgs,
   ...
 }:
+
 let
   tmuxModeIndicatorConfig = ''
     set -g @mode_indicator_prefix_prompt ' TMUX '
@@ -68,36 +69,6 @@ let
     set -g @fzf-url-bind 'x'
   '';
 
-  options = ''
-    set-option -g terminal-overrides ',xterm-256color:Tc'
-    set-option -g set-titles on
-    set-option -g set-titles-string "#W"
-    set-option -g remain-on-exit off
-
-    set -g set-clipboard on
-    set -g pane-base-index 1
-    set -g status on
-    set -g status-interval 1
-    set -g status-left-length 100
-    set -g status-right-length 100
-    set -g status-position bottom
-    set -g status-style "fg=red,bg=#101010"
-    set -g status-left '#{tmux_mode_indicator}#[bg=green]#[fg=black] #{user}@#H #[fg=#{@LGRAY} #[bg=magenta]#[fg=black]'
-    set -g status-right '#[fg=green]%Y-%m-%d #[fg=#ffffff]%H:%M'
-    set -g status-justify absolute-centre
-    set -g @prefix_highlight_output_prefix "#[fg=#252530]#[bg=#d9ba73]"
-    set -g @prefix_highlight_output_suffix ""
-
-    set -g pane-border-style 'fg=#272727'
-    set -g pane-active-border-style 'fg=#d9ba73'
-    set -g pane-border-lines heavy
-    set -g pane-border-indicators both
-
-    setw -g window-status-separator " - "
-    setw -g window-status-format "#[fg=#777777,bg=#272727] #I #[fg=#777777,bg=black] #W "
-    setw -g window-status-current-format "#[fg=black,bg=red] #I #[fg=#ffffff,bg=black] #W "
-  '';
-
   hooks = ''
     set-hook -g client-detached 'if -F "#{==:#{session_attached},0}" "run-shell \"tmux kill-session -t #{session_name}\""'
   '';
@@ -119,9 +90,8 @@ in
     ];
 
     extraConfig = ''
-      ${options}
-      ${bindings}
       ${hooks}
+      ${bindings}
       ${tmuxModeIndicatorConfig}
     '';
   };

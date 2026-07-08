@@ -1,18 +1,6 @@
 { ... }:
 {
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      splash = false;
-      wallpaper = [
-        {
-          monitor = "";
-          path = "~/wallpapers/single/artemis-ii-earth.jpg";
-          fit_mode = "cover";
-        }
-      ];
-    };
-  };
-
+  # Wallpaper and hyprpaper settings are managed by stylix
+  # (stylix.image + stylix.targets.hyprpaper)
   home.file.wallpapers.source = ./wallpapers;
 }

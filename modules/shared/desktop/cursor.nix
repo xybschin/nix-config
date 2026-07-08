@@ -1,13 +1,7 @@
-{ pkgs, ... }:
+{ ... }:
 {
-  home.pointerCursor = {
-    gtk.enable = true;
-    x11.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Ice";
-    size = 24;
-  };
-
+  # Cursor theme is managed by stylix (stylix.cursor)
+  # These env vars set the hyprland/x11 cursor theme names separately
   home.sessionVariables = {
     HYPRCURSOR_THEME = "macOS-hypr";
     HYPRCURSOR_SIZE = "28";
