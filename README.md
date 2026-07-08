@@ -1,17 +1,23 @@
 # NixOS Configuration
 
-Flake-based NixOS and Home Manager configuration.
+Flake-based NixOS, Darwin, and Home Manager configuration using [Snowfall Lib](https://snowfall.org).
 
 ## Usage
 
 ### Rebuild NixOS Host
 
 ```bash
-make build-host host=<hostname>
+make nixos host=<hostname>
 ```
 
-### Rebuild Home Manager
+### Rebuild Darwin Host
 
 ```bash
-make build-user user=<username>
+make darwin host=<hostname>
+```
+
+### Rebuild Home Manager (standalone)
+
+```bash
+make home user=<username> host=<hostname>
 ```

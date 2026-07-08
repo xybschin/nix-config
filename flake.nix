@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    snowfall-lib = {
+      url = "github:snowfallorg/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
@@ -23,7 +28,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-darwin = {
+    darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -52,58 +57,60 @@
 
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      nixos-wsl,
-      nix-darwin,
-      claude-code,
-      apple-fonts,
-      ...
-    }@inputs:
-    let
-      configRoot = builtins.getEnv "CONFIG_ROOT";
+  outputs = inputs:
+    inputs.snowfall-lib.mkFlake {
+      inherit inputs;
+      src = ./.;
+
+      snowfall.namespace = "config";
+
       overlays = [
-        claude-code.overlays.default
+        inputs.claude-code.overlays.default
       ];
-      specialArgs = {
-        inherit
-          inputs
-          nixpkgs
-          overlays
-          configRoot
-          home-manager
-          nixos-wsl
-          nix-darwin
-          apple-fonts
-          ;
-        lib = nixpkgs.lib;
-      };
 
-      mkSystem = import ./lib/mksystem.nix specialArgs;
-      mkStandalone = import ./lib/mkstandalone.nix specialArgs;
-    in
-    {
-      nixosConfigurations."bjarne@nixvidia" = mkSystem "nixvidia" "bjarne" {
-        system = "x86_64-linux";
-      };
+      systems.modules.nixos = [
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "backup";
+          home-manager.extraSpecialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+        }
+      ];
 
-      nixosConfigurations."dev@nixvm" = mkSystem "nixvm" "dev" {
-        system = "x86_64-linux";
-      };
+      systems.modules.darwin = [
+        inputs.home-manager.darwinModules.home-manager
+        {
+          home-manager.extraSpecialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+        }
+      ];
 
-      nixosConfigurations."dev@nixwsl" = mkSystem "nixwsl" "dev" {
-        system = "x86_64-linux";
-      };
+      systems.hosts.nixvidia.modules = [
+        inputs.hyprland.nixosModules.default
+      ];
 
-      homeConfigurations.dev = mkStandalone {
-        user = "dev";
-      };
+      systems.hosts.nixvm.modules = [
+        inputs.hyprland.nixosModules.default
+      ];
 
-      darwinConfigurations."bjarne@macbook" = mkSystem "macbook" "bjarne" {
-        system = "aarch64-darwin";
-      };
+      systems.hosts.wsl.modules = [
+        inputs.nixos-wsl.nixosModules.wsl
+        inputs.vscode-server.nixosModules.default
+      ];
+
+      # configRoot is passed to home-manager modules via extraSpecialArgs above.
+      # The per-host specialArgs below pass it to NixOS system modules too.
+      systems.hosts.nixvidia.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+      systems.hosts.nixvm.specialArgs.configRoot    = builtins.getEnv "CONFIG_ROOT";
+      systems.hosts.wsl.specialArgs.configRoot      = builtins.getEnv "CONFIG_ROOT";
+      systems.hosts.macbook.specialArgs.configRoot  = builtins.getEnv "CONFIG_ROOT";
+
+      # configRoot and isWsl for standalone home configurations
+      homes.users."bjarne@nixvidia".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+      homes.users."bjarne@macbook".specialArgs.configRoot  = builtins.getEnv "CONFIG_ROOT";
+      homes.users."dev@nixvm".specialArgs.configRoot       = builtins.getEnv "CONFIG_ROOT";
+      homes.users."dev@wsl".specialArgs.configRoot         = builtins.getEnv "CONFIG_ROOT";
+
+      # WSL flag for the global home module (standalone and system-integrated)
+      homes.users."dev@wsl".specialArgs.isWsl = true;
     };
 }
