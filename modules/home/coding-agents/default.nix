@@ -15,8 +15,27 @@ in
   home.packages = [
     pkgs.claude-code
     pkgs.github-copilot-cli
-    pkgs.opencode
   ];
+
+  programs.opencode = {
+    enable = true;
+
+    settings = {
+      lsp = {
+        nil = {
+          command = [ "nil" ];
+          extensions = [ ".nix" ];
+          settings = {
+            nil = {
+              formatting = {
+                command = [ "nixfmt" ];
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 
   home.shellAliases = {
     cc = "claude";

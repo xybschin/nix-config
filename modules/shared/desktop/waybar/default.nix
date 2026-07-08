@@ -77,6 +77,7 @@
 
     style = ''
       * {
+          font-family: FontAwesome, "Terminess Nerd Font";
           font-weight: 700;
       }
 

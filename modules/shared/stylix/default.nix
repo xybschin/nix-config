@@ -31,8 +31,8 @@
         name = "Inter";
       };
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font";
+        package = pkgs.nerd-fonts.terminess-ttf;
+        name = "Terminess Nerd Font";
       };
       emoji = {
         package = pkgs.noto-fonts-color-emoji;
@@ -41,7 +41,7 @@
       sizes = {
         terminal = 12;
         applications = 12;
-        desktop = 10;
+        desktop = 16;
         popups = 10;
       };
     };
