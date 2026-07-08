@@ -78,7 +78,6 @@
     style = ''
       * {
           font-family: FontAwesome, "Terminess Nerd Font";
-          font-weight: 700;
       }
 
       button {
@@ -100,7 +99,7 @@
 
       .modules-right > widget > * {
           margin: 8px 0;
-          padding: 0px 1rem;
+          padding: 0px 2rem;
           border-right: 1px solid @base03;
       }
 
