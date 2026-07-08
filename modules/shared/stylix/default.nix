@@ -16,7 +16,7 @@
     imageScalingMode = "fill";
 
     cursor = {
-      name = "Bibata-Modern-Ice";
+      name = "Bibata-Modern-Amber";
       package = pkgs.bibata-cursors;
       size = 24;
     };
@@ -42,7 +42,7 @@
         terminal = 12;
         applications = 10;
         desktop = 12;
-        popups = 10;
+        popups = 14;
       };
     };
 
