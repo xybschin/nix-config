@@ -99,8 +99,12 @@
 
       .modules-right > widget > * {
           margin: 8px 0;
-          padding: 0px 2rem;
+          padding: 0 1.5rem 0 1rem;
           border-right: 1px solid @base03;
+      }
+
+      #tray {
+          padding: 0;
       }
 
       .modules-right > widget:last-child > * {
