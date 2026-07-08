@@ -56,15 +56,35 @@ in
         $DRY_RUN_CMD $GIT clone --depth=1 --quiet "${skillsRepo}" "$SKILLS_DIR"
       fi
 
-      for dest in "$HOME/.claude/skills" "$HOME/.agents/skills"; do
+      # Skills are grouped as skills/<group>/<skill>/; flatten into the three
+      # discovery locations opencode and claude-code read from. Removing every
+      # managed symlink first prunes skills that have since been removed upstream.
+      for dest in "$HOME/.agents/skills" "$HOME/.claude/skills" "$HOME/.config/opencode/skills"; do
         $DRY_RUN_CMD mkdir -p "$dest"
-        for skillDir in "$SKILLS_DIR"/*/; do
-          skill="$(basename "$skillDir")"
-          if [ -L "$dest/$skill" ] || [ -e "$dest/$skill" ]; then
-            $DRY_RUN_CMD rm -rf "$dest/$skill"
-          fi
-          $DRY_RUN_CMD ln -s "''${skillDir%/}" "$dest/$skill"
+        for link in "$dest"/*; do
+          [ -L "$link" ] || continue
+          $DRY_RUN_CMD rm -f "$link"
         done
+        for groupDir in "$SKILLS_DIR"/skills/*/; do
+          [ -d "$groupDir" ] || continue
+          for skillDir in "$groupDir"*/; do
+            [ -d "$skillDir" ] || continue
+            skill="$(basename "$skillDir")"
+            $DRY_RUN_CMD ln -sfn "''${skillDir%/}" "$dest/$skill"
+          done
+        done
+      done
+
+      # Link opencode command files (commands/<name>.md) into the commands dir.
+      CMD_DEST="$HOME/.config/opencode/commands"
+      $DRY_RUN_CMD mkdir -p "$CMD_DEST"
+      for link in "$CMD_DEST"/*.md; do
+        [ -L "$link" ] || continue
+        $DRY_RUN_CMD rm -f "$link"
+      done
+      for cmdFile in "$SKILLS_DIR"/commands/*.md; do
+        [ -f "$cmdFile" ] || continue
+        $DRY_RUN_CMD ln -sfn "$cmdFile" "$CMD_DEST/$(basename "$cmdFile")"
       done
     '';
   };
