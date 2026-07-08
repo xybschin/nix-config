@@ -48,13 +48,10 @@ in
       GIT="${pkgs.git}/bin/git"
       SKILLS_DIR="${skillsLocalPath}"
 
-      $DRY_RUN_CMD mkdir -p "$SKILLS_DIR"
-
-      if [ -d "$SKILLS_DIR/.git" ]; then
-        $DRY_RUN_CMD $GIT -C "$SKILLS_DIR" pull --ff-only --quiet
-      else
-        $DRY_RUN_CMD $GIT clone --depth=1 --quiet "${skillsRepo}" "$SKILLS_DIR"
-      fi
+      # Treat the dir as a read-only cache: wipe and reclone on every run so
+      # stale untracked files can never block the clone.
+      $DRY_RUN_CMD rm -rf "$SKILLS_DIR"
+      $DRY_RUN_CMD $GIT clone --depth=1 --quiet "${skillsRepo}" "$SKILLS_DIR"
 
       # Skills are grouped as skills/<group>/<skill>/; flatten into the three
       # discovery locations opencode and claude-code read from. Removing every
