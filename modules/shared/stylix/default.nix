@@ -40,13 +40,11 @@
       };
       sizes = {
         terminal = 12;
-        applications = 12;
-        desktop = 16;
+        applications = 10;
+        desktop = 12;
         popups = 10;
       };
     };
-
-    opacity.terminal = 0.85;
 
     targets = {
       # Hyprland uses Lua config, not home-manager's hyprland module

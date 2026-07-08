@@ -5,16 +5,48 @@
 }:
 
 let
+  c = config.lib.stylix.colors.withHashtag;
+
   tmuxModeIndicatorConfig = ''
     set -g @mode_indicator_prefix_prompt ' TMUX '
     set -g @mode_indicator_copy_prompt ' COPY '
     set -g @mode_indicator_sync_prompt ' SYNC '
     set -g @mode_indicator_empty_prompt ' NORM '
     set -g @mode_indicator_prefix_mode_style 'bg=red,fg=black'
-    set -g @mode_indicator_copy_mode_style 'bg=#d9ba73,fg=black'
+    set -g @mode_indicator_copy_mode_style 'bg=${c.base0D},fg=black'
     set -g @mode_indicator_sync_mode_style 'bg=red,fg=black'
-    set -g @mode_indicator_empty_mode_style 'bg=#272727,fg=#777777'
+    set -g @mode_indicator_empty_mode_style 'bg=${c.base01},fg=${c.base03}'
     run-shell ${pkgs.tmuxPlugins.mode-indicator}/share/tmux-plugins/mode-indicator/mode_indicator.tmux
+  '';
+
+  options = ''
+    set-option -g terminal-overrides ',xterm-256color:Tc'
+    set-option -g set-titles on
+    set-option -g set-titles-string "#W"
+    set-option -g remain-on-exit off
+
+    set -g set-clipboard on
+    set -g pane-base-index 1
+    set -g status on
+    set -g status-interval 1
+    set -g status-left-length 100
+    set -g status-right-length 100
+    set -g status-position bottom
+    set -g status-style "fg=red,bg=${c.base00}"
+    set -g status-left '#{tmux_mode_indicator}#[bg=green]#[fg=black] #{user}@#H #[fg=#{@LGRAY} #[bg=magenta]#[fg=black]'
+    set -g status-right '#[fg=green]%Y-%m-%d #[fg=${c.base05}]%H:%M'
+    set -g status-justify absolute-centre
+    set -g @prefix_highlight_output_prefix "#[fg=#252530]#[bg=${c.base0D}]"
+    set -g @prefix_highlight_output_suffix ""
+
+    set -g pane-border-style 'fg=${c.base01}'
+    set -g pane-active-border-style 'fg=${c.base0D}'
+    set -g pane-border-lines heavy
+    set -g pane-border-indicators both
+
+    setw -g window-status-separator " - "
+    setw -g window-status-format "#[fg=${c.base03},bg=${c.base01}] #I #[fg=${c.base03},bg=black] #W "
+    setw -g window-status-current-format "#[fg=black,bg=red] #I #[fg=${c.base05},bg=black] #W "
   '';
 
   bindings = ''
@@ -74,6 +106,8 @@ let
   '';
 in
 {
+  stylix.targets.tmux.enable = false;
+
   programs.tmux = {
     enable = true;
     keyMode = "vi";
@@ -90,6 +124,7 @@ in
     ];
 
     extraConfig = ''
+      ${options}
       ${hooks}
       ${bindings}
       ${tmuxModeIndicatorConfig}

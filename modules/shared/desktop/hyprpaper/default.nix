@@ -1,6 +1,8 @@
 { ... }:
 {
-  # Wallpaper and hyprpaper settings are managed by stylix
-  # (stylix.image + stylix.targets.hyprpaper)
+  # Stylix sets wallpaper path via stylix.image, but we need to enable hyprpaper
+  # since stylix's hyprland target is disabled (Lua config)
+  services.hyprpaper.enable = true;
+
   home.file.wallpapers.source = ./wallpapers;
 }
