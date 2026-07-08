@@ -5,6 +5,9 @@
   ...
 }:
 
+let
+  c = config.lib.stylix.colors.withHashtag;
+in
 {
   home.packages = with pkgs; [
     uv
@@ -38,7 +41,7 @@
         tmux set-environment -g PATH "$PATH" >/dev/null 2>&1
       fi
 
-      PROMPT="[%n@%F{red}%m%f %1~] "
+      PROMPT="[%n@%F{${c.base08}}%m%f %1~] "
 
       function gcap() {
         git add . && git commit -m "$*" && git push
