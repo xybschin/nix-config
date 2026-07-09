@@ -7,6 +7,7 @@
 }:
 let
   hyprDir = "${configRoot}/modules/shared/desktop/wm/hyprland/config";
+  scriptsDir = "${configRoot}/modules/shared/desktop/wm/hyprland/scripts";
 in
 {
   imports = [
@@ -34,6 +35,9 @@ in
     config.lib.file.mkOutOfStoreSymlink "${hyprDir}/settings.lua";
   xdg.configFile."hypr/binds.lua".source = config.lib.file.mkOutOfStoreSymlink "${hyprDir}/binds.lua";
   xdg.configFile."hypr/rules.lua".source = config.lib.file.mkOutOfStoreSymlink "${hyprDir}/rules.lua";
+
+  xdg.configFile."hypr/scripts/rofi-launch".source =
+    config.lib.file.mkOutOfStoreSymlink "${scriptsDir}/rofi-launch";
 
   # Generated from stylix palette
   xdg.configFile."hypr/colors.lua".text =

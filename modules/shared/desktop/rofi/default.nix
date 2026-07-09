@@ -71,6 +71,7 @@ let
     /*****----- Main Window -----*****/
     window {
         transparency:                "real";
+        layer:                       "bottom";
         location:                    north;
         anchor:                      north;
         fullscreen:                  false;

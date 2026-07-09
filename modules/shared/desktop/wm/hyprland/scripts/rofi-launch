@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Launches rofi and temporarily adds top padding to the active workspace
+# so tiled windows move below the rofi bar. Rofi stays pinned to the top
+# via the "overlay" layer in its theme. A window-move animation is
+# enabled only for the duration of the padding transition.
+#
+# The gap follows the user across workspace switches while rofi is open.
+
+# Only one instance at a time — a second keypress while rofi is open
+# would spawn a rofi process that exits immediately, causing the gap
+# to be reset while rofi is still visible.
+exec 9>/tmp/rofi-launch.lock
+flock -n 9 || exit 0
+
+ANIM_SPEED=1
+ANIM_BEZIER="default"
+
+ws=$(hyprctl activeworkspace 2>/dev/null | head -1 | grep -oP 'workspace ID \K\d+')
+
+if [[ "$ws" == special* ]]; then
+    exec rofi "$@"
+fi
+
+if [ $# -eq 0 ]; then
+    set -- -show drun
+fi
+
+rofi "$@" &
+rofi_pid=$!
+
+# Poll layer-shell surfaces for rofi's height.
+height=""
+for _ in $(seq 1 30); do
+    sleep 0.05
+    height=$(hyprctl layers -j | jq -r '
+    [.. | objects | select(.namespace == "rofi") | (.h // .height // empty)]
+    | map(select(. > 0)) | .[0] // empty
+  ' 2>/dev/null) || true
+    if [ -n "$height" ] && [ "$height" -gt 0 ] 2>/dev/null; then
+        break
+    fi
+done
+
+enable_animations() {
+    hyprctl eval "
+    hl.config({ animations = { enabled = true } })
+    hl.animation({ leaf = 'windowsMove', enabled = true, speed = ${ANIM_SPEED}, bezier = '${ANIM_BEZIER}' })
+    hl.animation({ leaf = 'layers', enabled = false })
+    hl.animation({ leaf = 'windowsIn', enabled = false })
+    hl.animation({ leaf = 'windowsOut', enabled = false })
+    hl.animation({ leaf = 'fade', enabled = false })
+    hl.animation({ leaf = 'workspaces', enabled = false })
+  " 2>/dev/null || true
+}
+
+disable_animations() {
+    hyprctl eval "hl.config({ animations = { enabled = false } })" 2>/dev/null || true
+}
+
+set_gap() {
+    local target=$1
+    local h=$2
+    if [ -n "$h" ] && [ "$h" -gt 0 ] 2>/dev/null; then
+        hyprctl eval "hl.workspace_rule({ workspace = '${target}', gaps_out = { top = ${h}, right = 0, bottom = 0, left = 0 } })" 2>/dev/null || true
+    fi
+}
+
+clear_gap() {
+    local target=$1
+    hyprctl eval "hl.workspace_rule({ workspace = '${target}', gaps_out = { top = 0, right = 0, bottom = 0, left = 0 } })" 2>/dev/null || true
+}
+
+if [ -n "$height" ] && [ "$height" -gt 0 ] 2>/dev/null; then
+    enable_animations
+    set_gap "$ws" "$height"
+
+    # Poll for workspace changes while rofi is open — move the gap
+    # to whichever workspace the user switches to.
+    (
+        last_ws="$ws"
+        while kill -0 "$rofi_pid" 2>/dev/null; do
+            cur_ws=$(hyprctl activeworkspace 2>/dev/null | head -1 | grep -oP 'workspace ID \K\d+')
+            if [ "$cur_ws" != "$last_ws" ] && [ -n "$cur_ws" ]; then
+                clear_gap "$last_ws"
+                set_gap "$cur_ws" "$height"
+                last_ws="$cur_ws"
+            fi
+            sleep 0.05
+        done
+    ) &
+    poll_pid=$!
+fi
+
+wait "$rofi_pid" 2>/dev/null || true
+
+# Stop the polling loop.
+kill "$poll_pid" 2>/dev/null || true
+wait "$poll_pid" 2>/dev/null || true
+
+# Clear gap on the last workspace rofi was open on.
+cur_ws=$(hyprctl activeworkspace 2>/dev/null | head -1 | grep -oP 'workspace ID \K\d+')
+clear_gap "$cur_ws"
+
+sleep "$(awk "BEGIN { printf \"%.2f\", ${ANIM_SPEED} / 10 + 0.1 }")"
+disable_animations
