@@ -32,31 +32,28 @@ if [[ -z "$api_key" ]]; then
 fi
 
 resp="$(curl -fsS -H "Authorization: Bearer ${api_key}" \
-    https://openrouter.ai/api/v1/key 2>/dev/null)" || {
-    emit "OR: request failed" "GET https://openrouter.ai/api/v1/key failed" "error"
+    https://openrouter.ai/api/v1/credits 2>/dev/null)" || {
+    emit "OR: request failed" "GET https://openrouter.ai/api/v1/credits failed" "error"
     exit 0
 }
 
-remaining="$(printf '%s' "$resp" | jq -r '.data.limit_remaining // empty')"
-total="$(printf '%s' "$resp" | jq -r '.data.limit // empty')"
+total="$(printf '%s' "$resp" | jq -r '.data.total_credits // empty')"
+usage="$(printf '%s' "$resp" | jq -r '.data.total_usage // empty')"
 
-if [[ -z "$remaining" ]]; then
+if [[ -z "$total" || -z "$usage" ]]; then
     emit "OR: no data" "$(printf '%s' "$resp" | jq -c . 2>/dev/null || printf '%s' "$resp")" "error"
     exit 0
 fi
 
-rem="$(money "$remaining")"
+# Remaining credits = total purchased minus all-time usage.
+remaining="$(awk -v t="$total" -v u="$usage" 'BEGIN{ printf "%.2f", t - u }')"
+tot="$(money "$total")"
+
+text="$(printf 'OR $%s/$%s' "$remaining" "$tot")"
+tooltip="$(printf 'OpenRouter credits\nRemaining: $%s / $%s\nUsage: $%s' "$remaining" "$tot" "$(money "$usage")")"
 
 class="ok"
-if [[ -n "$total" && "$total" != "null" ]]; then
-    tot="$(money "$total")"
-    text="$(printf 'OR $%s/$%s' "$rem" "$tot")"
-    tooltip="$(printf 'OpenRouter credits\nRemaining: $%s / $%s' "$rem" "$tot")"
-    # Warn when remaining drops below 10% of the key's credit limit.
-    awk -v r="$remaining" -v t="$total" 'BEGIN{ exit !(r < t*0.1) }' && class="warning"
-else
-    text="$(printf 'OR $%s' "$rem")"
-    tooltip="$(printf 'OpenRouter credits\nRemaining: $%s (unlimited key)' "$rem")"
-fi
+# Warn when remaining drops below 10% of total credits.
+awk -v r="$remaining" -v t="$tot" 'BEGIN{ exit !(r < t*0.1) }' && class="warning"
 
 emit "$text" "$tooltip" "$class"
