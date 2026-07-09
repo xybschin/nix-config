@@ -6,6 +6,7 @@
 {
   imports = [
     ../../../modules/home/coding-agents
+    ../../../modules/shared/stylix
   ];
 
   home.packages = with pkgs; [
