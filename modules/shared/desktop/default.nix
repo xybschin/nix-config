@@ -9,7 +9,6 @@
     ../stylix
     ./waybar
     ./font.nix
-    ./cursor.nix
     ./zen-browser.nix
     ./rofi
     ./wayland-env.nix

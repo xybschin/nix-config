@@ -16,7 +16,7 @@
     imageScalingMode = "fill";
 
     cursor = {
-      name = "Bibata-Modern-Amber";
+      name = "Bibata-Modern-Classic";
       package = pkgs.bibata-cursors;
       size = 24;
     };
