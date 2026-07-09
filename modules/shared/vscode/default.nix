@@ -6,8 +6,13 @@
 }:
 let
   vscodeDir = "${configRoot}/modules/shared/vscode";
-  vscodeWithPasswordStore = pkgs.vscode.override {
-    commandLineArgs = "--password-store=gnome-libsecret";
+  vscodeWithPasswordStore = pkgs.vscode-with-extensions.override {
+    vscode = pkgs.vscode.override {
+      commandLineArgs = "--password-store=gnome-libsecret";
+    };
+    vscodeExtensions = with pkgs.vscode-extensions; [
+      vscodevim.vim
+    ];
   };
 in
 {
