@@ -22,6 +22,8 @@
     allowUnfree = true;
   };
 
+  stylix.overlays.enable = false;
+
   nix = {
     package = pkgs.nix;
     settings = {
