@@ -14,6 +14,7 @@
   stylix.base16Scheme = ../../../modules/shared/stylix/koda-dark.yaml;
 
   home.packages = with pkgs; [
+    home-manager
     devenv
     ducker
     htop
