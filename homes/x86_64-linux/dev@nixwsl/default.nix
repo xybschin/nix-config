@@ -6,8 +6,12 @@
 {
   imports = [
     ../../../modules/home/coding-agents
-    ../../../modules/shared/stylix
   ];
+
+  # Stylix is auto-enabled by the NixOS module; satisfy the base16Scheme/image
+  # assertion without pulling in the full desktop stylix config (wallpaper,
+  # cursor themes, hyprpaper target) which needs a graphical session.
+  stylix.base16Scheme = ../../../modules/shared/stylix/koda-dark.yaml;
 
   home.packages = with pkgs; [
     devenv
