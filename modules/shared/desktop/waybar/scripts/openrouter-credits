@@ -7,7 +7,7 @@
 #   export OPENROUTER_API_KEY_REF="op://Vault/Item/field"
 set -euo pipefail
 
-OP_REF="${OPENROUTER_API_KEY_REF:-op://Personal/OpenRouter/api-key}"
+OP_REF="${OPENROUTER_API_KEY_REF:-op://Private/ifbh3klkuwone6yw5f67thvmqu/credential}"
 
 emit() { # <text> <tooltip> <class>
     jq -nc --arg text "$1" --arg tooltip "$2" --arg class "$3" \
