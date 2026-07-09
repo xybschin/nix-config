@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 {
-  home.packages = with pkgs; [ playerctl ];
+  home.packages = with pkgs; [
+    playerctl
+    # 1Password CLI is used by waybar's openrouter-credits script to fetch
+    # the OpenRouter API key from the user's vault.
+    _1password-cli
+  ];
 
   # Use our own themed layout instead of stylix's default waybar theme,
   # which injects per-id padding rules and 3px workspace borders that
@@ -24,6 +29,7 @@
           "network"
           "memory"
           "cpu"
+          "custom/openrouter"
           "clock"
           "tray"
         ];
@@ -73,6 +79,16 @@
           tooltip-format = "{}";
           on-click = "playerctl play-pause";
         };
+        "custom/openrouter" = {
+          format = "{}";
+          exec = "${config.xdg.configHome}/waybar/scripts/openrouter-credits";
+          return-type = "json";
+          interval = 3600;
+          # exec-on-event defaults to true, so any click re-runs the script
+          # for an immediate refresh.
+          on-click = "${config.xdg.configHome}/waybar/scripts/openrouter-credits";
+          tooltip = true;
+        };
         tray = {
           icon-size = 16;
           spacing = 10;
@@ -113,6 +129,14 @@
 
       #custom-media {
           margin-left: 24px;
+      }
+
+      #custom-openrouter.warning {
+          color: @base08;
+      }
+
+      #custom-openrouter.error {
+          color: @base08;
       }
 
       #workspaces button {
