@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Waybar widget: remaining OpenRouter credits.
 #
-# The API key is fetched from 1Password CLI (`op`). Override the secret
-# reference with the $OPENROUTER_API_KEY_REF env var if your vault layout
-# differs, e.g.:
+# Uses `op run` to resolve the API key from 1Password, so authorization
+# (biometric/password) is only needed once per session timeout — subsequent
+# hourly refreshes reuse the cached session.
+# Override the secret reference with $OPENROUTER_API_KEY_REF if your vault
+# layout differs, e.g.:
 #   export OPENROUTER_API_KEY_REF="op://Vault/Item/field"
 set -euo pipefail
 
@@ -21,19 +23,16 @@ if ! command -v op >/dev/null 2>&1; then
     exit 0
 fi
 
-api_key="$(op read -n "$OP_REF" 2>/dev/null)" || {
-    emit "OR: op failed" "op could not read ${OP_REF}" "error"
-    exit 0
-}
-
-if [[ -z "$api_key" ]]; then
-    emit "OR: no key" "Empty API key from ${OP_REF}" "error"
-    exit 0
-fi
-
-resp="$(curl -fsS -H "Authorization: Bearer ${api_key}" \
-    https://openrouter.ai/api/v1/credits 2>/dev/null)" || {
-    emit "OR: request failed" "GET https://openrouter.ai/api/v1/credits failed" "error"
+# op run resolves the op:// reference in the env var inside the subshell,
+# caching the 1Password session so later runs don't re-prompt.
+# `exec -a` renames the subprocess so the 1Password authorization prompt
+# shows "OpenRouter Widget" instead of a nix-store bash path.
+resp="$(OPENROUTER_API_KEY="$OP_REF" op run --no-masking -- \
+    bash -c 'exec -a "OpenRouter Widget" bash -c "
+        curl -fsS -H \"Authorization: Bearer \$OPENROUTER_API_KEY\" \
+            https://openrouter.ai/api/v1/credits
+    "' 2>/dev/null)" || {
+    emit "OR: request failed" "op run / curl failed" "error"
     exit 0
 }
 
@@ -47,13 +46,10 @@ fi
 
 # Remaining credits = total purchased minus all-time usage.
 remaining="$(awk -v t="$total" -v u="$usage" 'BEGIN{ printf "%.2f", t - u }')"
-tot="$(money "$total")"
 
-text="$(printf 'OR $%s/$%s' "$remaining" "$tot")"
-tooltip="$(printf 'OpenRouter credits\nRemaining: $%s / $%s\nUsage: $%s' "$remaining" "$tot" "$(money "$usage")")"
+text="$(printf 'OR $%s' "$remaining")"
+tooltip="$(printf 'OpenRouter credits\nRemaining: $%s' "$remaining")"
 
 class="ok"
-# Warn when remaining drops below 10% of total credits.
-awk -v r="$remaining" -v t="$tot" 'BEGIN{ exit !(r < t*0.1) }' && class="warning"
 
 emit "$text" "$tooltip" "$class"
