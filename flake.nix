@@ -55,11 +55,6 @@
       url = "github:xybschin/rvm-webcam";
     };
 
-    opencode = {
-      url = "github:anomalyco/opencode";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,7 +72,6 @@
 
       overlays = [
         inputs.claude-code.overlays.default
-        inputs.opencode.overlays.default
       ];
 
       systems.modules.nixos = [
