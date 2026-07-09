@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Waybar widget: remaining OpenRouter credits.
+#
+# The API key is fetched from 1Password CLI (`op`). Override the secret
+# reference with the $OPENROUTER_API_KEY_REF env var if your vault layout
+# differs, e.g.:
+#   export OPENROUTER_API_KEY_REF="op://Vault/Item/field"
+set -euo pipefail
+
+OP_REF="${OPENROUTER_API_KEY_REF:-op://Personal/OpenRouter/api-key}"
+
+emit() { # <text> <tooltip> <class>
+    jq -nc --arg text "$1" --arg tooltip "$2" --arg class "$3" \
+        '{text:$text, tooltip:$tooltip, class:$class}'
+}
+
+money() { awk -v n="$1" 'BEGIN{ printf "%.2f", n+0 }'; }
+
+if ! command -v op >/dev/null 2>&1; then
+    emit "OR: op missing" "1Password CLI (op) is not installed" "error"
+    exit 0
+fi
+
+api_key="$(op read -n "$OP_REF" 2>/dev/null)" || {
+    emit "OR: op failed" "op could not read ${OP_REF}" "error"
+    exit 0
+}
+
+if [[ -z "$api_key" ]]; then
+    emit "OR: no key" "Empty API key from ${OP_REF}" "error"
+    exit 0
+fi
+
+resp="$(curl -fsS -H "Authorization: Bearer ${api_key}" \
+    https://openrouter.ai/api/v1/key 2>/dev/null)" || {
+    emit "OR: request failed" "GET https://openrouter.ai/api/v1/key failed" "error"
+    exit 0
+}
+
+remaining="$(printf '%s' "$resp" | jq -r '.data.limit_remaining // empty')"
+total="$(printf '%s' "$resp" | jq -r '.data.limit // empty')"
+
+if [[ -z "$remaining" ]]; then
+    emit "OR: no data" "$(printf '%s' "$resp" | jq -c . 2>/dev/null || printf '%s' "$resp")" "error"
+    exit 0
+fi
+
+rem="$(money "$remaining")"
+
+class="ok"
+if [[ -n "$total" && "$total" != "null" ]]; then
+    tot="$(money "$total")"
+    text="$(printf 'OR $%s/$%s' "$rem" "$tot")"
+    tooltip="$(printf 'OpenRouter credits\nRemaining: $%s / $%s' "$rem" "$tot")"
+    # Warn when remaining drops below 10% of the key's credit limit.
+    awk -v r="$remaining" -v t="$total" 'BEGIN{ exit !(r < t*0.1) }' && class="warning"
+else
+    text="$(printf 'OR $%s' "$rem")"
+    tooltip="$(printf 'OpenRouter credits\nRemaining: $%s (unlimited key)' "$rem")"
+fi
+
+emit "$text" "$tooltip" "$class"
