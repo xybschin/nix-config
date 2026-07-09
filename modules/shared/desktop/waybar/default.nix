@@ -2,6 +2,11 @@
 {
   home.packages = with pkgs; [ playerctl ];
 
+  # Use our own themed layout instead of stylix's default waybar theme,
+  # which injects per-id padding rules and 3px workspace borders that
+  # override our custom styling.
+  stylix.targets.waybar.enable = false;
+
   programs.waybar = {
     systemd.enable = true;
     enable = true;
@@ -75,9 +80,22 @@
       }
     ];
 
-    style = ''
+    style = let c = config.lib.stylix.colors; in ''
+      @define-color base00 #${c.base00};
+      @define-color base01 #${c.base01};
+      @define-color base03 #${c.base03};
+      @define-color base05 #${c.base05};
+      @define-color base08 #${c.base08};
+      @define-color base0D #${c.base0D};
+
+      window#waybar, tooltip {
+          background: @base00;
+          color: @base05;
+      }
+
       * {
           font-family: FontAwesome, "Terminess Nerd Font";
+          font-size: ${toString config.stylix.fonts.sizes.desktop}pt;
       }
 
       button {
@@ -98,24 +116,25 @@
       }
 
       #workspaces button {
-          background-color: @selection-background;
-          color: @selection-foreground;
+          background-color: @base01;
+          color: @base05;
+          border-bottom: 1px solid @base03;
       }
 
       #workspaces button.active {
-          background-color: @highlight;
-          color: @selection-background;
+          background-color: @base0D;
+          color: @base01;
       }
 
       .modules-right > widget > * {
           margin: 8px 0;
-          padding: 0px 1rem;
-          border-right: 1px solid @divider;
+          padding: 0 1rem;
+          border-right: 1px solid @base03;
       }
 
       .modules-right > widget:last-child > * {
           margin-right: 0;
-          border: 0px;
+          border: 0;
       }
     '';
   };
