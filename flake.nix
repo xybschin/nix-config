@@ -100,7 +100,7 @@
         inputs.hyprland.nixosModules.default
       ];
 
-      systems.hosts.wsl.modules = [
+      systems.hosts.nixwsl.modules = [
         inputs.nixos-wsl.nixosModules.wsl
         inputs.vscode-server.nixosModules.default
       ];
@@ -109,7 +109,7 @@
       # The per-host specialArgs below pass it to NixOS system modules too.
       systems.hosts.nixvidia.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       systems.hosts.nixvm.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      systems.hosts.wsl.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+      systems.hosts.nixwsl.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       systems.hosts.macbook.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
 
       # configRoot and isWsl for standalone home configurations
@@ -120,9 +120,9 @@
       homes.users."bjarne@nixvidia".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."bjarne@macbook".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."dev@nixvm".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      homes.users."dev@wsl".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+      homes.users."dev@nixwsl".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
 
       # WSL flag for the global home module (standalone and system-integrated)
-      homes.users."dev@wsl".specialArgs.isWsl = true;
+      homes.users."dev@nixwsl".specialArgs.isWsl = true;
     };
 }
