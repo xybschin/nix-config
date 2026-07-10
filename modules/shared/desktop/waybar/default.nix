@@ -102,6 +102,7 @@
       @define-color base08 #${c.base08};
       @define-color base0A #${c.base0A};
       @define-color base0D #${c.base0D};
+      @define-color base0C #${c.base0C};
       @define-color base0E #${c.base0E};
 
       window#waybar, tooltip {
@@ -146,7 +147,7 @@
       }
 
       #workspaces button.active {
-          background-color: @base0E;
+          background-color: @base0C;
           color: @base01;
       }
 

@@ -46,7 +46,7 @@ let
 
     setw -g window-status-separator " - "
     setw -g window-status-format "#[fg=${c.base03},bg=${c.base01}] #I #[fg=${c.base03},bg=${c.base00}] #W "
-    setw -g window-status-current-format "#[fg=black,bg=${c.base0E}] #I #[fg=${c.base05},bg=${c.base00}] #W "
+    setw -g window-status-current-format "#[fg=black,bg=${c.base0C}] #I #[fg=${c.base05},bg=${c.base00}] #W "
   '';
 
   bindings = ''
