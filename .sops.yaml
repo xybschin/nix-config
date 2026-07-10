@@ -1,0 +1,7 @@
+keys:
+  - &bjarne F28DC558F4792FCBCC4045141B6CFD2F494F4A52
+creation_rules:
+  - path_regex: secrets/.*\.(yaml|json|env|ini)$
+    key_groups:
+      - pgp:
+        - *bjarne

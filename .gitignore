@@ -1,1 +1,4 @@
-modules/shared/desktop/waybar/secrets/
+graphify-out/
+graph.json
+graph.html
+.graphify/
