@@ -17,11 +17,19 @@ in
         includeCoAuthoredBy = false;
       };
       ".copilot/mcp-config.json".source = jsonFormat.generate "copilot-mcp-config.json" {
-        mcpServers.nixos = {
-          type = "local";
-          command = lib.getExe pkgs.mcp-nixos;
-          args = [ ];
-          tools = [ "*" ];
+        mcpServers = {
+          git = {
+            type = "local";
+            command = lib.getExe pkgs.mcp-server-git;
+            args = [ ];
+            tools = [ "*" ];
+          };
+          nixos = {
+            type = "local";
+            command = lib.getExe pkgs.mcp-nixos;
+            args = [ ];
+            tools = [ "*" ];
+          };
         };
       };
     };
