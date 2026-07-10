@@ -142,13 +142,12 @@
 
       #workspaces button {
           background-color: @base01;
-          color: @base04;
-          border-bottom: 1px solid @base03;
+          color: @base03;
       }
 
       #workspaces button.active {
           background-color: @base0C;
-          color: @base01;
+          color: @base05;
       }
 
       .modules-right > widget > * {

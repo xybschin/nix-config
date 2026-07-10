@@ -39,6 +39,7 @@
   my.audio.enable = true;
   my.bluetooth.enable = true;
   my.razer.enable = true;
+  my.razer.dpi = 1000;
   my.gaming.enable = true;
   my.gnome-keyring.enable = true;
 
