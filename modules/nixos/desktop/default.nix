@@ -15,7 +15,7 @@
     in
     {
       programs.dconf.enable = true;
-      environment.systemPackages = with pkgs; [ geary ];
+      environment.systemPackages = with pkgs; [ geary kdePackages.breeze-icons ];
       programs.hyprland = {
         enable = true;
         withUWSM = true;
