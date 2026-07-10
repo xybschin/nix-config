@@ -26,7 +26,7 @@ total="$(printf '%s' "$resp" | jq -r '.data.total_credits // empty')"
 usage="$(printf '%s' "$resp" | jq -r '.data.total_usage // empty')"
 
 if [[ -z "$total" || -z "$usage" ]]; then
-    emit "OR: no data" "$(printf '%s' "$resp" | jq -c . 2>/dev/null || printf '%s' "$resp')" "error"
+    emit "OR: no data" "$(printf '%s' "$resp" | jq -c . 2>/dev/null || printf '%s' "$resp")" "error"
     exit 0
 fi
 
