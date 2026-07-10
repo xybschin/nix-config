@@ -11,6 +11,7 @@
 
     base16Scheme = ./koda-dark.yaml;
     polarity = "dark";
+    overlays.enable = false;
 
     image = ../desktop/hyprpaper/wallpapers/single/artemis-ii-earth.jpg;
     imageScalingMode = "fill";
