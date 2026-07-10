@@ -44,7 +44,6 @@
   my.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
-    kdePackages.plasma-workspace
     gnupg
   ];
 }

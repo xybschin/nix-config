@@ -41,7 +41,7 @@ in
         tmux set-environment -g PATH "$PATH" >/dev/null 2>&1
       fi
 
-      PROMPT="[%n@%F{${c.base08}}%m%f %1~] "
+      PROMPT="[%n@%F{${c.base09}}%m%f %1~] "
 
       function gcap() {
         git add . && git commit -m "$*" && git push

@@ -22,6 +22,15 @@ in
     servers = {
       git.command = lib.getExe pkgs.mcp-server-git;
       nixos.command = lib.getExe pkgs.mcp-nixos;
+      firecrawl = {
+        command = "${pkgs.nodejs}/bin/npx";
+        args = [ "-y" "firecrawl-mcp" ];
+        env.FIRECRAWL_API_KEY = "{env:FIRECRAWL_API_KEY}";
+      };
+      context7 = {
+        url = "https://mcp.context7.com/mcp";
+        headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
+      };
     };
   };
 

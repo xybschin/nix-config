@@ -55,6 +55,11 @@
       url = "github:xybschin/rvm-webcam";
     };
 
+    wine-sni-bridge = {
+      url = "github:waliori/wine-sni-bridge";
+      flake = false;
+    };
+
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -125,6 +130,9 @@
         inputs.stylix.homeModules.stylix
       ];
 
+      homes.users."bjarne@nixvidia".modules = [
+        (inputs.wine-sni-bridge + "/nix/module.nix")
+      ];
       homes.users."bjarne@nixvidia".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."bjarne@macbook".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."dev@nixvm".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";

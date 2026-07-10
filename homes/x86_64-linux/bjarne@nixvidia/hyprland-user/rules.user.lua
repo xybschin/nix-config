@@ -15,6 +15,19 @@ hl.window_rule({
   float = false,
 })
 
+-- wine-sni-bridge: X11-to-SNI tray bridge
+hl.window_rule({
+  name = "wine-sni-bridge",
+  match = { class = "wine-sni-bridge" },
+  float = true,
+  no_focus = true,
+  opacity = 0.0,
+  border_size = 0,
+  no_blur = true,
+  no_shadow = true,
+  no_anim = true,
+})
+
 -- XWayland opacity fix for floating windows without title/class
 hl.window_rule({
   name = "xwayland-opacity-fix",
