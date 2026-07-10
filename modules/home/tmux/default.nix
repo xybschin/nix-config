@@ -13,7 +13,7 @@ let
     set -g @mode_indicator_sync_prompt ' SYNC '
     set -g @mode_indicator_empty_prompt ' NORM '
     set -g @mode_indicator_prefix_mode_style 'bg=${c.base08},fg=black'
-    set -g @mode_indicator_copy_mode_style 'bg=${c.base0D},fg=black'
+    set -g @mode_indicator_copy_mode_style 'bg=${c.base0C},fg=black'
     set -g @mode_indicator_sync_mode_style 'bg=${c.base08},fg=black'
     set -g @mode_indicator_empty_mode_style 'bg=${c.base01},fg=${c.base03}'
     run-shell ${pkgs.tmuxPlugins.mode-indicator}/share/tmux-plugins/mode-indicator/mode_indicator.tmux
@@ -32,21 +32,21 @@ let
     set -g status-left-length 100
     set -g status-right-length 100
     set -g status-position bottom
-    set -g status-style "fg=${c.base08},bg=${c.base00}"
-    set -g status-left '#{tmux_mode_indicator}#[bg=green]#[fg=black] #{user}@#H #[fg=#{@LGRAY} #[bg=magenta]#[fg=black]'
-    set -g status-right '#[fg=green]%Y-%m-%d #[fg=${c.base05}]%H:%M'
+    set -g status-style "fg=${c.base04},bg=${c.base00}"
+    set -g status-left '#{tmux_mode_indicator}#[bg=${c.base0D},fg=black] #{user}@#H #[bg=${c.base0B},fg=black]'
+    set -g status-right '#[fg=${c.base0C}]%Y-%m-%d #[fg=${c.base05}]%H:%M'
     set -g status-justify absolute-centre
-    set -g @prefix_highlight_output_prefix "#[fg=#252530]#[bg=${c.base0D}]"
+    set -g @prefix_highlight_output_prefix "#[fg=black,bg=${c.base0A}]"
     set -g @prefix_highlight_output_suffix ""
 
     set -g pane-border-style 'fg=${c.base01}'
-    set -g pane-active-border-style 'fg=${c.base0D}'
+    set -g pane-active-border-style 'fg=${c.base0C}'
     set -g pane-border-lines heavy
     set -g pane-border-indicators both
 
     setw -g window-status-separator " - "
-    setw -g window-status-format "#[fg=${c.base03},bg=${c.base01}] #I #[fg=${c.base03},bg=black] #W "
-    setw -g window-status-current-format "#[fg=black,bg=${c.base08}] #I #[fg=${c.base05},bg=black] #W "
+    setw -g window-status-format "#[fg=${c.base03},bg=${c.base01}] #I #[fg=${c.base03},bg=${c.base00}] #W "
+    setw -g window-status-current-format "#[fg=black,bg=${c.base0E}] #I #[fg=${c.base05},bg=${c.base00}] #W "
   '';
 
   bindings = ''
