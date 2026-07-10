@@ -15,7 +15,7 @@
     in
     {
       programs.dconf.enable = true;
-      programs.thunderbird.enable = true;
+      environment.systemPackages = with pkgs; [ geary ];
       programs.hyprland = {
         enable = true;
         withUWSM = true;
