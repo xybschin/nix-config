@@ -1,0 +1,809 @@
+# VS Code settings mirroring my NeoVim (MiniMax) config.
+#
+# Requires the "VSCode Vim" extension (vscodevim.vim).
+# Optional but recommended: GitLens for richer <Leader>g mappings.
+#
+# Key conventions (matching nvim config):
+#   <Leader>  = <Space>
+#   <Leader>b = Buffer actions
+#   <Leader>e = Explore / Edit
+#   <Leader>f = Find (fuzzy)
+#   <Leader>g = Git
+#   <Leader>l = Language / LSP
+#   <Leader>m = Map (minimap)
+#   <Leader>o = Other utilities
+#   <Leader>s = Session / workspace
+#   <Leader>t = Terminal
+#
+# NOTE: Stylix also writes into `programs.vscode.profiles.default.userSettings`
+# (workbench.colorTheme = "Stylix" + font settings); those keys merge with the
+# ones below, so both take effect.
+{
+  # ── Editor ──────────────────────────────────────────────────────────────
+
+  # vim.o.number = true, vim.o.relativenumber = true
+  "editor.lineNumbers" = "relative";
+
+  # vim.o.wrap = false
+  "editor.wordWrap" = "off";
+
+  # vim.o.expandtab = true, vim.o.tabstop = 2, vim.o.shiftwidth = 2
+  "editor.tabSize" = 2;
+  "editor.insertSpaces" = true;
+  "editor.detectIndentation" = false;
+
+  # vim.o.cursorline = true
+  "editor.renderLineHighlight" = "all";
+
+  # vim.o.colorcolumn = "+1" (assuming textwidth = 80)
+  "editor.rulers" = [ 81 ];
+
+  # vim.o.list = true (show helpful text indicators)
+  "editor.renderWhitespace" = "boundary";
+
+  # vim.o.signcolumn = "yes"
+  "editor.glyphMargin" = true;
+
+  # format_on_save from conform.nvim
+  "editor.formatOnSave" = true;
+
+  # vim.o.updatetime = 250
+  "editor.quickSuggestionsDelay" = 250;
+
+  # vim.o.pumheight = 10
+  "editor.suggest.maxVisibleSuggestions" = 10;
+
+  # vim.o.foldlevel = 10 (fold nothing by default)
+  "editor.folding" = true;
+  "editor.showFoldingControls" = "always";
+  "editor.foldingImportsByDefault" = false;
+
+  # vim.o.autoindent + smartindent
+  "editor.autoIndent" = "full";
+
+  # indent scope visualization (mini.indentscope)
+  "editor.guides.indentation" = true;
+  "editor.guides.highlightActiveIndentation" = true;
+  "editor.bracketPairColorization.enabled" = true;
+
+  # conservative diagnostic display (update_in_insert = false)
+  "editor.inlayHints.enabled" = "off";
+
+  # minimap disabled by default (toggle with <Leader>mt)
+  "editor.minimap.enabled" = false;
+
+  # vim.o.splitbelow = true, vim.o.splitright = true
+  "workbench.editor.openSideBySideDirection" = "right";
+
+  # ── Files ───────────────────────────────────────────────────────────────
+
+  # mirrors <Leader>ot (MiniTrailspace.trim) + formatoptions
+  "files.trimTrailingWhitespace" = true;
+  "files.insertFinalNewline" = true;
+
+  # ── Search ──────────────────────────────────────────────────────────────
+
+  # vim.o.ignorecase = true, vim.o.smartcase = true
+  "editor.find.smartCase" = true;
+  "search.smartCase" = true;
+
+  # ── Workbench ───────────────────────────────────────────────────────────
+
+  # no startup screen (mini.starter shows only when nvim is opened without args)
+  "workbench.startupEditor" = "none";
+
+  # ── Terminal ────────────────────────────────────────────────────────────
+
+  "terminal.integrated.cursorStyle" = "line";
+
+  # ══════════════════════════════════════════════════════════════════════════
+  #  Vim Extension
+  # ══════════════════════════════════════════════════════════════════════════
+
+  # vim.g.mapleader = " "
+  "vim.leader" = " ";
+
+  # vim.o.hlsearch (Vim default)
+  "vim.hlsearch" = true;
+
+  # vim.o.incsearch = true
+  "vim.incsearch" = true;
+
+  # vim.o.ignorecase = true
+  "vim.ignorecase" = true;
+
+  # vim.o.smartcase = true
+  "vim.smartcase" = true;
+
+  # clipboard = "unnamedplus"
+  "vim.useSystemClipboard" = true;
+
+  # needed for <C-*> bindings below
+  "vim.useCtrlKeys" = true;
+
+  # vim.o.timeoutlen = 300
+  "vim.timeout" = 300;
+
+  # mini.comment – gc operator
+  "vim.commentary" = true;
+
+  # mini.surround – mapped as vim-surround style (ys/ds/cs instead of sa/sd/sr)
+  "vim.surround" = true;
+
+  # vim.o.spelloptions = "camel" – word-boundary motion through camelCase
+  "vim.camelCaseMotion.enable" = true;
+
+  # visual feedback on yank
+  "vim.highlightedyank.enable" = true;
+  "vim.highlightedyank.duration" = 200;
+
+  # vim.o.foldlevel = 10 (don't close folds on buffer open)
+  "vim.foldfix" = true;
+
+  # mini.jump2d – jump to visible spots; maps <Leader><Leader>w/b/s/f etc.
+  "vim.easymotion" = true;
+
+  # ── Vim: Normal mode ──────────────────────────────────────────────────────
+
+  "vim.normalModeKeyBindingsNonRecursive" = [
+    # nmap("<Esc>", "<cmd>nohlsearch<CR>")
+    {
+      before = [ "<Esc>" ];
+      commands = [ ":nohl" ];
+    }
+
+    # nmap("[p", ...) / nmap("]p", ...) – paste linewise above / below
+    {
+      before = [
+        "["
+        "p"
+      ];
+      after = [ "P" ];
+    }
+    {
+      before = [
+        "]"
+        "p"
+      ];
+      after = [ "p" ];
+    }
+
+    # ── mini.basics: windows = true  (<C-hjkl> window navigation) ──────────
+    {
+      before = [ "<C-h>" ];
+      commands = [ "workbench.action.focusLeftGroup" ];
+    }
+    {
+      before = [ "<C-j>" ];
+      commands = [ "workbench.action.focusBelowGroup" ];
+    }
+    {
+      before = [ "<C-k>" ];
+      commands = [ "workbench.action.focusAboveGroup" ];
+    }
+    {
+      before = [ "<C-l>" ];
+      commands = [ "workbench.action.focusRightGroup" ];
+    }
+
+    # mini.basics: <C-s> – save (and stay in Normal)
+    {
+      before = [ "<C-s>" ];
+      commands = [ ":w" ];
+    }
+
+    # mini.basics: \w – toggle word wrap
+    {
+      before = [
+        "\\"
+        "w"
+      ];
+      commands = [ "editor.action.toggleWordWrap" ];
+    }
+
+    # mini.basics: \h – toggle search highlight
+    {
+      before = [
+        "\\"
+        "h"
+      ];
+      after = [
+        ":"
+        "s"
+        "e"
+        "t"
+        " "
+        "h"
+        "l"
+        "s"
+        "e"
+        "a"
+        "r"
+        "c"
+        "h"
+        "!"
+        "<Enter>"
+      ];
+    }
+
+    # ── mini.bracketed: buffer navigation ───────────────────────────────────
+    {
+      before = [
+        "]"
+        "b"
+      ];
+      commands = [ "workbench.action.nextEditor" ];
+    }
+    {
+      before = [
+        "["
+        "b"
+      ];
+      commands = [ "workbench.action.previousEditor" ];
+    }
+
+    # ── mini.bracketed: diagnostic navigation ───────────────────────────────
+    {
+      before = [
+        "]"
+        "d"
+      ];
+      commands = [ "editor.action.marker.next" ];
+    }
+    {
+      before = [
+        "["
+        "d"
+      ];
+      commands = [ "editor.action.marker.prev" ];
+    }
+    {
+      before = [
+        "]"
+        "e"
+      ];
+      commands = [ "editor.action.marker.nextInFiles" ];
+    }
+    {
+      before = [
+        "["
+        "e"
+      ];
+      commands = [ "editor.action.marker.prevInFiles" ];
+    }
+
+    # ── mini.bracketed: quickfix / diff-hunk navigation ─────────────────────
+    {
+      before = [
+        "]"
+        "q"
+      ];
+      commands = [ "workbench.action.editor.nextChange" ];
+    }
+    {
+      before = [
+        "["
+        "q"
+      ];
+      commands = [ "workbench.action.editor.previousChange" ];
+    }
+    {
+      before = [
+        "]"
+        "Q"
+      ];
+      commands = [ "workbench.action.moveToLastChangeInEditor" ];
+    }
+    {
+      before = [
+        "["
+        "Q"
+      ];
+      commands = [ "workbench.action.moveToFirstChangeInEditor" ];
+    }
+
+    # ── <Leader>b : Buffer ────────────────────────────────────────────────────
+    # nmap_leader("ba") – alternate buffer
+    {
+      before = [
+        "<leader>"
+        "b"
+        "a"
+      ];
+      commands = [ "workbench.action.openPreviousRecentlyUsedEditorInGroup" ];
+    }
+    # nmap_leader("bd") – delete buffer
+    {
+      before = [
+        "<leader>"
+        "b"
+        "d"
+      ];
+      commands = [ "workbench.action.closeActiveEditor" ];
+    }
+    # nmap_leader("bD") – force delete (discard changes)
+    {
+      before = [
+        "<leader>"
+        "b"
+        "D"
+      ];
+      commands = [ "workbench.action.revertAndCloseActiveEditor" ];
+    }
+    # nmap_leader("bw") – wipeout buffer
+    {
+      before = [
+        "<leader>"
+        "b"
+        "w"
+      ];
+      commands = [ "workbench.action.closeActiveEditor" ];
+    }
+    # nmap_leader("bW") – force wipeout
+    {
+      before = [
+        "<leader>"
+        "b"
+        "W"
+      ];
+      commands = [ "workbench.action.revertAndCloseActiveEditor" ];
+    }
+
+    # ── <Leader>e : Explore / Edit ────────────────────────────────────────────
+    # nmap_leader("ed") – open explorer at cwd
+    {
+      before = [
+        "<leader>"
+        "e"
+        "d"
+      ];
+      commands = [ "workbench.view.explorer" ];
+    }
+    # nmap_leader("ef") – reveal current file in explorer
+    {
+      before = [
+        "<leader>"
+        "e"
+        "f"
+      ];
+      commands = [ "workbench.files.action.showActiveFileInExplorer" ];
+    }
+    # nmap_leader("en") – show notifications (MiniNotify.show_history)
+    {
+      before = [
+        "<leader>"
+        "e"
+        "n"
+      ];
+      commands = [ "workbench.action.showNotifications" ];
+    }
+    # nmap_leader("eq") – toggle problems / quickfix panel
+    {
+      before = [
+        "<leader>"
+        "e"
+        "q"
+      ];
+      commands = [ "workbench.actions.view.problems" ];
+    }
+
+    # ── <Leader>f : Find (mini.pick / mini.extra pickers) ─────────────────────
+    # nmap_leader("ff") – find files (:Pick files)
+    {
+      before = [
+        "<leader>"
+        "f"
+        "f"
+      ];
+      commands = [ "workbench.action.quickOpen" ];
+    }
+    # nmap_leader("fg") – grep live (:Pick grep_live)
+    {
+      before = [
+        "<leader>"
+        "f"
+        "g"
+      ];
+      commands = [ "workbench.action.findInFiles" ];
+    }
+    # nmap_leader("fG") – grep current word
+    {
+      before = [
+        "<leader>"
+        "f"
+        "G"
+      ];
+      commands = [ "workbench.action.findInFiles" ];
+    }
+    # nmap_leader("fb") – pick buffers
+    {
+      before = [
+        "<leader>"
+        "f"
+        "b"
+      ];
+      commands = [ "workbench.action.showAllEditors" ];
+    }
+    # nmap_leader("fd") – diagnostics workspace
+    {
+      before = [
+        "<leader>"
+        "f"
+        "d"
+      ];
+      commands = [ "workbench.actions.view.problems" ];
+    }
+    # nmap_leader("fD") – diagnostics buffer
+    {
+      before = [
+        "<leader>"
+        "f"
+        "D"
+      ];
+      commands = [ "workbench.action.problems.focus" ];
+    }
+    # nmap_leader("fr") – resume / recent
+    {
+      before = [
+        "<leader>"
+        "f"
+        "r"
+      ];
+      commands = [ "workbench.action.openRecent" ];
+    }
+    # nmap_leader("fR") – references (LSP)
+    {
+      before = [
+        "<leader>"
+        "f"
+        "R"
+      ];
+      commands = [ "editor.action.goToReferences" ];
+    }
+    # nmap_leader("fs") – workspace symbols live
+    {
+      before = [
+        "<leader>"
+        "f"
+        "s"
+      ];
+      commands = [ "workbench.action.showAllSymbols" ];
+    }
+    # nmap_leader("fS") – document symbols
+    {
+      before = [
+        "<leader>"
+        "f"
+        "S"
+      ];
+      commands = [ "workbench.action.gotoSymbol" ];
+    }
+
+    # ── <Leader>g : Git (mini.git / mini.diff) ───────────────────────────────
+    # nmap_leader("ga") – staged diff (all)
+    {
+      before = [
+        "<leader>"
+        "g"
+        "a"
+      ];
+      commands = [ "git.viewStagedChanges" ];
+    }
+    # nmap_leader("gA") – staged diff (buffer)
+    {
+      before = [
+        "<leader>"
+        "g"
+        "A"
+      ];
+      commands = [ "git.openChange" ];
+    }
+    # nmap_leader("gc") – commit
+    {
+      before = [
+        "<leader>"
+        "g"
+        "c"
+      ];
+      commands = [ "git.commit" ];
+    }
+    # nmap_leader("gC") – commit amend
+    {
+      before = [
+        "<leader>"
+        "g"
+        "C"
+      ];
+      commands = [ "git.commitAmend" ];
+    }
+    # nmap_leader("gd") – unstaged diff (all)
+    {
+      before = [
+        "<leader>"
+        "g"
+        "d"
+      ];
+      commands = [ "git.openAllChanges" ];
+    }
+    # nmap_leader("gD") – unstaged diff (buffer)
+    {
+      before = [
+        "<leader>"
+        "g"
+        "D"
+      ];
+      commands = [ "git.openChange" ];
+    }
+    # nmap_leader("go") – toggle diff overlay (MiniDiff.toggle_overlay)
+    {
+      before = [
+        "<leader>"
+        "g"
+        "o"
+      ];
+      commands = [ "git.openChange" ];
+    }
+    # nmap_leader("gs") – show at cursor (MiniGit.show_at_cursor)
+    {
+      before = [
+        "<leader>"
+        "g"
+        "s"
+      ];
+      commands = [ "git.openChange" ];
+    }
+
+    # ── <Leader>l : Language / LSP ────────────────────────────────────────────
+    # nmap_leader("la") – code actions
+    {
+      before = [
+        "<leader>"
+        "l"
+        "a"
+      ];
+      commands = [ "editor.action.quickFix" ];
+    }
+    # nmap_leader("ld") – diagnostic popup (vim.diagnostic.open_float)
+    {
+      before = [
+        "<leader>"
+        "l"
+        "d"
+      ];
+      commands = [ "editor.action.showHover" ];
+    }
+    # nmap_leader("lf") – format document (conform.format)
+    {
+      before = [
+        "<leader>"
+        "l"
+        "f"
+      ];
+      commands = [ "editor.action.formatDocument" ];
+    }
+    # nmap_leader("li") – go to implementation
+    {
+      before = [
+        "<leader>"
+        "l"
+        "i"
+      ];
+      commands = [ "editor.action.goToImplementation" ];
+    }
+    # nmap_leader("lh") – hover (vim.lsp.buf.hover)
+    {
+      before = [
+        "<leader>"
+        "l"
+        "h"
+      ];
+      commands = [ "editor.action.showHover" ];
+    }
+    # nmap_leader("lr") – rename
+    {
+      before = [
+        "<leader>"
+        "l"
+        "r"
+      ];
+      commands = [ "editor.action.rename" ];
+    }
+    # nmap_leader("lR") – references
+    {
+      before = [
+        "<leader>"
+        "l"
+        "R"
+      ];
+      commands = [ "editor.action.goToReferences" ];
+    }
+    # nmap_leader("ls") – go to definition (source)
+    {
+      before = [
+        "<leader>"
+        "l"
+        "s"
+      ];
+      commands = [ "editor.action.revealDefinition" ];
+    }
+    # nmap_leader("lt") – go to type definition
+    {
+      before = [
+        "<leader>"
+        "l"
+        "t"
+      ];
+      commands = [ "editor.action.goToTypeDefinition" ];
+    }
+
+    # ── <Leader>m : Map (mini.map ≈ VS Code minimap) ─────────────────────────
+    # nmap_leader("mt") – toggle minimap
+    {
+      before = [
+        "<leader>"
+        "m"
+        "t"
+      ];
+      commands = [ "editor.action.toggleMinimap" ];
+    }
+
+    # ── <Leader>o : Other ─────────────────────────────────────────────────────
+    # nmap_leader("or") – resize to default width
+    {
+      before = [
+        "<leader>"
+        "o"
+        "r"
+      ];
+      commands = [ "workbench.action.evenEditorWidths" ];
+    }
+    # nmap_leader("ot") – trim trailing whitespace (MiniTrailspace.trim)
+    {
+      before = [
+        "<leader>"
+        "o"
+        "t"
+      ];
+      commands = [ "editor.action.trimTrailingWhitespace" ];
+    }
+    # nmap_leader("oz") – zoom toggle (MiniMisc.zoom)
+    {
+      before = [
+        "<leader>"
+        "o"
+        "z"
+      ];
+      commands = [ "workbench.action.toggleMaximizeEditorGroup" ];
+    }
+
+    # ── <Leader>s : Session / workspace ──────────────────────────────────────
+    # nmap_leader("sn") – new session → save workspace as
+    {
+      before = [
+        "<leader>"
+        "s"
+        "n"
+      ];
+      commands = [ "workbench.action.saveWorkspaceAs" ];
+    }
+    # nmap_leader("sr") – read session → open recent
+    {
+      before = [
+        "<leader>"
+        "s"
+        "r"
+      ];
+      commands = [ "workbench.action.openRecent" ];
+    }
+
+    # ── <Leader>t : Terminal ──────────────────────────────────────────────────
+    # nmap_leader("tt") – new terminal (vertical in nvim)
+    {
+      before = [
+        "<leader>"
+        "t"
+        "t"
+      ];
+      commands = [ "workbench.action.terminal.newInActiveWorkspace" ];
+    }
+    # nmap_leader("tT") – split terminal (horizontal in nvim)
+    {
+      before = [
+        "<leader>"
+        "t"
+        "T"
+      ];
+      commands = [ "workbench.action.terminal.split" ];
+    }
+  ];
+
+  # ── Vim: Visual mode ──────────────────────────────────────────────────────
+
+  "vim.visualModeKeyBindingsNonRecursive" = [
+    # mini.basics: <C-hjkl> window navigation
+    {
+      before = [ "<C-h>" ];
+      commands = [ "workbench.action.focusLeftGroup" ];
+    }
+    {
+      before = [ "<C-j>" ];
+      commands = [ "workbench.action.focusBelowGroup" ];
+    }
+    {
+      before = [ "<C-k>" ];
+      commands = [ "workbench.action.focusAboveGroup" ];
+    }
+    {
+      before = [ "<C-l>" ];
+      commands = [ "workbench.action.focusRightGroup" ];
+    }
+
+    # mini.move: move selection up/down (visual <C-j>/<C-k>)
+    {
+      before = [ "<M-j>" ];
+      commands = [ "editor.action.moveLinesDownAction" ];
+    }
+    {
+      before = [ "<M-k>" ];
+      commands = [ "editor.action.moveLinesUpAction" ];
+    }
+
+    # mini.move: indent/outdent selection (visual <C-h>/<C-l>)
+    {
+      before = [ "<M-h>" ];
+      commands = [ "editor.action.outdentLines" ];
+    }
+    {
+      before = [ "<M-l>" ];
+      commands = [ "editor.action.indentLines" ];
+    }
+
+    # xmap_leader("lf") – format selection
+    {
+      before = [
+        "<leader>"
+        "l"
+        "f"
+      ];
+      commands = [ "editor.action.formatSelection" ];
+    }
+
+    # xmap_leader("gs") – git show at selection
+    {
+      before = [
+        "<leader>"
+        "g"
+        "s"
+      ];
+      commands = [ "git.openChange" ];
+    }
+  ];
+
+  # ── Vim: Insert mode ──────────────────────────────────────────────────────
+
+  "vim.insertModeKeyBindings" = [
+    # mini.basics: <C-s> – save and return to Normal
+    {
+      before = [ "<C-s>" ];
+      commands = [ ":w" ];
+    }
+
+    # mini.basics: move_with_alt = true (<M-hjkl> navigation in Insert mode)
+    {
+      before = [ "<M-h>" ];
+      after = [ "<Left>" ];
+    }
+    {
+      before = [ "<M-j>" ];
+      after = [ "<Down>" ];
+    }
+    {
+      before = [ "<M-k>" ];
+      after = [ "<Up>" ];
+    }
+    {
+      before = [ "<M-l>" ];
+      after = [ "<Right>" ];
+    }
+  ];
+}
