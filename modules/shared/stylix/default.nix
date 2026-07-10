@@ -13,12 +13,19 @@
     polarity = "dark";
     overlays.enable = false;
 
+    icons = {
+      enable = true;
+      package = pkgs.kdePackages.breeze-icons;
+      light = "breeze";
+      dark = "breeze";
+    };
+
     image = ../desktop/hyprpaper/wallpapers/single/artemis-ii-earth.jpg;
     imageScalingMode = "fill";
 
     cursor = {
-      name = "Bibata-Modern-Classic";
-      package = pkgs.bibata-cursors;
+      name = "macOS";
+      package = pkgs.apple-cursor;
       size = 24;
     };
 
