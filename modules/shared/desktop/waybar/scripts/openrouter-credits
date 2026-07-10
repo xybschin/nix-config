@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
 # Waybar widget: remaining OpenRouter credits.
 #
-# Uses `op run` to resolve the API key from 1Password, so authorization
-# (biometric/password) is only needed once per session timeout — subsequent
-# hourly refreshes reuse the cached session.
-# Override the secret reference with $OPENROUTER_API_KEY_REF if your vault
-# layout differs, e.g.:
-#   export OPENROUTER_API_KEY_REF="op://Vault/Item/field"
+# Reads the API key from the $OPENROUTER_API_KEY environment variable.
 set -euo pipefail
-
-OP_REF="${OPENROUTER_API_KEY_REF:-op://Private/ifbh3klkuwone6yw5f67thvmqu/credential}"
 
 emit() { # <text> <tooltip> <class>
     jq -nc --arg text "$1" --arg tooltip "$2" --arg class "$3" \
@@ -18,21 +11,14 @@ emit() { # <text> <tooltip> <class>
 
 money() { awk -v n="$1" 'BEGIN{ printf "%.2f", n+0 }'; }
 
-if ! command -v op >/dev/null 2>&1; then
-    emit "OR: op missing" "1Password CLI (op) is not installed" "error"
+if [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
+    emit "OR: no key" "OPENROUTER_API_KEY is not set" "error"
     exit 0
 fi
 
-# op run resolves the op:// reference in the env var inside the subshell,
-# caching the 1Password session so later runs don't re-prompt.
-# `exec -a` renames the subprocess so the 1Password authorization prompt
-# shows "OpenRouter Widget" instead of a nix-store bash path.
-resp="$(OPENROUTER_API_KEY="$OP_REF" op run --no-masking -- \
-    bash -c 'exec -a "OpenRouter Widget" bash -c "
-        curl -fsS -H \"Authorization: Bearer \$OPENROUTER_API_KEY\" \
-            https://openrouter.ai/api/v1/credits
-    "' 2>/dev/null)" || {
-    emit "OR: request failed" "op run / curl failed" "error"
+resp="$(curl -fsS -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    https://openrouter.ai/api/v1/credits 2>/dev/null)" || {
+    emit "OR: request failed" "curl failed" "error"
     exit 0
 }
 
@@ -40,7 +26,7 @@ total="$(printf '%s' "$resp" | jq -r '.data.total_credits // empty')"
 usage="$(printf '%s' "$resp" | jq -r '.data.total_usage // empty')"
 
 if [[ -z "$total" || -z "$usage" ]]; then
-    emit "OR: no data" "$(printf '%s' "$resp" | jq -c . 2>/dev/null || printf '%s' "$resp")" "error"
+    emit "OR: no data" "$(printf '%s' "$resp" | jq -c . 2>/dev/null || printf '%s' "$resp')" "error"
     exit 0
 fi
 

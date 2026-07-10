@@ -2,9 +2,6 @@
 {
   home.packages = with pkgs; [
     playerctl
-    # 1Password CLI is used by waybar's openrouter-credits script to fetch
-    # the OpenRouter API key from the user's vault.
-    _1password-cli
   ];
 
   # Use our own themed layout instead of stylix's default waybar theme,
@@ -164,4 +161,14 @@
   };
 
   xdg.configFile."waybar/scripts".source = config.lib.file.mkOutOfStoreSymlink ./scripts;
+
+  # OpenRouter API key for the openrouter-credits widget. waybar runs as a
+  # systemd user service, which does not source shell rc files (~/.zshrc.local
+  # etc.), so the key must be exposed via environment.d — the generator
+  # systemd-environment-d-generator loads ~/.config/environment.d/*.conf into
+  # the user service manager environment and every service it starts.
+  # The target is an out-of-store, gitignored file so the secret never enters
+  # the Nix store or the repository.
+  xdg.configFile."environment.d/openrouter.conf".source =
+    config.lib.file.mkOutOfStoreSymlink ./secrets/openrouter.conf;
 }
