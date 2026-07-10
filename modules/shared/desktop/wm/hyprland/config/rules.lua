@@ -1,21 +1,21 @@
 -- Suppress maximize events for all windows
 hl.window_rule({
-  name = "suppress-maximize-events",
-  match = { class = ".*" },
-  suppress_event = "maximize",
+	name = "suppress-maximize-events",
+	match = { class = ".*" },
+	suppress_event = "maximize",
 })
 
 -- Fix XWayland dragging issues
 hl.window_rule({
-  name = "fix-xwayland-drags",
-  match = {
-    class = "^$",
-    title = "^$",
-    xwayland = true,
-    float = true,
-    fullscreen = false,
-  },
-  no_focus = true,
+	name = "fix-xwayland-drags",
+	match = {
+		class = "^$",
+		title = "^$",
+		xwayland = true,
+		float = true,
+		fullscreen = false,
+	},
+	no_focus = true,
 })
 
 -- Window-specific rules

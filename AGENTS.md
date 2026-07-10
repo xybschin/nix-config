@@ -167,7 +167,7 @@ When tackling a request:
 | `home/terminals` | yes | — | — | yes |
 
 ### Stylix
-- Custom theme at `modules/shared/stylix/koda-dark.yaml` (author: Bjarne Schindler)
+- Custom theme at `modules/shared/stylix/koda-dark.yaml`
 - Palette: background `#101010`, dark surfaces `#272727`, muted `#777777`, light fg `#b0b0b0`, white `#ffffff`, red `#ff5733`, orange `#c4a09a`, yellow `#d9ba73`, green `#4a4645`, cyan `#504d4b`, blue `#f0ece8`, purple `#b58e88`, brown `#666666`.
 
 ### Secrets
@@ -181,6 +181,3 @@ make nixos host=<name>       # NixOS host (e.g. nixvidia, nixvm, nixwsl)
 make darwin host=macbook     # Darwin host
 make home user=<u> host=<h>  # Standalone home-manager
 ```
-
-### Flake Inputs (16 total)
-nixpkgs, snowfall-lib, home-manager, darwin, nixos-wsl, vscode-server, zen-browser, firefox-addons, claude-code, apple-fonts, hyprland, waybar-audio-control, rvm-webcam, wine-sni-bridge, stylix, sops-nix

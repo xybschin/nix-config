@@ -1,12 +1,9 @@
 {
   pkgs,
-  inputs,
-  config,
   ...
 }:
 
 let
-  hmLib = inputs.home-manager.lib.hm;
   scripts = ./scripts;
   hyprlandUser = ./hyprland-user;
 in
@@ -34,7 +31,7 @@ in
       pkgs.zathura
     ];
 
-  services.wine-sni-bridge.enable = true;
+  services.xembed-sni-proxy.enable = true;
 
   programs.git = {
     enable = true;
@@ -57,18 +54,5 @@ in
   # RTX 2070 Super has 8192 MiB total; 7680 = 7.5 GB.
   home.file.".config/dxvk.conf".text = ''
     dxgi.maxDeviceMemory = 7680
-  '';
-
-  # Disable Wine's WM_TAKE_FOCUS to prevent residual focus-stealing issues
-  # with wine-sni-bridge.  Only runs if ~/.wine already exists (wineprefix
-  # created) to avoid a silent `wine` invocation booting the prefix on every
-  # home-manager switch.
-  home.activation.wineTakeFocus = hmLib.dag.entryAfter [ "writeBoundary" ] ''
-    WINE="${pkgs.wine}/bin/wine"
-    WINE_PREFIX="$HOME/.wine"
-    if [ -f "$WINE_PREFIX/system.reg" ]; then
-      $DRY_RUN_CMD "$WINE" reg add 'HKEY_CURRENT_USER\Software\Wine\X11 Driver' \
-        /t REG_SZ /v UseTakeFocus /d N /f 2>/dev/null || true
-    fi
   '';
 }
