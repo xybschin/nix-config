@@ -44,5 +44,6 @@
 
   environment.systemPackages = with pkgs; [
     kdePackages.plasma-workspace
+    gnupg
   ];
 }

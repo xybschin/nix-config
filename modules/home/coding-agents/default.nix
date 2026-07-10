@@ -19,7 +19,10 @@ in
 
   programs.mcp = {
     enable = true;
-    servers.nixos.command = lib.getExe pkgs.mcp-nixos;
+    servers = {
+      git.command = lib.getExe pkgs.mcp-server-git;
+      nixos.command = lib.getExe pkgs.mcp-nixos;
+    };
   };
 
   home.activation.fetchSkills = hmLib.dag.entryAfter [ "writeBoundary" ] ''

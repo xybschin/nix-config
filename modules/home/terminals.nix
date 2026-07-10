@@ -12,6 +12,7 @@
       window-padding-y = 6;
       confirm-close-surface = false;
       bell-features = "no-attention,no-title,no-system,no-border";
+      keybind = "ctrl+enter>unbind";
     };
   };
 

@@ -60,6 +60,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
@@ -81,6 +86,9 @@
           home-manager.useUserPackages = true;
           home-manager.backupFileExtension = "backup";
           home-manager.extraSpecialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
+          home-manager.sharedModules = [
+            inputs.sops-nix.homeManagerModules.sops
+          ];
         }
       ];
 

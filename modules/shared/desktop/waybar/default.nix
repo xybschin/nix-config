@@ -97,9 +97,12 @@
       @define-color base00 #${c.base00};
       @define-color base01 #${c.base01};
       @define-color base03 #${c.base03};
+      @define-color base04 #${c.base04};
       @define-color base05 #${c.base05};
       @define-color base08 #${c.base08};
+      @define-color base0A #${c.base0A};
       @define-color base0D #${c.base0D};
+      @define-color base0E #${c.base0E};
 
       window#waybar, tooltip {
           background: @base00;
@@ -129,7 +132,7 @@
       }
 
       #custom-openrouter.warning {
-          color: @base08;
+          color: @base0A;
       }
 
       #custom-openrouter.error {
@@ -138,12 +141,12 @@
 
       #workspaces button {
           background-color: @base01;
-          color: @base05;
+          color: @base04;
           border-bottom: 1px solid @base03;
       }
 
       #workspaces button.active {
-          background-color: @base0D;
+          background-color: @base0E;
           color: @base01;
       }
 
@@ -162,13 +165,19 @@
 
   xdg.configFile."waybar/scripts".source = config.lib.file.mkOutOfStoreSymlink ./scripts;
 
-  # OpenRouter API key for the openrouter-credits widget. waybar runs as a
-  # systemd user service, which does not source shell rc files (~/.zshrc.local
-  # etc.), so the key must be exposed via environment.d — the generator
-  # systemd-environment-d-generator loads ~/.config/environment.d/*.conf into
-  # the user service manager environment and every service it starts.
-  # The target is an out-of-store, gitignored file so the secret never enters
-  # the Nix store or the repository.
-  xdg.configFile."environment.d/openrouter.conf".source =
-    config.lib.file.mkOutOfStoreSymlink ./secrets/openrouter.conf;
+  # OpenRouter API key for the openrouter-credits widget. Encrypted via sops
+  # and decrypted at activation by the sops-nix user service. waybar must
+  # order after sops-nix and read the key via EnvironmentFile (not
+  # environment.d, which races with sops-nix decryption).
+  sops.gnupg.home = "${config.home.homeDirectory}/.gnupg";
+  sops.secrets.openrouter = {
+    sopsFile = ../../../../secrets/openrouter.env;
+    format = "dotenv";
+  };
+
+  systemd.user.services.waybar = {
+    Service.EnvironmentFile = [ config.sops.secrets.openrouter.path ];
+    Unit.After = [ "sops-nix.service" ];
+    Unit.Wants = [ "sops-nix.service" ];
+  };
 }

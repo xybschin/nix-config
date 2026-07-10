@@ -1,4 +1,7 @@
-{ lib, ... }:
+{ config, lib, ... }:
+let
+  c = config.lib.stylix.colors;
+in
 {
   programs.hyprlock = {
     enable = true;
@@ -23,7 +26,7 @@
         dots_spacing = 0.64;
         dots_center = true;
         fade_on_empty = true;
-        placeholder_text = ''<span color="##ffffff"><i>Password...</i></span>'';
+        placeholder_text = ''<span color="##${c.base05}"><i>Password...</i></span>'';
         hide_input = false;
         position = "0, 50";
         halign = "center";
@@ -34,7 +37,7 @@
       label {
           monitor =
           text = cmd[update:1000] echo "<b><big> $(date +"%H:%M") </big></b>"
-          color = rgba(176, 176, 176, 0.75)
+          color = rgba(${c.base04}BF)
           font_size = 64
           font_family = SF Pro Display
           position = 0, -70
@@ -44,7 +47,7 @@
       label {
           monitor =
           text = cmd[update:18000000] echo "<b> "$(date +'%-d %B %Y')" </b>"
-          color = rgba(176, 176, 176, 0.75)
+          color = rgba(${c.base04}BF)
           font_size = 24
           font_family = SF Pro Display
           position = 0, -150
