@@ -87,9 +87,100 @@ When tackling a request:
 
 ## 6. Repo-Specific Conventions
 
+### Architecture
 - **Snowfall Lib** auto-discovers `systems/`, `homes/`, `modules/<type>/<name>/default.nix`. Modules are namespaced as `my.<name>`.
 - **Module types:** `nixos/`, `darwin/`, `home/`, `shared/` — keep cross-platform config in `shared/`.
-- **Hosts:** `nixvidia` (desktop + Hyprland), `nixvm` (VM + Hyprland), `nixwsl` (WSL), `macbook` (darwin).
-- **Stylix** does system-wide theming; theme file at `modules/shared/stylix/koda-dark.yaml`.
-- **Secrets:** sops-nix with GPG; edit via `sops secrets/<file>`.
-- **Rebuild commands:** `make nixos host=<name>`, `make darwin host=<name>`, `make home user=<name> host=<name>`.
+- **Flake namespace** is `config` (set in `snowfall-lib.mkFlake` input `namespace`).
+
+### Hosts
+
+| Host | Arch | User | Role |
+|------|------|------|------|
+| `nixvidia` | `x86_64-linux` | `bjarne` | Primary desktop (Nvidia GPU, Hyprland, gaming, Razer, libvirtd, full setup) |
+| `nixvm` | `x86_64-linux` | `dev` | VM/test host (Hyprland desktop, no Nvidia/gaming/Razer) |
+| `nixwsl` | `x86_64-linux` | `dev` | WSL headless (no desktop, Docker, vscode-server, azure-cli) |
+| `macbook` | `aarch64-darwin` | `bjarne` | Apple Silicon MacBook (nix-darwin, homebrew, Touch ID sudo) |
+
+### NixOS Modules
+- **`nixos/common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, hyprland, xybschin), flakes, zsh, stateVersion 25.11
+- **`nixos/common-desktop`** — shared desktop infra: US keyboard, NetworkManager, polkit, latest kernel, zramSwap, gparted, gnumake, wl-clipboard
+- **`nixos/desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
+- **`nixos/nvidia`** — open driver, modesetting, powerManagement, VA-API, CUDA, nvtop, env vars
+- **`nixos/gaming`** — Steam (gamemode), Lutris, Discord, Spotify, wowup-cf, protonup-rs
+- **`nixos/razer`** — OpenRazer, polychromatic, auto DPI=1000 (nixvidia only)
+- **`nixos/virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes
+- **`nixos/1password`** — `programs._1password` + GUI with zen-bin
+- **`nixos/audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects
+- **`nixos/bluetooth`** — controller tweaks (FastConnectable, Experimental, JustWorksRepairing)
+- **`nixos/boot`** — systemd-boot, limit 10, consoleMode=max
+- **`nixos/gnome-keyring`** — GNOME Keyring + seahorse
+
+### Darwin Modules
+- **`darwin/common`** — timezone Europe/Berlin, unfree, Nix caches (claude-code), Touch ID sudo, homebrew (zap cleanup), zsh
+
+### Home Manager Modules
+- **`home/global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports fzf, zsh, nvim, tmux, lazygit, direnv, ranger. stateVersion 26.05
+- **`home/coding-agents`** — Claude Code, OpenCode, GitHub Copilot CLI with MCP servers (git, nixos, firecrawl, context7). Fetches skills from github.com/xybschin/skills
+- **`home/nvim`** — Neovim with LSP (nil, bash-language-server, lua-language-server, cmake-language-server, docker-language-server) and formatters (nixfmt, prettier, beautysh, stylua). Config symlinked from repo.
+- **`home/tmux`** — stylix-colored theme, mode-indicator, prefix highlight, heavy pane borders
+- **`home/terminals`** — Ghostty (Wayland/macOS) + Kitty
+- **`home/1password`** — 1Password SSH agent bridge (WSL via socat/npiperelay)
+- **`home/rvm-webcam`** — virtual background webcam via RobustVideoMatting (nixvidia only)
+- **`home/waybar-audio-control`** — floating audio control widget (nixvidia only)
+
+### Shared Modules (cross-platform)
+- **`shared/stylix`** — dark polarity, custom "Koda Dark Minimal" scheme (base00: `#101010`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper, zen-browser.
+- **`shared/desktop`** — imports stylix, waybar, fonts, zen-browser, rofi, wayland-env, hyprpaper. Packages: nautilus, feh.
+  - **`shared/desktop/wm/hyprland/`** — Lua config files, hyprlock (screenshot blur, time/date), hyprpolkitagent. Scripts: `auto-hide-wine-trays`, `monitor-config`, `rofi-launch`, `rofi-monitor-menu`.
+  - **`shared/desktop/waybar/`** — bottom bar layout, stylix target disabled, playerctl. Scripts: `openrouter-credits`, `scrolling-playerctl`.
+  - **`shared/desktop/rofi/`** — custom adi1090x type-1 style-10 theme, recolored with stylix colors.
+  - **`shared/desktop/hyprpaper/`** — 14 single + 7 ultrawide/split wallpapers for multi-monitor.
+  - **`shared/desktop/font.nix`** — Apple SF, Segoe UI, Nerd Fonts.
+  - **`shared/desktop/zen-browser.nix`** — Zen browser flake integration.
+  - **`shared/desktop/wayland-env.nix`** — Wayland env vars.
+- **`shared/vscode`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (nixvidia only)
+- **`shared/ideavim`** — symlinks `.ideavimrc` from repo to `$HOME`
+
+### Module-to-Host Usage
+
+| Module | nixvidia | nixvm | nixwsl | macbook |
+|--------|----------|-------|--------|---------|
+| `nixos/common` | auto | auto | auto | — |
+| `nixos/common-desktop` | yes | yes | — | — |
+| `nixos/desktop` | yes | yes | — | — |
+| `nixos/nvidia` | yes | — | — | — |
+| `nixos/gaming` | yes | — | — | — |
+| `nixos/razer` | yes | — | — | — |
+| `nixos/virtualisation` | yes | — | — | — |
+| `nixos/1password` | yes | yes | — | — |
+| `nixos/gnome-keyring` | yes | — | — | — |
+| `nixos/audio` | yes | yes | — | — |
+| `nixos/bluetooth` | yes | yes | — | — |
+| `nixos/boot` | yes | yes | — | — |
+| `darwin/common` | — | — | — | auto |
+| `shared/stylix` | full | full | headless-only | full |
+| `shared/desktop` | yes | yes | — | — |
+| `shared/vscode` | yes | — | — | — |
+| `home/coding-agents` | yes | yes | yes | yes |
+| `home/rvm-webcam` | yes | — | — | — |
+| `home/waybar-audio-control` | yes | — | — | — |
+| `home/terminals` | yes | — | — | yes |
+
+### Stylix
+- Custom theme at `modules/shared/stylix/koda-dark.yaml` (author: Bjarne Schindler)
+- Palette: background `#101010`, dark surfaces `#272727`, muted `#777777`, light fg `#b0b0b0`, white `#ffffff`, red `#ff5733`, orange `#c4a09a`, yellow `#d9ba73`, green `#4a4645`, cyan `#504d4b`, blue `#f0ece8`, purple `#b58e88`, brown `#666666`.
+
+### Secrets
+- sops-nix with GPG key `F28DC558F4792FCBCC4045141B6CFD2F494F4A52` (bjarne)
+- Only secret file: `secrets/openrouter.env` — contains `OPENROUTER_API_KEY`
+- Edit with: `sops secrets/openrouter.env`
+
+### Rebuild Commands
+```bash
+make nixos host=<name>       # NixOS host (e.g. nixvidia, nixvm, nixwsl)
+make darwin host=macbook     # Darwin host
+make home user=<u> host=<h>  # Standalone home-manager
+```
+
+### Flake Inputs (16 total)
+nixpkgs, snowfall-lib, home-manager, darwin, nixos-wsl, vscode-server, zen-browser, firefox-addons, claude-code, apple-fonts, hyprland, waybar-audio-control, rvm-webcam, wine-sni-bridge, stylix, sops-nix
