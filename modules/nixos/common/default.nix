@@ -49,6 +49,16 @@
     };
   };
 
+  fonts.fontconfig = {
+    enable = true;
+    hinting = {
+      enable = true;
+      style = "slight";
+    };
+    antialias = true;
+    subpixel.rgba = "rgb";
+  };
+
   environment.localBinInPath = true;
   environment.systemPackages = [ pkgs.mcp-nixos ];
   programs.zsh.enable = true;

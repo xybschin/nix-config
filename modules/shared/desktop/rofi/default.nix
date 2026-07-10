@@ -34,7 +34,7 @@ let
 
     /*****----- Global Properties -----*****/
     * {
-        font:                        "${config.stylix.fonts.monospace.name} 12";
+        font:                        "${config.stylix.fonts.monospace.name} Bold 11";
 
         background:                  ${rgba c.base00};
         background-alt:              ${rgba c.base01};
