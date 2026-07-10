@@ -2,3 +2,9 @@ graphify-out/
 graph.json
 graph.html
 .graphify/
+
+# opencode (plugin deps installed locally)
+.opencode/node_modules/
+.opencode/package.json
+.opencode/package-lock.json
+.opencode/bun.lock
