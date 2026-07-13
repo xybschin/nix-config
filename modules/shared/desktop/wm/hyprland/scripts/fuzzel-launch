@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Launches fuzzel and temporarily adds top padding to the active workspace
+# so tiled windows move below the fuzzel bar. Fuzzel stays pinned to the
+# top via the "overlay" layer in its config.
+#
+# The gap follows the user across workspace switches while fuzzel is open.
+# All workspaces that received a gap are tracked and cleaned up on exit
+# to prevent orphaned gaps from pushing windows out of view.
+
+# Only one instance at a time — a second keypress while fuzzel is open
+# would spawn a fuzzel process that exits immediately, causing the gap
+# to be reset while fuzzel is still visible.
+exec 9>/tmp/fuzzel-launch.lock
+flock -n 9 || exit 0
+
+ws=$(hyprctl activeworkspace 2>/dev/null | head -1 | grep -oP 'workspace ID \K\d+')
+
+if [[ "$ws" == special* ]]; then
+    exec fuzzel "$@"
+fi
+
+# fuzzel defaults to drun mode when launched with no arguments.
+# Pass --dmenu to use dmenu mode instead.
+
+fuzzel "$@" &
+fuzzel_pid=$!
+
+# Layer-shell heights are in physical pixels, but gaps_out expects logical
+# coordinates.  Read the monitor's scale and divide the detected height.
+scale=$(hyprctl monitors -j | jq -r '
+  [ .[] | select(.focused == true) | .scale ] | .[0] // "1"
+' 2>/dev/null) || scale="1"
+
+height=""
+prev_height=""
+stable_count=0
+for _ in $(seq 1 60); do
+    sleep 0.05
+    height=$(hyprctl layers -j | jq -r --argjson s "$scale" '
+    [.. | objects | select(.namespace == "fuzzel") | (.h // .height // empty)]
+    | map(select(. > 0)) | .[0] as $raw | ($raw / $s | floor) // empty
+  ' 2>/dev/null) || true
+    if [ -n "$height" ] && [ "$height" -gt 0 ] 2>/dev/null; then
+        if [ "$height" = "$prev_height" ]; then
+            stable_count=$((stable_count + 1))
+        else
+            stable_count=0
+        fi
+        prev_height="$height"
+        if [ "$stable_count" -ge 3 ]; then
+            break
+        fi
+    fi
+done
+
+set_gap() {
+    local target=$1
+    local h=$2
+    if [ -n "$h" ] && [ "$h" -gt 0 ] 2>/dev/null; then
+        hyprctl eval "hl.workspace_rule({ workspace = '${target}', gaps_out = { top = ${h}, right = 0, bottom = 0, left = 0 } })" 2>/dev/null || true
+    fi
+}
+
+clear_gap() {
+    local target=$1
+    hyprctl eval "hl.workspace_rule({ workspace = '${target}', gaps_out = { top = 0, right = 0, bottom = 0, left = 0 } })" 2>/dev/null || true
+}
+
+if [ -n "$height" ] && [ "$height" -gt 0 ] 2>/dev/null; then
+    set_gap "$ws" "$height"
+
+    # Poll for workspace changes while fuzzel is open — move the gap
+    # to whichever workspace the user switches to.  Write every
+    # workspace that received a gap to fd 3 so the parent can clean
+    # them all up (subshell variables don't propagate back).
+    exec 3>/tmp/fuzzel-gapped-ws
+    echo "$ws" >&3
+    (
+        last_ws="$ws"
+        while kill -0 "$fuzzel_pid" 2>/dev/null; do
+            cur_ws=$(hyprctl activeworkspace 2>/dev/null | head -1 | grep -oP 'workspace ID \K\d+')
+            if [ "$cur_ws" != "$last_ws" ] && [ -n "$cur_ws" ]; then
+                clear_gap "$last_ws"
+                set_gap "$cur_ws" "$height"
+                echo "$cur_ws" >&3
+                last_ws="$cur_ws"
+            fi
+            sleep 0.05
+        done
+    ) &
+    poll_pid=$!
+
+    wait "$fuzzel_pid" 2>/dev/null || true
+
+    # Stop the polling loop.
+    kill "$poll_pid" 2>/dev/null || true
+    wait "$poll_pid" 2>/dev/null || true
+    exec 3>&-
+
+    # Clear gap on every workspace that received one — not just the
+    # currently active one, which may have changed while fuzzel was open.
+    sort -u /tmp/fuzzel-gapped-ws | while read -r gws; do
+        clear_gap "$gws"
+    done
+    rm -f /tmp/fuzzel-gapped-ws
+else
+    wait "$fuzzel_pid" 2>/dev/null || true
+fi
