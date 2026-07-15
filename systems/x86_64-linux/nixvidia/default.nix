@@ -8,7 +8,11 @@
     ./hardware-configuration.nix
   ];
 
-  boot.kernelParams = [ "amd_pstate=active" ];
+  boot.kernelParams = [
+    "amd_pstate=active"
+    "pcie_aspm=off"
+    "usbcore.autosuspend=-1"
+  ];
 
   snowfallorg.users.bjarne = {
     admin = true;
