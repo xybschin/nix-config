@@ -23,7 +23,6 @@
       };
     };
 
-    boot.kernelPackages = pkgs.linuxPackages_latest;
     zramSwap.enable = true;
 
     environment.systemPackages = with pkgs; [
