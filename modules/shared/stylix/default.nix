@@ -59,7 +59,6 @@
       hyprland.enable = false;
       # Keep hyprpaper managed manually (wallpaper already set via stylix.image)
       hyprpaper.enable = true;
-      zen-browser.profileNames = [ "*" ];
     };
   };
 

@@ -20,12 +20,11 @@
         General = {
           ControllerMode = "dual";
           FastConnectable = true;
-          Experimental = true;
-          # Re-pair silently without prompting the user
+          Experimental = false;
           JustWorksRepairing = "always";
         };
         Policy = {
-          # Retry reconnection up to 7 times with exponential backoff (seconds)
+          AutoEnable = true;
           ReconnectAttempts = 7;
           ReconnectIntervals = "1,2,4,8,16,32,64";
         };
@@ -33,14 +32,11 @@
           MinConnectionInterval = 6;
           MaxConnectionInterval = 12;
           ConnectionLatency = 0;
-          # Detect dropped connections in ~2s instead of the default 32s
           ConnectionSupervisionTimeout = 200;
         };
       };
     };
 
-    # Prevent the BT USB adapter from being autosuspended,
-    # which can cause brief disconnects and key repeat stuttering
     boot.extraModprobeConfig = ''
       options btusb enable_autosuspend=0
     '';
