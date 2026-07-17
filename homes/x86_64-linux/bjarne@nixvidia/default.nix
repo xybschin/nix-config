@@ -16,6 +16,7 @@ in
     ../../../modules/shared/vscode
     ../../../modules/home/waybar-audio-control.nix
     ../../../modules/home/rvm-webcam.nix
+    ../../../modules/home/mangohud
     ./hypridle.nix
   ];
 
