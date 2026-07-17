@@ -40,7 +40,28 @@
         "gfx.blacklist.dmabuf" = 0;
         "media.rdd-ffmpeg.enabled" = true;
         "general.autoScroll" = true;
+        "browser.aboutConfig.showWarning" = false;
+        "zen.glance.enabled" = false;
+        "browser.translations.enable" = false;
+        "extensions.formautofill.addresses.enabled" = false;
+        "extensions.formautofill.creditCards.enabled" = false;
       };
+      keyboardShortcuts = [
+        {
+          id = "zen-compact-mode-toggle";
+          key = "c";
+          modifiers = {
+            alt = true;
+          };
+        }
+        {
+          id = "zen-toggle-sidebar";
+          key = "s";
+          modifiers = {
+            alt = true;
+          };
+        }
+      ];
     };
   };
 }

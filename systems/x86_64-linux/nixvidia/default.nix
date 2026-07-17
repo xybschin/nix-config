@@ -38,8 +38,9 @@
   my."1password".enable = true;
   my.boot.enable = true;
 
-  boot.loader.systemd-boot.sortKey = "@nixos";
-  boot.loader.timeout = 60;
+  boot.extraModprobeConfig = "options hid_apple fnmode=2";
+
+  boot.loader.timeout = 10;
   boot.loader.systemd-boot.extraEntries = {
     "bazzite.conf" = ''
       title Bazzite
