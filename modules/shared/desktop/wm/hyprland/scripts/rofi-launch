@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Launches rofi and temporarily adds top padding to the active workspace
 # so tiled windows move below the rofi bar. Rofi stays pinned to the top
-# via the "overlay" layer in its theme.
+# via the "overlay" layer in its theme. Height is hardcoded to avoid
+# layer-shell reporting the full listview height on first launch.
 #
 # The gap follows the user across workspace switches while rofi is open.
 # All workspaces that received a gap are tracked and cleaned up on exit
@@ -28,18 +29,8 @@ fi
 rofi "$@" &
 rofi_pid=$!
 
-# Poll layer-shell surfaces for rofi's height.
-height=""
-for _ in $(seq 1 30); do
-    sleep 0.05
-    height=$(hyprctl layers -j | jq -r '
-    [.. | objects | select(.namespace == "rofi") | (.h // .height // empty)]
-    | map(select(. > 0)) | .[0] // empty
-  ' 2>/dev/null) || true
-    if [ -n "$height" ] && [ "$height" -gt 0 ] 2>/dev/null; then
-        break
-    fi
-done
+# Hardcoded height to match the rofi bar (inputbar + theme padding).
+height=36
 
 set_gap() {
     local target=$1
