@@ -38,13 +38,14 @@
     options v4l2loopback devices=1 video_nr=10 card_label="rvm-webcam" exclusive_caps=1
   '';
 
-  fileSystems."/games" = {
-    device = "/dev/disk/by-uuid/871b1716-27b4-4dea-8452-05fe0cf89d43";
+  fileSystems."/mnt/steam-library" = {
+    device = "/dev/disk/by-uuid/500d9dc3-59e5-429f-aecb-e6869db4aaba";
     fsType = "auto";
     options = [
       "users"
       "nofail"
       "exec"
+      "compress=zstd"
     ];
   };
 
