@@ -104,10 +104,6 @@
         inputs.hyprland.nixosModules.default
       ];
 
-      systems.hosts.nixvm.modules = [
-        inputs.hyprland.nixosModules.default
-      ];
-
       systems.hosts.nixwsl.modules = [
         inputs.nixos-wsl.nixosModules.wsl
         inputs.vscode-server.nixosModules.default
@@ -116,7 +112,6 @@
       # configRoot is passed to home-manager modules via extraSpecialArgs above.
       # The per-host specialArgs below pass it to NixOS system modules too.
       systems.hosts.fenris.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      systems.hosts.nixvm.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       systems.hosts.nixwsl.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       systems.hosts.macbook.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
 
@@ -127,7 +122,6 @@
 
       homes.users."moonz@fenris".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."bjarne@macbook".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      homes.users."dev@nixvm".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
       homes.users."dev@nixwsl".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
 
       # WSL flag for the global home module (standalone and system-integrated)

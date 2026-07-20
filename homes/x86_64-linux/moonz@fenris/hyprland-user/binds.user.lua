@@ -1,4 +1,4 @@
--- Host-specific bindings for nixvidia
+-- Host-specific bindings for fenris
 
 local mainMod = "SUPER"
 local scriptsDir = os.getenv("HOME") .. "/.config/hypr/scripts"

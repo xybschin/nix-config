@@ -5,6 +5,15 @@
     feh
   ];
 
+  services.udiskie.enable = true;
+
+  dconf.settings = {
+    "org/gnome/desktop/media-handling" = {
+      automount = true;
+      automount-open = false;
+    };
+  };
+
   imports = [
     ../stylix
     ./waybar

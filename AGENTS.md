@@ -96,7 +96,7 @@ When tackling a request:
 
 | Host | Arch | User | Role |
 |------|------|------|------|
-| `nixvidia` | `x86_64-linux` | `bjarne` | Primary desktop (Nvidia GPU, Hyprland, gaming, Razer, libvirtd, full setup) |
+| `fenris` | `x86_64-linux` | `bjarne` | Primary desktop (Nvidia GPU, Hyprland, gaming, Razer, libvirtd, full setup) |
 | `nixvm` | `x86_64-linux` | `dev` | VM/test host (Hyprland desktop, no Nvidia/gaming/Razer) |
 | `nixwsl` | `x86_64-linux` | `dev` | WSL headless (no desktop, Docker, vscode-server, azure-cli) |
 | `macbook` | `aarch64-darwin` | `bjarne` | Apple Silicon MacBook (nix-darwin, homebrew, Touch ID sudo) |
@@ -107,7 +107,7 @@ When tackling a request:
 - **`nixos/desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
 - **`nixos/nvidia`** — open driver, modesetting, powerManagement, VA-API, CUDA, nvtop, env vars
 - **`nixos/gaming`** — Steam (gamemode), Lutris, Discord, Spotify, wowup-cf, protonup-rs
-- **`nixos/razer`** — OpenRazer, polychromatic, auto DPI=1000 (nixvidia only)
+- **`nixos/razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
 - **`nixos/virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes
 - **`nixos/1password`** — `programs._1password` + GUI with zen-bin
 - **`nixos/audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects
@@ -125,8 +125,8 @@ When tackling a request:
 - **`home/tmux`** — stylix-colored theme, mode-indicator, prefix highlight, heavy pane borders
 - **`home/terminals`** — Ghostty (Wayland/macOS) + Kitty
 - **`home/1password`** — 1Password SSH agent bridge (WSL via socat/npiperelay)
-- **`home/rvm-webcam`** — virtual background webcam via RobustVideoMatting (nixvidia only)
-- **`home/waybar-audio-control`** — floating audio control widget (nixvidia only)
+- **`home/rvm-webcam`** — virtual background webcam via RobustVideoMatting (fenris only)
+- **`home/waybar-audio-control`** — floating audio control widget (fenris only)
 
 ### Shared Modules (cross-platform)
 - **`shared/stylix`** — dark polarity, custom "Koda Dark Minimal" scheme (base00: `#101010`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper, zen-browser.
@@ -138,12 +138,12 @@ When tackling a request:
   - **`shared/desktop/font.nix`** — Apple SF, Segoe UI, Nerd Fonts.
   - **`shared/desktop/zen-browser.nix`** — Zen browser flake integration.
   - **`shared/desktop/wayland-env.nix`** — Wayland env vars.
-- **`shared/vscode`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (nixvidia only)
+- **`shared/vscode`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (fenris only)
 - **`shared/ideavim`** — symlinks `.ideavimrc` from repo to `$HOME`
 
 ### Module-to-Host Usage
 
-| Module | nixvidia | nixvm | nixwsl | macbook |
+| Module | fenris | nixvm | nixwsl | macbook |
 |--------|----------|-------|--------|---------|
 | `nixos/common` | auto | auto | auto | — |
 | `nixos/common-desktop` | yes | yes | — | — |
@@ -177,7 +177,7 @@ When tackling a request:
 
 ### Rebuild Commands
 ```bash
-make nixos host=<name>       # NixOS host (e.g. nixvidia, nixvm, nixwsl)
+make nixos host=<name>       # NixOS host (e.g. fenris, nixvm, nixwsl)
 make darwin host=macbook     # Darwin host
 make home user=<u> host=<h>  # Standalone home-manager
 ```

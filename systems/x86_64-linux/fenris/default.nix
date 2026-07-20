@@ -60,6 +60,7 @@
   my.razer.dpi = 1000;
   my.gaming.enable = true;
   my.gnome-keyring.enable = true;
+  my.usb-auto-mount.enable = true;
 
   environment.systemPackages = with pkgs; [
     gnupg

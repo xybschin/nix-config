@@ -15,6 +15,7 @@
       gh
       jq
       htop
+      tldr
     ]
     ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
       pkgs.systemctl-tui
