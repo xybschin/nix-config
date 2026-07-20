@@ -14,12 +14,12 @@
     "usbcore.autosuspend=-1"
   ];
 
-  snowfallorg.users.bjarne = {
+  snowfallorg.users.moonz = {
     admin = true;
     home.enable = true;
   };
 
-  users.users.bjarne = {
+  users.users.moonz = {
     isNormalUser = true;
     extraGroups = [
       "wheel"
@@ -49,7 +49,10 @@
     '';
   };
   my.virtualisation.enable = true;
-  my.nvidia.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
   my.desktop.enable = true;
   my.audio.enable = true;
   my.bluetooth.enable = true;

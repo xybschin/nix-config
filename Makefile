@@ -11,4 +11,9 @@ darwin:
 home:
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1 home-manager switch --impure --flake .#$(user)@$(host)
 
-.PHONY: nixos darwin home
+.PHONY: nixos darwin home clean-all
+
+clean-all:
+	sudo nix-collect-garbage -d
+	nix-store --optimise
+	rm -f result result-*
