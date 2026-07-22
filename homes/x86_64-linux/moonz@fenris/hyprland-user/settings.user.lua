@@ -12,8 +12,8 @@ end
 -- Monitor layout
 -- ---------------------------------------------------------------------------
 if profile == "profile1" then
-	hl.monitor({ output = "DP-1", mode = "2560x1440@120", position = "0x0", scale = 1 })
-	hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "2560x0", scale = 1 })
+	hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "0x0", scale = 1 })
+	hl.monitor({ output = "DP-1", mode = "2560x1440@120", position = "2560x0", scale = 1 })
 elseif profile == "profile2" then
 	hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "0x0", scale = 1 })
 	hl.monitor({ output = "DP-1", disabled = true })
@@ -29,12 +29,12 @@ end
 -- Workspace assignment
 -- ---------------------------------------------------------------------------
 if profile == "profile1" then
-	-- Odd workspaces on HDMI-A-1, even on DP-1
+	-- Odd workspaces on HDMI-A-1 (left), even on DP-1 (right)
 	for i = 1, 10 do
 		if i % 2 == 1 then
-			hl.workspace_rule({ workspace = tostring(i), monitor = "DP-1" })
-		else
 			hl.workspace_rule({ workspace = tostring(i), monitor = "HDMI-A-1" })
+		else
+			hl.workspace_rule({ workspace = tostring(i), monitor = "DP-1" })
 		end
 	end
 else
