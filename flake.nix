@@ -118,6 +118,7 @@
       # configRoot and isWsl for standalone home configurations
       homes.modules = [
         inputs.stylix.homeModules.stylix
+        inputs.rvm-webcam.homeManagerModules.default
       ];
 
       homes.users."moonz@fenris".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";

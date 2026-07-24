@@ -1,28 +1,14 @@
 {
   config,
-  pkgs,
-  inputs,
   ...
 }:
-let
-  rvmModel = pkgs.fetchurl {
-    url = "https://github.com/PeterL1n/RobustVideoMatting/releases/download/v1.0.0/rvm_resnet50.pth";
-    hash = "sha256-wZGoByURZMBz3OX6QI56gWBw1Tm4grKjFQMwqf7BEs4=";
-    name = "rvm_resnet50.pth";
-  };
-in
 {
-  imports = [ inputs.rvm-webcam.homeManagerModules.default ];
   services.rvm-webcam = {
     enable = true;
-    modelPath = "${rvmModel}";
-    backbone = "resnet50";
+    modelPath = "/home/moonz/.local/share/rvm-webcam/rvm_resnet50_fp16.onnx";
+    cacheDir = "${config.xdg.cacheHome}/rvm-webcam/migraphx";
     extraConfig = {
-      bg_image = "${config.home.homeDirectory}/wallpapers/single/artemis-ii-earth-peek.jpg";
-      downsample_ratio = 0.25;
-      precision = "auto";
-      on_demand = true;
-      compile = true;
+      bg_image = "/home/moonz/webcam-backgrounds/pub.png";
     };
   };
 }

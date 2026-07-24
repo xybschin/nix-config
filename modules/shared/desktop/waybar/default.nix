@@ -26,7 +26,6 @@
           "network"
           "memory"
           "cpu"
-          "custom/openrouter"
           "clock"
           "tray"
         ];
@@ -76,16 +75,6 @@
           tooltip-format = "{}";
           on-click = "playerctl play-pause";
         };
-        "custom/openrouter" = {
-          format = "{}";
-          exec = "${config.xdg.configHome}/waybar/scripts/openrouter-credits";
-          return-type = "json";
-          interval = 3600;
-          # exec-on-event defaults to true, so any click re-runs the script
-          # for an immediate refresh.
-          on-click = "${config.xdg.configHome}/waybar/scripts/openrouter-credits";
-          tooltip = true;
-        };
         tray = {
           icon-size = 16;
           spacing = 10;
@@ -93,74 +82,87 @@
       }
     ];
 
-    style = let c = config.lib.stylix.colors; in ''
-      @define-color base00 #${c.base00};
-      @define-color base01 #${c.base01};
-      @define-color base03 #${c.base03};
-      @define-color base04 #${c.base04};
-      @define-color base05 #${c.base05};
-      @define-color base08 #${c.base08};
-      @define-color base0A #${c.base0A};
-      @define-color base0D #${c.base0D};
-      @define-color base0C #${c.base0C};
-      @define-color base0E #${c.base0E};
+    style =
+      let
+        c = config.lib.stylix.colors;
+      in
+      ''
+        @define-color base00 #${c.base00};
+        @define-color base01 #${c.base01};
+        @define-color base03 #${c.base03};
+        @define-color base04 #${c.base04};
+        @define-color base05 #${c.base05};
+        @define-color base08 #${c.base08};
+        @define-color base0A #${c.base0A};
+        @define-color base0D #${c.base0D};
+        @define-color base0C #${c.base0C};
+        @define-color base0E #${c.base0E};
 
-      window#waybar, tooltip {
-          background: @base00;
-          color: @base05;
-      }
+        window#waybar, tooltip {
+            background: @base00;
+            color: @base05;
+        }
 
-      * {
-          font-family: FontAwesome, "Terminess Nerd Font";
-          font-size: ${toString config.stylix.fonts.sizes.desktop}pt;
-      }
+        * {
+            font-family: FontAwesome, "Terminess Nerd Font";
+            font-size: ${toString config.stylix.fonts.sizes.desktop}pt;
+        }
 
-      button {
-          border: none;
-          border-radius: 0;
-      }
+        button {
+            border: none;
+            border-radius: 0;
+        }
 
-      button:hover {
-          background: inherit;
-      }
+        button:hover {
+            background: inherit;
+        }
 
-      #custom-arch {
-          min-width: 52px;
-      }
+        #custom-arch {
+            min-width: 52px;
+        }
 
-      #custom-media {
-          margin-left: 24px;
-      }
+        #custom-media {
+            margin-left: 24px;
+        }
 
-      #custom-openrouter.warning {
-          color: @base0A;
-      }
+        #custom-openrouter.warning {
+            color: @base0A;
+        }
 
-      #custom-openrouter.error {
-          color: @base08;
-      }
+        #custom-openrouter.error {
+            color: @base08;
+        }
 
-      #workspaces button {
-          background-color: @base01;
-          color: @base03;
-      }
+        #bluetooth.disabled,
+        #bluetooth.off {
+            color: @base03;
+        }
 
-      #workspaces button.active {
-          background-color: @base0C;
-          color: @base05;
-      }
+        #bluetooth.connected {
+            color: @base0C;
+        }
 
-      .modules-right > widget > * {
-          margin: 8px 0;
-          padding: 0 1rem;
-          border-right: 1px solid @base03;
-      }
+        #workspaces button {
+            background-color: @base01;
+            color: @base03;
+        }
 
-      .modules-right > widget:last-child > * {
-          margin-right: 0;
-          border: 0;
-      }
-    '';
+        #workspaces button.active {
+            background-color: @base0C;
+            color: @base05;
+        }
+
+        .modules-right > widget > * {
+            margin: 8px 0;
+            padding: 0 1rem;
+            border-right: 1px solid @base03;
+        }
+
+        .modules-right > widget:last-child > * {
+            margin-right: 0;
+            border: 0;
+        }
+      '';
   };
 
   xdg.configFile."waybar/scripts".source = config.lib.file.mkOutOfStoreSymlink ./scripts;

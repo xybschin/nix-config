@@ -29,6 +29,7 @@
       "kvm"
       "libvirtd"
       "video"
+      "render"
     ];
     shell = pkgs.zsh;
     hashedPassword = "$y$j9T$NUUdJqm0TLbeSko6tfPww1$RQXYJ.jM17uWDkwmtlssASXcthw4MUo2Y9t.ixw63F9";

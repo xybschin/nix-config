@@ -20,7 +20,7 @@
         General = {
           ControllerMode = "dual";
           FastConnectable = true;
-          Experimental = false;
+          Experimental = true;
           JustWorksRepairing = "always";
         };
         Policy = {
