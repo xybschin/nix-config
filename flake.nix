@@ -4,10 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    snowfall-lib = {
-      url = "github:snowfallorg/lib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:denful/import-tree";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
 
@@ -64,68 +62,9 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
-  outputs =
-    inputs:
-    inputs.snowfall-lib.mkFlake {
-      inherit inputs;
-      src = ./.;
-
-      snowfall.namespace = "config";
-
-      overlays = [
-        inputs.claude-code.overlays.default
-      ];
-
-      systems.modules.nixos = [
-        inputs.home-manager.nixosModules.home-manager
-        inputs.stylix.nixosModules.stylix
-        {
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "backup";
-          home-manager.extraSpecialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-          home-manager.sharedModules = [
-            inputs.sops-nix.homeManagerModules.sops
-          ];
-        }
-      ];
-
-      systems.modules.darwin = [
-        inputs.home-manager.darwinModules.home-manager
-        inputs.stylix.darwinModules.stylix
-        {
-          home-manager.extraSpecialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-        }
-      ];
-
-      systems.hosts.fenris.modules = [
-        inputs.hyprland.nixosModules.default
-      ];
-
-      systems.hosts.nixwsl.modules = [
-        inputs.nixos-wsl.nixosModules.wsl
-        inputs.vscode-server.nixosModules.default
-      ];
-
-      # configRoot is passed to home-manager modules via extraSpecialArgs above.
-      # The per-host specialArgs below pass it to NixOS system modules too.
-      systems.hosts.fenris.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      systems.hosts.nixwsl.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      systems.hosts.macbook.specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-
-      # configRoot and isWsl for standalone home configurations
-      homes.modules = [
-        inputs.stylix.homeModules.stylix
-        inputs.rvm-webcam.homeManagerModules.default
-      ];
-
-      homes.users."moonz@fenris".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      homes.users."bjarne@macbook".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-      homes.users."dev@nixwsl".specialArgs.configRoot = builtins.getEnv "CONFIG_ROOT";
-
-      # WSL flag for the global home module (standalone and system-integrated)
-      homes.users."dev@nixwsl".specialArgs.isWsl = true;
-    };
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; }
+      (inputs.import-tree ./config);
 }

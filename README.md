@@ -1,6 +1,12 @@
 # NixOS Configuration
 
-Flake-based NixOS, Darwin, and Home Manager configuration using [Snowfall Lib](https://snowfall.org).
+Flake-based NixOS, Darwin, and Home Manager configuration using the
+[dendritic pattern](https://github.com/denful/import-tree): every `.nix` file
+under [`config/`](config/) is auto-imported as a flake-parts module (dirs
+prefixed with `_` are excluded). Modules define feature sets under
+`config.my.features.*`, hosts under `config.my.hosts`, and
+[`config/outputs.nix`](config/outputs.nix) wires them into
+`nixosConfigurations` / `darwinConfigurations` / `homeConfigurations`.
 
 ## Usage
 

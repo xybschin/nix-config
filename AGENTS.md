@@ -1,6 +1,6 @@
 # Agent Instructions: Nix Config Architecture & Tools
 
-This project is a **Snowfall Lib-based NixOS/darwin/home-manager flake**. When working here, use the tools below in priority order. Nixpkgs and framework docs change fast — your training data lags, so lean on the live tools.
+This project is a **flake-parts/import-tree (dendritic) NixOS/darwin/home-manager flake**. Every `.nix` file under [`config/`](config/) is auto-imported as a module (`config.core.nix` declares the option tree, `config/outputs.nix` builds the configurations). When working here, use the tools below in priority order. Nixpkgs and framework docs change fast — your training data lags, so lean on the live tools.
 
 ---
 
@@ -9,15 +9,15 @@ This project is a **Snowfall Lib-based NixOS/darwin/home-manager flake**. When w
 Use the **Graphify** graph tools as your primary method for searching, exploring, and navigating the codebase. A pre-built graph exists at `graphify-out/graph.json`.
 
 ### When to Trigger:
-- **Locating modules or hosts:** Find where a module (`modules/nixos/`, `modules/home/`, `modules/darwin/`, `modules/shared/`), system (`systems/`), or home (`homes/`) is defined.
+- **Locating modules or hosts:** Find where a module (`config/nixos/`, `config/home/`, `config/darwin/`, `config/shared/`), host (`config/hosts/`), or feature is defined.
 - **Context gathering:** Entering an unfamiliar module to see what it imports, what options it declares, and what depends on it.
 - **Pre-refactor review:** Before refactoring a module, evaluate blast radius — which hosts enable it, which other modules reference it.
-- **Data flow tracing:** Track how an option flows from module declaration → host config → home config.
+- **Data flow tracing:** Track how an option flows from feature declaration → host config → home config.
 
 ### Execution Instructions:
 - **Find & Locate:** Use `search_nodes` to pinpoint modules matching a functional area (e.g., "hyprland", "stylix", "gaming").
 - **Explore Connections:** Use `get_neighbors` on a module file to see its imports, exported options, and dependent hosts.
-- **Trace Impact Radii:** Before changing a module, check its centrality. High-centrality nodes (e.g., `modules/shared/stylix`) affect many hosts — modify with care.
+- **Trace Impact Radii:** Before changing a module, check its centrality. High-centrality nodes (e.g., `config/shared/stylix.nix`) affect many hosts — modify with care.
 - **Stale Cache Warning:** The graph server reads `graph.json` at startup. After structural changes, rebuild with `graphify build .` and restart the session.
 
 ---
@@ -88,86 +88,93 @@ When tackling a request:
 ## 6. Repo-Specific Conventions
 
 ### Architecture
-- **Snowfall Lib** auto-discovers `systems/`, `homes/`, `modules/<type>/<name>/default.nix`. Modules are namespaced as `my.<name>`.
-- **Module types:** `nixos/`, `darwin/`, `home/`, `shared/` — keep cross-platform config in `shared/`.
-- **Flake namespace** is `config` (set in `snowfall-lib.mkFlake` input `namespace`).
+- **Dendritic pattern:** [`flake.nix`](flake.nix) feeds every `.nix` file under [`config/`](config/) into flake-parts via `inputs.import-tree ./config`. Directories prefixed with `_` are **excluded** from auto-import (used for submodules/assets/data).
+- **`config/core.nix`** declares the whole option tree: `config.my.configRoot` (repo path for out-of-store symlinks), `config.my.features.{nixos,home,darwin}` (`attrsOf deferredModule` — feature modules), and `config.my.hosts` (submodule with `system`/`username`/`isWsl` and per-kind `features`/`extraModules`/`configuration`).
+- **`config/outputs.nix`** builds `nixosConfigurations` (x86_64-linux hosts), `darwinConfigurations` (aarch64-darwin), and `homeConfigurations` (`${username}@${host}` for every host). Also injects the home-manager integration modules and the sops-nix home module into both integrated and standalone homes.
+- **Feature modules:** a file like `config/home/terminals.nix` defines `config.my.features.home.terminals = { pkgs, ... }: { ... };`. The **outer** lambda only receives flake-parts args (`config`, `lib`, `inputs`) — **`pkgs` is NOT available there**. Any `pkgs`/`hostUser`/`configRoot` usage must live **inside** the feature value lambda, which is evaluated in the home-manager/NixOS/darwin context (where those args exist). Same rule applies to `nixos.configuration` / `home.configuration` values in hosts.
+- Feature-references-feature (e.g. `config/shared/desktop.nix` importing the `shared.stylix` module) requires an attrset module `{ imports = [ ... ]; }` — a bare list is rejected.
+- **Eval gotchas:** import-tree only sees git-tracked files (must `git add` before evaluating). `builtins.getEnv` returns `""` in pure eval, so configRoot uses `CONFIG_ROOT` env with `PWD` fallback and evaluations run with `--impure` (the Makefile does this).
+- All `nixpkgs.config.allowUnfree = true` lives both in `config/nixos/common.nix` (system) and in the `homeUser` wrapper in `config/outputs.nix` (home), because home-manager's pkgs is a separate instance.
 
 ### Hosts
 
 | Host | Arch | User | Role |
 |------|------|------|------|
-| `fenris` | `x86_64-linux` | `bjarne` | Primary desktop (Nvidia GPU, Hyprland, gaming, Razer, libvirtd, full setup) |
-| `nixvm` | `x86_64-linux` | `dev` | VM/test host (Hyprland desktop, no Nvidia/gaming/Razer) |
-| `nixwsl` | `x86_64-linux` | `dev` | WSL headless (no desktop, Docker, vscode-server, azure-cli) |
+| `fenris` | `x86_64-linux` | `moonz` | Primary desktop (AMD GPU, Hyprland, gaming, Razer, libvirtd, full setup) |
+| `nixwsl` | `x86_64-linux` | `dev` | WSL headless (Docker, vscode-server, azure-cli, coding agents) |
 | `macbook` | `aarch64-darwin` | `bjarne` | Apple Silicon MacBook (nix-darwin, homebrew, Touch ID sudo) |
 
-### NixOS Modules
-- **`nixos/common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, hyprland, xybschin), flakes, zsh, stateVersion 25.11
-- **`nixos/common-desktop`** — shared desktop infra: US keyboard, NetworkManager, polkit, latest kernel, zramSwap, gparted, gnumake, wl-clipboard
-- **`nixos/desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
-- **`nixos/nvidia`** — open driver, modesetting, powerManagement, VA-API, CUDA, nvtop, env vars
-- **`nixos/gaming`** — Steam (gamemode), Lutris, Discord, Spotify, wowup-cf, protonup-rs
-- **`nixos/razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
-- **`nixos/virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes
-- **`nixos/1password`** — `programs._1password` + GUI with zen-bin
-- **`nixos/audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects
-- **`nixos/bluetooth`** — controller tweaks (FastConnectable, Experimental, JustWorksRepairing)
-- **`nixos/boot`** — systemd-boot, limit 10, consoleMode=max
-- **`nixos/gnome-keyring`** — GNOME Keyring + seahorse
+### NixOS Features (`config/nixos/`)
+- **`common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, hyprland, xybschin), flakes, zsh, stateVersion 25.11, stylix overlays disabled
+- **`common-desktop`** — shared desktop infra: US keyboard, NetworkManager, polkit, zramSwap, gparted, gnumake, wl-clipboard
+- **`desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
+- **`gaming`** — Steam (gamemode), Lutris (openldap FHS fix), Discord, Spotify, wowup-cf, protonup-rs
+- **`razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
+- **`virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes (fenris only)
+- **`1password`** — `programs._1password` + GUI with zen-bin
+- **`audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects
+- **`bluetooth`** — controller tweaks (FastConnectable, Experimental, JustWorksRepairing)
+- **`boot`** — systemd-boot, configLimit 1, consoleMode=max
+- **`gnome-keyring`** — GNOME Keyring + seahorse
+- **`usb-auto-mount`** — udisks2, gvfs, ntfs3g
 
-### Darwin Modules
-- **`darwin/common`** — timezone Europe/Berlin, unfree, Nix caches (claude-code), Touch ID sudo, homebrew (zap cleanup), zsh
+### Darwin Features (`config/darwin/`)
+- **`common`** — timezone Europe/Berlin, unfree, Nix caches (claude-code), Touch ID sudo, homebrew (zap cleanup), zsh
 
-### Home Manager Modules
-- **`home/global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports fzf, zsh, nvim, tmux, lazygit, direnv, ranger. stateVersion 26.05
-- **`home/coding-agents`** — Claude Code, OpenCode, GitHub Copilot CLI with MCP servers (git, nixos, firecrawl, context7). Fetches skills from github.com/xybschin/skills
-- **`home/nvim`** — Neovim with LSP (nil, bash-language-server, lua-language-server, cmake-language-server, docker-language-server) and formatters (nixfmt, prettier, beautysh, stylua). Config symlinked from repo.
-- **`home/tmux`** — stylix-colored theme, mode-indicator, prefix highlight, heavy pane borders
-- **`home/terminals`** — Ghostty (Wayland/macOS) + Kitty
-- **`home/1password`** — 1Password SSH agent bridge (WSL via socat/npiperelay)
-- **`home/rvm-webcam`** — virtual background webcam via RobustVideoMatting (fenris only)
-- **`home/waybar-audio-control`** — floating audio control widget (fenris only)
+### Home Features (`config/home/`)
+- **`global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports `_global/{fzf,zsh,nvim,tmux,lazygit,direnv,ranger}`. Sets a `stylix.base16Scheme` mkDefault (koda-dark) so tmux/zsh/waybar color interpolation resolves even when theming is off. stateVersion 26.05
+- **`coding-agents`** — Claude Code, OpenCode, GitHub Copilot CLI with MCP servers (git, nixos, firecrawl, context7). Fetches skills from github.com/xybschin/skills
+- **`1password`** — 1Password SSH agent bridge (WSL via socat/npiperelay)
+- **`terminals`** — Ghostty (Wayland/macOS) + Kitty
+- **`mangohud`** — session-wide MangoHud (fenris only)
+- **`waybar-audio-control`** — floating audio control widget (fenris only)
+- **`rvm-webcam`** — virtual background webcam via RobustVideoMatting (fenris only)
 
-### Shared Modules (cross-platform)
-- **`shared/stylix`** — dark polarity, custom "Koda Dark Minimal" scheme (base00: `#101010`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper, zen-browser.
-- **`shared/desktop`** — imports stylix, waybar, fonts, zen-browser, rofi, wayland-env, hyprpaper. Packages: nautilus, feh.
-  - **`shared/desktop/wm/hyprland/`** — Lua config files, hyprlock (screenshot blur, time/date), hyprpolkitagent. Scripts: `auto-hide-wine-trays`, `monitor-config`, `rofi-launch`, `rofi-monitor-menu`.
-  - **`shared/desktop/waybar/`** — bottom bar layout, stylix target disabled, playerctl. Scripts: `openrouter-credits`, `scrolling-playerctl`.
-  - **`shared/desktop/rofi/`** — custom adi1090x type-1 style-10 theme, recolored with stylix colors.
-  - **`shared/desktop/hyprpaper/`** — 14 single + 7 ultrawide/split wallpapers for multi-monitor.
-  - **`shared/desktop/font.nix`** — Apple SF, Segoe UI, Nerd Fonts.
-  - **`shared/desktop/zen-browser.nix`** — Zen browser flake integration.
-  - **`shared/desktop/wayland-env.nix`** — Wayland env vars.
-- **`shared/vscode`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (fenris only)
-- **`shared/ideavim`** — symlinks `.ideavimrc` from repo to `$HOME`
+### Shared Features (`config/shared/`)
+- **`stylix.nix`** — dark polarity, custom "Koda Dark Minimal" scheme (base00: `#101010`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper. Imported only by `shared.desktop`.
+- **`desktop.nix`** — imports `stylix`, `_desktop/{waybar,font.nix,zen-browser.nix,rofi,wayland-env.nix,hyprpaper}`. Packages: nautilus, feh, udiskie, dconf automount.
+- **`wm-hyprland.nix`** — `_desktop/wm/hyprland/` Lua config files (mkOutOfStoreSymlink), stylix-generated `hypr/colors.lua`, hyprlock, hyprpolkitagent. Scripts: `rofi-launch`, `rofi-monitor-menu`.
+- **`vscode.nix`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (fenris only)
+- **`_desktop/waybar/`** — bottom bar (stylix colors, playerctl via `scrolling-playerctl`), sops secret `openrouter` (EnvironmentFile after `sops-nix.service`).
+- **`_desktop/rofi/`** — custom adi1090x type-1 style-10 theme, recolored with stylix colors.
+- **`_desktop/hyprpaper/`** — 14 single + 7 ultrawide/split wallpapers for multi-monitor.
+- **`_desktop/font.nix`** — Apple SF, Segoe UI, Nerd Fonts.
+- **`_desktop/zen-browser.nix`** — Zen browser flake integration; unfree addons (onepassword, improved-tube, untrap-for-youtube) are vendored locally because the firefox-addons NUR flake imports its own nixpkgs without an allowUnfree config.
+- **`_desktop/wayland-env.nix`** — Wayland env vars.
 
-### Module-to-Host Usage
+### Feature-to-Host Usage
 
-| Module | fenris | nixvm | nixwsl | macbook |
-|--------|----------|-------|--------|---------|
-| `nixos/common` | auto | auto | auto | — |
-| `nixos/common-desktop` | yes | yes | — | — |
-| `nixos/desktop` | yes | yes | — | — |
-| `nixos/nvidia` | yes | — | — | — |
-| `nixos/gaming` | yes | — | — | — |
-| `nixos/razer` | yes | — | — | — |
-| `nixos/virtualisation` | yes | — | — | — |
-| `nixos/1password` | yes | yes | — | — |
-| `nixos/gnome-keyring` | yes | — | — | — |
-| `nixos/audio` | yes | yes | — | — |
-| `nixos/bluetooth` | yes | yes | — | — |
-| `nixos/boot` | yes | yes | — | — |
-| `darwin/common` | — | — | — | auto |
-| `shared/stylix` | full | full | headless-only | full |
-| `shared/desktop` | yes | yes | — | — |
-| `shared/vscode` | yes | — | — | — |
-| `home/coding-agents` | yes | yes | yes | yes |
-| `home/rvm-webcam` | yes | — | — | — |
-| `home/waybar-audio-control` | yes | — | — | — |
-| `home/terminals` | yes | — | — | yes |
+| Feature | fenris | nixwsl | macbook |
+|---------|--------|--------|---------|
+| `nixos.common` | yes | yes | — |
+| `nixos.common-desktop` | yes | — | — |
+| `nixos.desktop` | yes | — | — |
+| `nixos.gaming` | yes | — | — |
+| `nixos.razer` | yes | — | — |
+| `nixos.virtualisation` | yes | — | — |
+| `nixos.1password` | yes | — | — |
+| `nixos.gnome-keyring` | yes | — | — |
+| `nixos.audio` | yes | — | — |
+| `nixos.bluetooth` | yes | — | — |
+| `nixos.boot` | yes | — | — |
+| `nixos.usb-auto-mount` | yes | — | — |
+| `darwin.common` | — | — | yes |
+| `home.global` | yes | yes | yes |
+| `home.1password` | yes | yes | yes |
+| `home.coding-agents` | yes | yes | yes |
+| `home.terminals` | yes | — | yes |
+| `home.mangohud` | yes | — | — |
+| `home.waybar-audio-control` | yes | — | — |
+| `home.rvm-webcam` | yes | — | — |
+| `shared.stylix` | yes | — | — |
+| `shared.desktop` | yes | — | — |
+| `shared.desktop.wm.hyprland` | yes | — | — |
+| `shared.vscode` | yes | — | — |
+
+Host-specific extras live in `config/hosts/_fenris/` (hardware, hyprland-user Lua, scripts) and are wired via `extraModules`/`xdg.configFile` in `config/hosts/fenris.nix`.
 
 ### Stylix
-- Custom theme at `modules/shared/stylix/koda-dark.yaml`
+- Custom theme at `config/shared/_stylix/koda-dark.yaml`
 - Palette: background `#101010`, dark surfaces `#272727`, muted `#777777`, light fg `#b0b0b0`, white `#ffffff`, red `#ff5733`, orange `#c4a09a`, yellow `#d9ba73`, green `#4a4645`, cyan `#504d4b`, blue `#f0ece8`, purple `#b58e88`, brown `#666666`.
 
 ### Secrets
@@ -177,7 +184,7 @@ When tackling a request:
 
 ### Rebuild Commands
 ```bash
-make nixos host=<name>       # NixOS host (e.g. fenris, nixvm, nixwsl)
+make nixos host=<name>       # NixOS host (e.g. fenris, nixwsl)
 make darwin host=macbook     # Darwin host
-make home user=<u> host=<h>  # Standalone home-manager
+make home user=<u> host=<h>  # Standalone home-manager (e.g. make home user=moonz host=fenris)
 ```
