@@ -21,6 +21,8 @@
     ];
     nixos.extraModules = [ ./_fenris/hardware.nix ];
     nixos.configuration = { pkgs, ... }: {
+      networking.hostName = "fenris";
+
       boot.kernelParams = [
         "amd_pstate=active"
         "pcie_aspm=off"

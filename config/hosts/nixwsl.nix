@@ -16,6 +16,8 @@
       inputs.vscode-server.nixosModules.default
     ];
     nixos.configuration = { pkgs, ... }: {
+      networking.hostName = "nixwsl";
+
       users.users.dev = {
         isNormalUser = true;
         extraGroups = [
