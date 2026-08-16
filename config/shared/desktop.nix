@@ -20,6 +20,7 @@ in
     home.packages = with pkgs; [
       nautilus
       feh
+      zathura
     ];
 
     services.udiskie.enable = true;
