@@ -113,6 +113,7 @@
           obsidian
           python3
           nodejs
+          tigervnc
         ]
         ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
           pkgs.google-chrome
