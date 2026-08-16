@@ -18,6 +18,7 @@
       "razer"
       "usb-auto-mount"
       "virtualisation"
+      "printing"
     ];
     nixos.extraModules = [ ./_fenris/hardware.nix ];
     nixos.configuration = { pkgs, ... }: {
@@ -41,6 +42,7 @@
           "libvirtd"
           "video"
           "render"
+          "lpadmin"
         ];
         shell = pkgs.zsh;
         hashedPassword = "$y$j9T$NUUdJqm0TLbeSko6tfPww1$RQXYJ.jM17uWDkwmtlssASXcthw4MUo2Y9t.ixw63F9";
