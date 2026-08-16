@@ -34,6 +34,7 @@
         extraGroups = [
           "wheel"
           "docker"
+          "gamemode"
           "networkmanager"
           "openrazer"
           "kvm"
