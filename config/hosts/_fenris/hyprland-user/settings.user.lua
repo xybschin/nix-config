@@ -25,7 +25,8 @@ elseif profile == "profile4" then
 	hl.monitor({ output = "HDMI-A-1", disabled = true })
 end
 
-hl.monitor({ output = "HDMI-A-3", disabled = true })
+hl.monitor({ output = "DP-3", disabled = true })
+
 -- ---------------------------------------------------------------------------
 -- Workspace assignment
 -- ---------------------------------------------------------------------------
