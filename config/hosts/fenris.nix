@@ -114,7 +114,7 @@
           python3
           nodejs
         ]
-        ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+        ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
           pkgs.google-chrome
           pkgs.zathura
         ];
