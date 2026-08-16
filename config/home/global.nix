@@ -34,7 +34,7 @@
         htop
         tldr
       ]
-      ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
+      ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
         pkgs.systemctl-tui
       ];
 
