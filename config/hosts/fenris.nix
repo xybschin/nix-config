@@ -29,6 +29,7 @@
         "amd_pstate=active"
         "pcie_aspm=off"
         "usbcore.autosuspend=-1"
+        "video=DP-3:d"
       ];
 
       users.users.moonz = {
