@@ -28,9 +28,12 @@ in
       ];
     };
 
-    initContent = lib.mkBefore ''
+    initExtra = ''
       bindkey '^H' backward-kill-word
+      bindkey '^?' backward-kill-word
+    '';
 
+    initContent = lib.mkBefore ''
       [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
       if [[ -z "$TMUX" ]]; then
