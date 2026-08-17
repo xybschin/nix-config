@@ -30,7 +30,6 @@ in
 
     initExtra = ''
       bindkey '^H' backward-kill-word
-      bindkey '^?' backward-kill-word
     '';
 
     initContent = lib.mkBefore ''
