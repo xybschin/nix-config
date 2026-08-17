@@ -30,13 +30,11 @@
       "terminals"
     ];
     home.configuration = { pkgs, ... }: {
-      home.packages =
-        with pkgs;
-        [
-          obsidian
-          python3
-          nodejs
-        ];
+      home.packages = with pkgs; [
+        obsidian
+        python3
+        nodejs
+      ];
 
       programs.git = {
         enable = true;

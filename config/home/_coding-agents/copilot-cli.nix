@@ -27,7 +27,10 @@ let
       firecrawl = {
         type = "local";
         command = "${pkgs.nodejs}/bin/npx";
-        args = [ "-y" "firecrawl-mcp" ];
+        args = [
+          "-y"
+          "firecrawl-mcp"
+        ];
         tools = [ "*" ];
       };
     };

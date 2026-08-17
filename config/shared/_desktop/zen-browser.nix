@@ -10,7 +10,13 @@ let
   # with the same output layout home-manager's firefox module expects
   # ($out/share/mozilla/extensions/{GUID}/<addonId>.xpi).
   mkAddon =
-    { name, version, addonId, url, sha256 }:
+    {
+      name,
+      version,
+      addonId,
+      url,
+      sha256,
+    }:
     pkgs.stdenv.mkDerivation {
       inherit name version addonId;
       src = pkgs.fetchurl { inherit url sha256; };
@@ -60,17 +66,20 @@ in
     enable = true;
 
     profiles."Default" = {
-      extensions.packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-        ublock-origin
-        purpleadblock
-        dearrow
-        vimium
-        privacy-badger
-      ] ++ [
-        onepassword
-        improvedTube
-        untrapForYouTube
-      ];
+      extensions.packages =
+        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
+        [
+          ublock-origin
+          purpleadblock
+          dearrow
+          vimium
+          privacy-badger
+        ]
+        ++ [
+          onepassword
+          improvedTube
+          untrapForYouTube
+        ];
       settings = {
         "media.ffmpeg.vaapi.enabled" = lib.mkForce true;
         "media.hardware-video-decoding.force-enabled" = true;
