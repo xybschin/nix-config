@@ -21,7 +21,7 @@
         RestartSec = "2s";
       };
       script = ''
-        ${pkgs.razer-cli}/bin/razer-cli --dpi 1000
+        ${pkgs.razer-cli}/bin/razer-cli --dpi 400
       '';
     };
   };

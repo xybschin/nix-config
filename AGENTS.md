@@ -110,6 +110,7 @@ When tackling a request:
 - **`desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
 - **`gaming`** — Steam (gamemode), Lutris (openldap FHS fix), Discord, Spotify, wowup-cf, protonup-rs
 - **`razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
+- **`logiops`** — LogiOps HID++ driver for Logitech devices; MX Master 3S: DPI=1000, SmartShift on (threshold 30), HiRes scroll (fenris only)
 - **`virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes (fenris only)
 - **`1password`** — `programs._1password` + GUI with zen-bin
 - **`audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects
@@ -151,6 +152,7 @@ When tackling a request:
 | `nixos.desktop` | yes | — | — |
 | `nixos.gaming` | yes | — | — |
 | `nixos.razer` | yes | — | — |
+| `nixos.logiops` | yes | — | — |
 | `nixos.virtualisation` | yes | — | — |
 | `nixos.1password` | yes | — | — |
 | `nixos.gnome-keyring` | yes | — | — |

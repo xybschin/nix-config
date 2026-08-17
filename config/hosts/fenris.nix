@@ -16,6 +16,7 @@
       "gnome-keyring"
       "gaming"
       "razer"
+      "logiops"
       "usb-auto-mount"
       "virtualisation"
       "printing"

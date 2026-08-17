@@ -25,8 +25,7 @@ hl.config({
 	input = {
 		kb_layout = "eu",
 		follow_mouse = 2,
-		accel_profile = "custom", --
-		scroll_points = "0.1378592682 0.000 0.224 0.449 0.673 0.997 1.335 1.672 2.010 2.348 2.685 3.186 3.699 4.212 4.725 5.237 5.750 6.263 6.776 7.288 7.801 8.314 8.827 9.339 9.852 10.365 10.878 11.390 11.903 12.416 13.476",
+		scroll_factor = 2,
 	},
 	dwindle = {
 		preserve_split = true,
