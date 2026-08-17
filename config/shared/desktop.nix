@@ -23,11 +23,6 @@ in
       zathura
     ];
 
-    home.file.".feh/keys".text = ''
-      scroll_up zoom_in 5
-      scroll_down zoom_out 5
-    '';
-
     services.udiskie.enable = true;
 
     dconf.settings = {
