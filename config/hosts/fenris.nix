@@ -19,6 +19,7 @@
       "usb-auto-mount"
       "virtualisation"
       "printing"
+      "wireguard"
     ];
     nixos.extraModules = [ ./_fenris/hardware.nix ];
     nixos.configuration = { pkgs, ... }: {
