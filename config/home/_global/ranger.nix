@@ -3,7 +3,8 @@
   programs.ranger = {
     enable = true;
     settings = {
-      preview_images = false;
+      preview_images = true;
+      preview_images_method = "w3m";
     };
   };
 
@@ -16,5 +17,6 @@
     jq
     librsvg
     lynx
+    w3m
   ];
 }

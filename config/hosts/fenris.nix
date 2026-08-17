@@ -118,6 +118,7 @@
           python3
           nodejs
           tigervnc
+          vlc
         ]
         ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
           pkgs.google-chrome
@@ -125,6 +126,27 @@
         ];
 
       services.xembed-sni-proxy.enable = true;
+
+      xdg.mime.enable = true;
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "application/pdf" = "org.pwmt.zathura.desktop";
+          "image/png" = "feh.desktop";
+          "image/jpeg" = "feh.desktop";
+          "image/gif" = "feh.desktop";
+          "video/mp4" = "vlc.desktop";
+          "video/webm" = "vlc.desktop";
+          "video/x-matroska" = "vlc.desktop";
+          "audio/mpeg" = "vlc.desktop";
+          "audio/ogg" = "vlc.desktop";
+          "audio/flac" = "vlc.desktop";
+          "text/html" = "zen.desktop";
+          "x-scheme-handler/http" = "zen.desktop";
+          "x-scheme-handler/https" = "zen.desktop";
+          "inode/directory" = "org.gnome.Nautilus.desktop";
+        };
+      };
 
       programs.git = {
         enable = true;
