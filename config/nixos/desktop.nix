@@ -31,9 +31,13 @@
         enable = true;
         settings = {
           default_session = {
-            command = "${pkgs.tuigreet}/bin/tuigreet --time --asterisks --remember --remember-session --sessions ${
-              inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
-            }/share/wayland-sessions";
+            command = let
+              hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+              uwsm-session = pkgs.runCommand "tuigreet-sessions" { } ''
+                mkdir -p $out
+                ln -s ${hyprland}/share/wayland-sessions/hyprland-uwsm.desktop $out/
+              '';
+            in "${pkgs.tuigreet}/bin/tuigreet --time --asterisks --remember --remember-session --sessions ${uwsm-session}";
             user = "greeter";
           };
         };
