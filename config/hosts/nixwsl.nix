@@ -63,7 +63,7 @@
           python3
           nodejs
           bun
-          (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
+          (pkgs.writeShellScriptBin "code" "exec code.cmd \"$@\"")
         ];
 
       home.sessionPath = [ "$HOME/.bun/bin" ];
