@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
     import-tree.url = "github:denful/import-tree";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
@@ -60,6 +61,11 @@
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    opencode = {
+      url = "github:anomalyco/opencode";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
