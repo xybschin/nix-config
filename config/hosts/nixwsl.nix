@@ -53,15 +53,18 @@
       "coding-agents"
     ];
     home.configuration = { pkgs, ... }: {
-      home.packages = with pkgs; [
-        home-manager
-        devenv
-        ducker
-        htop
-        python3
-        nodejs
-        bun
-      ];
+      home.packages =
+        with pkgs;
+        [
+          home-manager
+          devenv
+          ducker
+          htop
+          python3
+          nodejs
+          bun
+          (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
+        ];
 
       home.sessionPath = [ "$HOME/.bun/bin" ];
 
