@@ -32,7 +32,6 @@ in
       };
 
       theme = {
-        name = "custom";
         custom = {
           # Backgrounds & Surfaces
           panel_bg = c.base00; # #101010 (palette.bg)
