@@ -41,8 +41,8 @@
             name = "Inter";
           };
           monospace = {
-            package = pkgs.nerd-fonts.terminess-ttf;
-            name = "Terminess Nerd Font";
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font Mono";
           };
           emoji = {
             package = pkgs.noto-fonts-color-emoji;
