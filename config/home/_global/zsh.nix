@@ -33,14 +33,8 @@ in
 
       [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
-      if [[ -z "$TMUX" ]]; then
-        SESSION_NAME="$$"
-        tmux new-session -d -s "$SESSION_NAME" 2>/dev/null
-        exec tmux attach -t "$SESSION_NAME"
-      fi
-
-      if [ -n "$TMUX" ]; then
-        tmux set-environment -g PATH "$PATH" >/dev/null 2>&1
+      if [[ -z "$HERDR_PANE_ID" && -z "$TMUX" && -o interactive ]]; then
+        exec herdr
       fi
 
       PROMPT="[%n@%F{${c.base09}}%m%f %1~] "

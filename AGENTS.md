@@ -123,7 +123,7 @@ When tackling a request:
 - **`common`** — timezone Europe/Berlin, unfree, Nix caches (claude-code), Touch ID sudo, homebrew (zap cleanup), zsh
 
 ### Home Features (`config/home/`)
-- **`global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports `_global/{fzf,zsh,nvim,tmux,lazygit,direnv,ranger}`. Sets a `stylix.base16Scheme` mkDefault (koda-dark) so tmux/zsh/waybar color interpolation resolves even when theming is off. stateVersion 26.05
+- **`global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports `_global/{fzf,zsh,nvim,herdr,lazygit,direnv,ranger}`. Sets a `stylix.base16Scheme` mkDefault (koda-dark) so herdr/zsh/waybar color interpolation resolves even when theming is off. stateVersion 26.05
 - **`coding-agents`** — Claude Code, OpenCode, GitHub Copilot CLI with MCP servers (git, nixos, firecrawl, context7). Fetches skills from github.com/xybschin/skills
 - **`1password`** — 1Password SSH agent bridge (WSL via socat/npiperelay)
 - **`terminals`** — Ghostty (Wayland/macOS) + Kitty

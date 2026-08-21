@@ -13,7 +13,7 @@
         ./_global/fzf.nix
         ./_global/zsh.nix
         ./_global/nvim.nix
-        ./_global/tmux.nix
+        ./_global/herdr.nix
         ./_global/lazygit.nix
         ./_global/direnv.nix
         ./_global/ranger.nix
