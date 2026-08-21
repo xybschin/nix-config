@@ -43,7 +43,7 @@
         cyan = "#5abfb5";
       };
       theme = {
-        primary = "highlight";
+        primary = "emphasis";
         secondary = "cyan";
         accent = "info";
         error = "danger";
@@ -57,13 +57,13 @@
         backgroundPanel = "bg";
         backgroundElement = "line";
         border = "dim";
-        borderActive = "highlight";
+        borderActive = "emphasis";
         borderSubtle = "line";
         diffAdded = "success";
         diffRemoved = "danger";
         diffContext = "textMuted";
-        diffHunkHeader = "cyan";
-        diffHighlightAdded = "green";
+        diffHunkHeader = "info";
+        diffHighlightAdded = "success";
         diffHighlightRemoved = "danger";
         diffAddedBg = "none";
         diffRemovedBg = "none";
@@ -71,14 +71,14 @@
         diffLineNumber = "keyword";
         markdownText = "fg";
         markdownHeading = "emphasis";
-        markdownLink = "highlight";
+        markdownLink = "emphasis";
         markdownLinkText = "info";
-        markdownCode = "emphasis";
+        markdownCode = "const";
         markdownBlockQuote = "comment";
         markdownEmph = "emphasis";
         markdownStrong = "emphasis";
         markdownHorizontalRule = "dim";
-        markdownListItem = "keyword";
+        markdownListItem = "emphasis";
         markdownListEnumeration = "keyword";
         markdownImage = "cyan";
         markdownImageText = "cyan";
