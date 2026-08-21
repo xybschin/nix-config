@@ -6,7 +6,7 @@ hl.config({
 		gaps_out = 0,
 		border_size = 1,
 		col = {
-			active_border = C.base0C,
+			active_border = C.base02,
 			inactive_border = C.base01,
 		},
 		resize_on_border = false,
@@ -18,8 +18,8 @@ hl.config({
 		rounding_power = 1.0,
 		active_opacity = 1.0,
 		inactive_opacity = 1.0,
-		blur = { enabled = false },
-		shadow = { enabled = false },
+		blur = { enabled = true },
+		shadow = { enabled = true },
 	},
 	animations = { enabled = false },
 	input = {
