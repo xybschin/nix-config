@@ -142,9 +142,10 @@
           "audio/mpeg" = "vlc.desktop";
           "audio/ogg" = "vlc.desktop";
           "audio/flac" = "vlc.desktop";
-          "text/html" = "zen.desktop";
-          "x-scheme-handler/http" = "zen.desktop";
-          "x-scheme-handler/https" = "zen.desktop";
+          "text/html" = "zen-twilight.desktop";
+          "application/xhtml+xml" = "zen-twilight.desktop";
+          "x-scheme-handler/http" = "zen-twilight.desktop";
+          "x-scheme-handler/https" = "zen-twilight.desktop";
           "inode/directory" = "org.gnome.Nautilus.desktop";
         };
       };
