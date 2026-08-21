@@ -26,15 +26,6 @@
         name = "terminal";
         custom = {
           panel_bg = "#101010";
-          sidebar_bg = "#101010";
-          active_row_bg = "#272727";
-          selection_bg = "#272727";
-          surface0 = "#272727";
-          surface1 = "#474747";
-          overlay0 = "#50585d";
-          overlay1 = "#777777";
-          text = "#b0b0b0";
-          subtext0 = "#777777";
           accent = "#d9ba73";
           green = "#86cd82";
           blue = "#8ebeec";
