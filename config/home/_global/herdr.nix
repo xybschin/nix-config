@@ -26,7 +26,8 @@
         name = "terminal";
         custom = {
           panel_bg = "#101010";
-          accent = "#d9ba73";
+          accent = "#504d4b";
+          overlay0 = "#272727";
           green = "#86cd82";
           blue = "#8ebeec";
           red = "#ff7676";
