@@ -49,7 +49,7 @@
             name = "Noto Color Emoji";
           };
           sizes = {
-            terminal = 12;
+            terminal = 14;
             applications = 12;
             desktop = 12;
             popups = 12;
@@ -57,14 +57,11 @@
         };
 
         targets = {
-          # Hyprland uses Lua config, not home-manager's hyprland module
           hyprland.enable = false;
-          # Keep hyprpaper managed manually (wallpaper already set via stylix.image)
           hyprpaper.enable = true;
         };
       };
 
-      # Fix deprecation warning from home-manager
       home.pointerCursor.enable = lib.mkIf config.stylix.enable true;
     };
 }
