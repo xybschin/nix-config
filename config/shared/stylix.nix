@@ -49,7 +49,7 @@
             name = "Noto Color Emoji";
           };
           sizes = {
-            terminal = 14;
+            terminal = 12;
             applications = 12;
             desktop = 12;
             popups = 12;
