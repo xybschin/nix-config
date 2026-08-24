@@ -26,6 +26,7 @@
     nixos.configuration = { pkgs, ... }: {
       networking.hostName = "fenris";
 
+      boot.kernelPackages = pkgs.linuxPackages_latest;
       boot.kernelParams = [
         "amd_pstate=active"
         "pcie_aspm=off"
