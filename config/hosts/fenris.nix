@@ -53,15 +53,6 @@
 
       boot.extraModprobeConfig = "options hid_apple fnmode=2";
 
-      boot.loader.timeout = 10;
-      boot.loader.systemd-boot.extraEntries = {
-        "bazzite.conf" = ''
-          title Bazzite
-          efi /EFI/fedora/grubx64.efi
-          sort-key @bazzite
-        '';
-      };
-
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
