@@ -1,4 +1,7 @@
-{ lib, ... }:
+{ config, lib, ... }:
+let
+  c = config.lib.stylix.colors.withHashtag;
+in
 {
   programs.opencode = {
     enable = true;
@@ -17,31 +20,31 @@
     themes.koda = {
       "$schema" = "https://opencode.ai/theme.json";
       defs = {
-        bg = "#101010";
-        fg = "#b0b0b0";
-        dim = "#474747";
-        line = "#272727";
-        keyword = "#777777";
-        type = "#777777";
-        operator = "#777777";
-        comment = "#50585d";
-        border = "#ffffff";
-        emphasis = "#ffffff";
-        func = "#ffffff";
-        string = "#ffffff";
-        char = "#ffffff";
-        special = "#ffffff";
-        const = "#d9ba73";
-        highlight = "#458ee6";
-        info = "#8ebeec";
-        success = "#86cd82";
-        warning = "#d9ba73";
-        danger = "#ff7676";
-        green = "#14ba19";
-        orange = "#ff5733";
-        red = "#701516";
-        pink = "#f2a4db";
-        cyan = "#5abfb5";
+        bg = c.base00;
+        fg = c.base05;
+        dim = c.base02;
+        line = c.base01;
+        keyword = c.base0E;
+        type = c.base0A;
+        operator = c.base04;
+        comment = c.base03;
+        border = c.base07;
+        emphasis = c.base07;
+        func = c.base0D;
+        string = c.base0B;
+        char = c.base0B;
+        special = c.base0C;
+        const = c.base09;
+        highlight = c.base0D;
+        info = c.base0C;
+        success = c.base0B;
+        warning = c.base0A;
+        danger = c.base0F;
+        green = c.base0B;
+        orange = c.base09;
+        red = c.base08;
+        pink = c.base0E;
+        cyan = c.base0C;
       };
       theme = {
         primary = "emphasis";
@@ -53,7 +56,7 @@
         info = "info";
         text = "fg";
         textMuted = "keyword";
-        selectedListItemText = "emphasis";
+        selectedListItemText = "bg";
         background = "bg";
         backgroundPanel = "bg";
         backgroundElement = "line";
