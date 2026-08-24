@@ -17,6 +17,7 @@
         ./_global/lazygit.nix
         ./_global/direnv.nix
         ./_global/ranger.nix
+        ./_global/tmux.nix
       ];
 
       # Safe default scheme so tmux/zsh color interpolation always resolves
