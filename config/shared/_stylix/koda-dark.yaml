@@ -1,18 +1,18 @@
-scheme: "Koda Dark Minimal"
-author: "Bjarne Schindler"
-base00: "101010"
-base01: "272727"
-base02: "272727"
-base03: "777777"
-base04: "b0b0b0"
-base05: "ffffff"
-base06: "b0b0b0"
-base07: "ffffff"
-base08: "ff5733"
-base09: "c4a09a"
-base0A: "d9ba73"
-base0B: "4a4645"
-base0C: "504d4b"
-base0D: "f0ece8"
-base0E: "b58e88"
-base0F: "666666"
+scheme: "Koda Dark"
+author: "oskarnurm"
+base00: "101010" # Background (bg)
+base01: "272727" # Selection / Lighter Background (line)
+base02: "474747" # UI Elements / Secondary (dim)
+base03: "50585d" # Comments, Line Numbers (comment)
+base04: "777777" # Dark Foreground / Muted Operators (keyword/type/operator)
+base05: "b0b0b0" # Main Code / Regular Text (fg)
+base06: "d9ba73" # Accent Foreground (const/warning)
+base07: "ffffff" # High Contrast / Focus (border/emphasis/func/string)
+base08: "b0b0b0" # Variables -> Main FG
+base09: "d9ba73" # Numbers / Constants -> Warm Accent
+base0A: "d9ba73" # Classes / Types -> Warm Accent
+base0B: "ffffff" # Strings -> High Contrast White
+base0C: "777777" # Regex / Escapes -> Neutral Gray
+base0D: "ffffff" # Functions / Methods -> High Contrast White
+base0E: "777777" # Keywords / Control -> Neutral Gray
+base0F: "ff7676" # Errors / Warnings Only -> Soft Red

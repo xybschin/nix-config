@@ -144,18 +144,18 @@
 
         #workspaces button {
             background-color: @base01;
-            color: @base03;
+            color: @base04;
         }
 
         #workspaces button.active {
             background-color: @base0C;
-            color: @base05;
+            color: @base07;
         }
 
         .modules-right > widget > * {
             margin: 8px 0;
             padding: 0 1rem;
-            border-right: 1px solid @base03;
+            border-right: 1px solid @base02;
         }
 
         .modules-right > widget:last-child > * {

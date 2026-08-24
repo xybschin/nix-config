@@ -110,6 +110,7 @@ in
 
   programs.tmux = {
     enable = true;
+    mouse = true;
     keyMode = "vi";
     baseIndex = 1;
     historyLimit = 1000000;

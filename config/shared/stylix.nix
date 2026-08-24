@@ -41,8 +41,8 @@
             name = "Inter";
           };
           monospace = {
-            package = pkgs.nerd-fonts.terminess-ttf;
-            name = "Terminess Nerd Font";
+            package = pkgs.nerd-fonts.jetbrains-mono;
+            name = "JetBrainsMono Nerd Font Mono";
           };
           emoji = {
             package = pkgs.noto-fonts-color-emoji;
@@ -57,14 +57,11 @@
         };
 
         targets = {
-          # Hyprland uses Lua config, not home-manager's hyprland module
           hyprland.enable = false;
-          # Keep hyprpaper managed manually (wallpaper already set via stylix.image)
           hyprpaper.enable = true;
         };
       };
 
-      # Fix deprecation warning from home-manager
       home.pointerCursor.enable = lib.mkIf config.stylix.enable true;
     };
 }

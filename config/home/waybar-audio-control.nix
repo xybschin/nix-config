@@ -2,10 +2,14 @@
 {
   config.my.features.home.waybar-audio-control =
     {
+      config,
       inputs,
       pkgs,
       ...
     }:
+    let
+      c = config.lib.stylix.colors.withHashtag;
+    in
     {
       imports = [ inputs.waybar-audio-control.homeManagerModules.default ];
 
@@ -14,9 +18,9 @@
         package = inputs.waybar-audio-control.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
         colors = {
-          background = "#101010";
-          foreground = "#b0b0b0";
-          accent = "#d9ba73";
+          background = c.base00;
+          foreground = c.base04;
+          accent = c.base0A;
         };
 
         position = {
