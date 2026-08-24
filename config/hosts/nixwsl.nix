@@ -54,7 +54,14 @@
     ];
     home.configuration = { pkgs, ... }: {
       # Enables CLI theming (opencode, zsh, fzf, lazygit, ...) with vesper
-      stylix.enable = true;
+      stylix = {
+        enable = true;
+        autoEnable = false;
+        targets = {
+          fzf.enable = true;
+          lazygit.enable = true;
+        };
+      };
 
       home.packages =
         with pkgs;
