@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   programs.opencode = {
     enable = true;
@@ -11,7 +12,7 @@
       };
     };
     tui = {
-      theme = "koda";
+      theme = lib.mkForce "koda";
     };
     themes.koda = {
       "$schema" = "https://opencode.ai/theme.json";
