@@ -42,8 +42,6 @@
           "gamemode"
           "networkmanager"
           "openrazer"
-          "kvm"
-          "libvirtd"
           "video"
           "render"
           "lpadmin"
@@ -67,6 +65,7 @@
 
     home.features = [
       "global"
+      "git-identity"
       "1password"
       "coding-agents"
       "terminals"
@@ -92,7 +91,7 @@
               on-timeout = "hyprlock";
             }
             {
-              timeout = 300;
+              timeout = 360;
               on-timeout = "hyprctl dispatch dpms off";
               on-resume = "hyprctl dispatch dpms on";
             }
@@ -104,19 +103,13 @@
         };
       };
 
-      home.packages =
-        with pkgs;
-        [
-          obsidian
-          python3
-          nodejs
-          tigervnc
-          vlc
-        ]
-        ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-          pkgs.google-chrome
-          pkgs.zathura
-        ];
+      home.packages = with pkgs; [
+        obsidian
+        python3
+        nodejs
+        tigervnc
+        vlc
+      ];
 
       services.xembed-sni-proxy.enable = true;
 
@@ -139,17 +132,6 @@
           "x-scheme-handler/http" = "zen-twilight.desktop";
           "x-scheme-handler/https" = "zen-twilight.desktop";
           "inode/directory" = "org.gnome.Nautilus.desktop";
-        };
-      };
-
-      programs.git = {
-        enable = true;
-        settings = {
-          user.name = "xybschin";
-          user.email = "hello@bjarneschindler.dev";
-          extraConfig.credential.helper = "store";
-          color.ui = true;
-          init.defaultBranch = "main";
         };
       };
 
