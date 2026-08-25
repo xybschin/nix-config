@@ -5,7 +5,7 @@ base01: "272727" # Selection / Lighter Background (line)
 base02: "474747" # UI Elements / Secondary (dim)
 base03: "50585d" # Comments, Line Numbers (comment)
 base04: "777777" # Dark Foreground / Muted Operators (keyword/type/operator)
-base05: "b0b0b0" # Main Code / Regular Text (fg)
+base05: "ffffff" # Main Code / Regular Text (fg)
 base06: "d9ba73" # Accent Foreground (const/warning)
 base07: "ffffff" # High Contrast / Focus (border/emphasis/func/string)
 base08: "b0b0b0" # Variables -> Main FG
