@@ -8,7 +8,7 @@
           configurationLimit = 1;
           consoleMode = "max";
         };
-        timeout = lib.mkDefault 10;
+        timeout = lib.mkDefault 5;
       };
     };
   };

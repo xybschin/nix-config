@@ -26,6 +26,7 @@
     nixos.configuration = { pkgs, ... }: {
       networking.hostName = "fenris";
 
+      boot.kernelPackages = pkgs.linuxPackages_latest;
       boot.kernelParams = [
         "amd_pstate=active"
         "pcie_aspm=off"
@@ -50,15 +51,6 @@
       };
 
       boot.extraModprobeConfig = "options hid_apple fnmode=2";
-
-      boot.loader.timeout = 10;
-      boot.loader.systemd-boot.extraEntries = {
-        "bazzite.conf" = ''
-          title Bazzite
-          efi /EFI/fedora/grubx64.efi
-          sort-key @bazzite
-        '';
-      };
 
       hardware.graphics = {
         enable = true;
