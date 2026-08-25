@@ -25,6 +25,7 @@
 
     home.features = [
       "global"
+      "git-identity"
       "1password"
       "coding-agents"
       "terminals"
@@ -35,17 +36,6 @@
         python3
         nodejs
       ];
-
-      programs.git = {
-        enable = true;
-        settings = {
-          user.name = "xybschin";
-          user.email = "hello@bjarneschindler.dev";
-          extraConfig.credential.helper = "store";
-          color.ui = true;
-          init.defaultBranch = "main";
-        };
-      };
     };
   };
 }
