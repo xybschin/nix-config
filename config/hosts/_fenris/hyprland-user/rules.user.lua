@@ -39,6 +39,17 @@ hl.window_rule({
 	size = { 0, 0 },
 })
 
-hl.windowrule("workspace special:magic silent", "class:^(geary)$")
-hl.windowrule("workspace special:magic silent", "class:^(Signal)$")
-hl.windowrule("workspace special:magic silent", "class:^(spotify)$")
+hl.window_rule({
+	match = { class = "^(signal)$" },
+	workspace = "special:magic silent",
+})
+
+hl.window_rule({
+	match = { class = "^(geary)$" },
+	workspace = "special:magic silent",
+})
+
+hl.window_rule({
+	match = { class = "^(spotify)$" },
+	workspace = "special:magic silent",
+})
