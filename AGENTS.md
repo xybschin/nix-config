@@ -123,7 +123,7 @@ When tackling a request:
 - **`common`** — timezone Europe/Berlin, unfree, Nix caches (claude-code), Touch ID sudo, homebrew (zap cleanup), zsh
 
 ### Home Features (`config/home/`)
-- **`global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports `_global/{fzf,zsh,nvim,tmux,lazygit,direnv,ranger}`. Sets a `stylix.base16Scheme` mkDefault (base16 Vesper from `pkgs.base16-schemes`) so tmux/zsh/waybar color interpolation resolves even when theming is off. stateVersion 26.05
+- **`global`** — core pkgs (git, tree, unzip, gh, jq, htop, systemctl-tui). Imports `_global/{fzf,zsh,nvim,tmux,lazygit,direnv,ranger}`. Sets a `stylix.base16Scheme` mkDefault (`shared/_stylix/koda-dark.yaml`) so tmux/zsh/waybar color interpolation resolves even when theming is off. stateVersion 26.05
 - **`coding-agents`** — Claude Code, OpenCode, GitHub Copilot CLI with MCP servers (git, nixos, firecrawl, context7). Fetches skills from github.com/xybschin/skills
 - **`1password`** — 1Password SSH agent bridge (WSL via socat/npiperelay)
 - **`terminals`** — Ghostty (Wayland/macOS) + Kitty
@@ -132,7 +132,7 @@ When tackling a request:
 - **`rvm-webcam`** — virtual background webcam via RobustVideoMatting (fenris only)
 
 ### Shared Features (`config/shared/`)
-- **`stylix.nix`** — dark polarity, base16 Vesper scheme from `pkgs.base16-schemes` (`share/themes/vesper.yaml`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper. Imported only by `shared.desktop`.
+- **`stylix.nix`** — dark polarity, base16 Koda Dark scheme (vendored `_stylix/koda-dark.yaml`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper. Imported only by `shared.desktop`.
 - **`desktop.nix`** — imports `stylix`, `_desktop/{waybar,font.nix,zen-browser.nix,rofi,wayland-env.nix,hyprpaper}`. Packages: nautilus, feh, udiskie, dconf automount.
 - **`wm-hyprland.nix`** — `_desktop/wm/hyprland/` Lua config files (mkOutOfStoreSymlink), stylix-generated `hypr/colors.lua`, hyprlock, hyprpolkitagent. Scripts: `rofi-launch`, `rofi-monitor-menu`.
 - **`vscode.nix`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (fenris only)
@@ -176,8 +176,8 @@ When tackling a request:
 Host-specific extras live in `config/hosts/_fenris/` (hardware, hyprland-user Lua, scripts) and are wired via `extraModules`/`xdg.configFile` in `config/hosts/fenris.nix`.
 
 ### Stylix
-- Scheme: base16 Vesper (by FormalSnake), loaded from `pkgs.base16-schemes` (`share/themes/vesper.yaml`) — no vendored YAML needed.
-- Palette: background `#101010`, surfaces `#232323`/`#222222`, muted `#333333`, fg `#b7b7b7`, accents are muted red `#de6e6e`, sand `#dab083`, peach `#ffc799`, teal `#5f8787`, green-teal `#60a592`, blue-gray `#8eaaaa`, rose `#d69094`.
+- Scheme: base16 Koda Dark (by oskarnurm), vendored at `config/shared/_stylix/koda-dark.yaml`, derived from the `koda.nvim` colorscheme used directly in `nvim.nix`. Used as both the `home.global` default and the `shared.stylix` desktop theme, so all hosts render the same palette.
+- Palette: background `#101010`, line `#272727`, dim `#474747`, comment `#50585d`, muted gray `#777777`, fg `#ffffff`, warm accent (const/warning/type) `#d9ba73`, soft red (errors) `#ff7676`.
 
 ### Secrets
 - sops-nix with GPG key `F28DC558F4792FCBCC4045141B6CFD2F494F4A52` (bjarne)

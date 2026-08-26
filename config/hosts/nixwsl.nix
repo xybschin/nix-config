@@ -53,7 +53,7 @@
       "coding-agents"
     ];
     home.configuration = { pkgs, ... }: {
-      # Enables CLI theming (opencode, zsh, fzf, lazygit, ...) with vesper
+      # Enables CLI theming (opencode, zsh, fzf, lazygit, ...) with koda-dark
       stylix = {
         enable = true;
         autoEnable = false;
