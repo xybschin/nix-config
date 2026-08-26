@@ -22,7 +22,7 @@
           dark = "breeze";
         };
 
-        image = ./_desktop/hyprpaper/wallpapers/single/nix-wallpaper-nineish-dark-gray.png;
+        image = ./_desktop/hyprpaper/wallpapers/single/4173824.jpg;
         imageScalingMode = "fill";
 
         cursor = {
