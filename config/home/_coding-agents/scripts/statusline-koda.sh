@@ -11,13 +11,13 @@ COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
 DURATION_MS=$(echo "$input" | jq -r '.cost.total_duration_ms // 0')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 
-AMBER='\033[38;2;217;186;115m' # base09/0A/06 d9ba73 - accent
-GRAY='\033[38;2;119;119;119m'  # base04/0C/0E 777777 - neutral
-MUTED='\033[38;2;80;88;93m'    # base03 50585d - muted/comment
-WHITE='\033[38;2;255;255;255m' # base05/07/0B/0D ffffff - focus/emphasis
-RED='\033[38;2;255;118;118m'   # base0F ff7676 - danger
-BOLD='\033[1m'
-RESET='\033[0m'
+AMBER=$'\033[38;2;217;186;115m' # base09/0A/06 d9ba73 - accent
+GRAY=$'\033[38;2;119;119;119m'  # base04/0C/0E 777777 - neutral
+MUTED=$'\033[38;2;80;88;93m'    # base03 50585d - muted/comment
+WHITE=$'\033[38;2;255;255;255m' # base05/07/0B/0D ffffff - focus/emphasis
+RED=$'\033[38;2;255;118;118m'   # base0F ff7676 - danger
+BOLD=$'\033[1m'
+RESET=$'\033[0m'
 
 if [ "$PCT" -ge 90 ]; then
     BAR_COLOR="$RED"
@@ -55,5 +55,21 @@ DURATION_SEC=$((DURATION_MS / 1000))
 MINS=$((DURATION_SEC / 60))
 SECS=$((DURATION_SEC % 60))
 
-echo -e "${AMBER}${BOLD}[$MODEL]${RESET} ${GRAY}$(basename "$DIR")${RESET}${GIT_INFO}"
-echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% ${MUTED}·${RESET} ${GRAY}${COST_FMT} · ${MINS}m ${SECS}s${RESET}"
+LEFT="${AMBER}${BOLD}[$MODEL]${RESET} ${GRAY}$(basename "$DIR")${RESET}${GIT_INFO}"
+RIGHT="${BAR_COLOR}${BAR}${RESET} ${PCT}% ${MUTED}·${RESET} ${GRAY}${COST_FMT} · ${MINS}m ${SECS}s${RESET}"
+
+# Right-align RIGHT to the terminal width, measuring visible length with
+# ANSI escapes stripped out.
+strip_ansi() { printf '%s' "$1" | sed -E 's/\x1b\[[0-9;]*m//g'; }
+LEFT_PLAIN=$(strip_ansi "$LEFT")
+RIGHT_PLAIN=$(strip_ansi "$RIGHT")
+LEFT_LEN=${#LEFT_PLAIN}
+RIGHT_LEN=${#RIGHT_PLAIN}
+
+SAFETY_MARGIN=4 # Claude Code adds its own built-in spacing around the row
+COLS=$(( ${COLUMNS:-80} - SAFETY_MARGIN ))
+GAP=$((COLS - LEFT_LEN - RIGHT_LEN))
+[ "$GAP" -lt 1 ] && GAP=1
+printf -v PADDING '%*s' "$GAP" ''
+
+printf '%s\n-\n' "${LEFT}${PADDING}${RIGHT}"
