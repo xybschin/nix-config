@@ -38,3 +38,7 @@ hl.window_rule({
 	no_focus = true,
 	size = { 0, 0 },
 })
+
+hl.windowrule("workspace special:magic silent", "class:^(geary)$")
+hl.windowrule("workspace special:magic silent", "class:^(Signal)$")
+hl.windowrule("workspace special:magic silent", "class:^(spotify)$")

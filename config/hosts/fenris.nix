@@ -105,6 +105,7 @@
 
       home.packages = with pkgs; [
         obsidian
+        signal-desktop
         python3
         nodejs
         tigervnc

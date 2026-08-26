@@ -18,8 +18,14 @@ hl.window_rule({
 	no_focus = true,
 })
 
--- Window-specific rules
-hl.window_rule({ match = { class = "feh" }, float = true })
-
 -- Workspace rules
-hl.workspace_rule({ workspace = "special", gaps_in = 24, gaps_out = 64 })
+hl.workspace_rule({
+	workspace = "special:magic",
+	gaps_in = 5,
+	gaps_out = {
+		top = 35,
+		right = 35,
+		bottom = 0,
+		left = 35,
+	},
+})
