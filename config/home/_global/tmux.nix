@@ -20,7 +20,7 @@ let
   '';
 
   options = ''
-    set-option -g terminal-overrides ',xterm-256color:Tc'
+    set-option -g terminal-overrides ',xterm-256color:Tc,tmux-256color:Tc'
     set-option -g set-titles on
     set-option -g set-titles-string "#W"
     set-option -g remain-on-exit off
