@@ -22,7 +22,7 @@
           dark = "breeze";
         };
 
-        image = ./_desktop/hyprpaper/wallpapers/single/artemis-ii-earth.jpg;
+        image = ./_desktop/hyprpaper/wallpapers/single/nix-wallpaper-nineish-dark-gray.png;
         imageScalingMode = "fill";
 
         cursor = {
