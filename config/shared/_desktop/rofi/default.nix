@@ -41,7 +41,7 @@ let
         foreground:                  ${rgba c.base05};
         selected:                    ${rgba c.base0D};
         active:                      ${rgba c.base0B};
-        urgent:                      ${rgba c.base08};
+        urgent:                      ${rgba c.base0F};
 
         border-colour:               var(selected);
         handle-colour:               var(foreground);

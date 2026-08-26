@@ -14,8 +14,8 @@ let
     set -g @mode_indicator_empty_prompt ' NORM '
     set -g @mode_indicator_prefix_mode_style 'bg=${c.base08},fg=black'
     set -g @mode_indicator_copy_mode_style 'bg=${c.base0C},fg=black'
-    set -g @mode_indicator_sync_mode_style 'bg=${c.base08},fg=black'
-    set -g @mode_indicator_empty_mode_style 'bg=${c.base01},fg=${c.base03}'
+    set -g @mode_indicator_sync_mode_style 'bg=${c.base0A},fg=black'
+    set -g @mode_indicator_empty_mode_style 'bg=${c.base01},fg=${c.base08}'
     run-shell ${pkgs.tmuxPlugins.mode-indicator}/share/tmux-plugins/mode-indicator/mode_indicator.tmux
   '';
 
@@ -33,7 +33,7 @@ let
     set -g status-right-length 100
     set -g status-position bottom
     set -g status-style "fg=${c.base04},bg=${c.base00}"
-    set -g status-left '#{tmux_mode_indicator}#[bg=${c.base0D},fg=black] #{user}@#H #[bg=${c.base0B},fg=black]'
+    set -g status-left '#{tmux_mode_indicator}#[bg=${c.base0A},fg=black] #{user}@#H #[fg=${c.base04},bg=${c.base00}]'
     set -g status-right '#[fg=${c.base0C}]%Y-%m-%d #[fg=${c.base05}]%H:%M'
     set -g status-justify absolute-centre
     set -g @prefix_highlight_output_prefix "#[fg=black,bg=${c.base0A}]"
@@ -45,7 +45,7 @@ let
     set -g pane-border-indicators both
 
     setw -g window-status-separator " - "
-    setw -g window-status-format "#[fg=${c.base03},bg=${c.base01}] #I #[fg=${c.base03},bg=${c.base00}] #W "
+    setw -g window-status-format "#[fg=${c.base08},bg=${c.base01}] #I #[fg=${c.base08},bg=${c.base00}] #W "
     setw -g window-status-current-format "#[fg=black,bg=${c.base0C}] #I #[fg=${c.base05},bg=${c.base00}] #W "
   '';
 

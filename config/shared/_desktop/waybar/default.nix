@@ -97,6 +97,7 @@
         @define-color base0D #${c.base0D};
         @define-color base0C #${c.base0C};
         @define-color base0E #${c.base0E};
+        @define-color base0F #${c.base0F};
 
         window#waybar, tooltip {
             background: @base00;
@@ -130,7 +131,7 @@
         }
 
         #custom-openrouter.error {
-            color: @base08;
+            color: @base0F;
         }
 
         #bluetooth.disabled,
