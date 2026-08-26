@@ -99,6 +99,10 @@
         @define-color base0E #${c.base0E};
         @define-color base0F #${c.base0F};
 
+        window#waybar {
+            border-top: 1px solid @base01;
+        }
+
         window#waybar, tooltip {
             background: @base00;
             color: @base05;
@@ -144,6 +148,7 @@
         }
 
         #workspaces button {
+            border-top: 1px solid @base01;
             background-color: @base01;
             color: @base04;
         }
@@ -156,7 +161,7 @@
         .modules-right > widget > * {
             margin: 8px 0;
             padding: 0 1rem;
-            border-right: 1px solid @base02;
+            border-right: 1px solid @base01;
         }
 
         .modules-right > widget:last-child > * {

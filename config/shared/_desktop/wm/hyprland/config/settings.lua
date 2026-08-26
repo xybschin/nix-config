@@ -3,7 +3,7 @@ local C = require("colors")
 hl.config({
 	general = {
 		gaps_in = 0,
-		gaps_out = 0,
+		gaps_out = { bottom = 1 },
 		border_size = 1,
 		col = {
 			active_border = C.base04,
