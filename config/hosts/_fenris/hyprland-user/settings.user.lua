@@ -21,8 +21,8 @@ elseif profile == "profile3" then
 	hl.monitor({ output = "HDMI-A-1", mode = "2560x1440@120", position = "0x0", scale = 1 })
 	hl.monitor({ output = "DP-2", disabled = true })
 elseif profile == "profile4" then
-	hl.monitor({ output = "HDMI-A-1", mode = "5120x1440@144", position = "0x0", scale = 1 })
-	hl.monitor({ output = "DP-2", disabled = true })
+	hl.monitor({ output = "DP-2", mode = "5120x1440@144", position = "0x0", scale = 1 })
+	hl.monitor({ output = "HDMI-A-1", disabled = true })
 end
 
 hl.monitor({ output = "DP-3", disabled = true })

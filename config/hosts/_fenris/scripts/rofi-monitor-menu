@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-options=("DP-2|HDMI-A-1:2560x1440@120" "HDMI-A-1:2560x1440@120" "DP-2:2560x1440@120" "DP-2:5120x1440@144")
+options=("DP-2|HDMI-A-1:2560x1440@120" "DP-2:2560x1440@120" "HDMI-A-1:2560x1440@120" "DP-2:5120x1440@144")
 selected=$(printf "%s\n" "${options[@]}" | rofi -dmenu -p "DISPLAY PROFILES" -no-custom)
 
 case "$selected" in
