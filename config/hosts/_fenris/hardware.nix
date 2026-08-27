@@ -39,13 +39,13 @@
   '';
 
   fileSystems."/mnt/steam-library" = {
-    device = "/dev/disk/by-uuid/500d9dc3-59e5-429f-aecb-e6869db4aaba";
-    fsType = "auto";
+    device = "/dev/disk/by-uuid/d69827d6-b0ff-4195-9f36-df90a10cfaef";
+    fsType = "ext4";
     options = [
       "users"
       "nofail"
       "exec"
-      "compress=zstd"
+      "noatime"
     ];
   };
 
