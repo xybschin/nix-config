@@ -24,7 +24,7 @@ hl.bind(mainMod .. " + SHIFT + p", hl.dsp.exec_cmd("hyprpicker --autocopy"))
 
 -- Application shortcuts
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("ghostty"))
-hl.bind(mainMod .. " + r", hl.dsp.exec_cmd("$HOME/.config/hypr/scripts/rofi-launch -show drun"))
+hl.bind(mainMod .. " + r", hl.dsp.exec_cmd("rofi -show drun"))
 hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("ghostty -e ranger ~"))
 hl.bind(mainMod .. " + z", hl.dsp.exec_cmd("zen-twilight"))
 hl.bind("CTRL + SHIFT + Space", hl.dsp.exec_cmd("1password --quick-access"))

@@ -1,34 +1,48 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 
 let
-  # stylix exposes base16 colors as hex strings without leading '#'
   c = config.lib.stylix.colors;
   rgba = hex: "#${hex}FF";
 
-  # adi1090x/rofi type-1 style-10 layout, recolored with stylix colors.
-  # https://github.com/adi1090x/rofi/blob/master/files/launchers/type-1/style-10.rasi
-  # Written to rofi's themes dir and referenced by name; rofi resolves
-  # theme names from ~/.local/share/rofi/themes/ and ~/.config/rofi/themes/.
+  powermenu = pkgs.writeShellScript "rofi-powermenu" ''
+    shutdown=" Shutdown"
+    reboot=" Reboot"
+    lock=" Lock"
+    logout=" Logout"
+
+    if [ -z "$1" ]; then
+        echo -e "$shutdown\n$reboot\n$lock\n$logout"
+    else
+        case "$1" in
+            *Shutdown*) hyprshutdown --post-cmd 'poweroff' ;;
+            *Reboot*)   hyprshutdown --post-cmd 'reboot' ;;
+            *Lock*)     hyprlock ;;
+            *Logout*)   hyprctl dispatch "hl.dsp.exit()" ;;
+        esac
+    fi
+  '';
+
   theme = ''
     /**
-     * adi1090x/rofi - type-1 style-10 layout
-     * Colors: stylix (${config.stylix.base16Scheme.scheme or "stylix"})
+     * Author : Aditya Shakya (adi1090x)
+     * Github : @adi1090x
      **/
 
     /*****----- Configuration -----*****/
     configuration {
-        modi:                       "drun,run";
-        show-icons:                 false;
-        display-drun:               "";
-        display-run:                "";
-        display-filebrowser:        "";
-        display-window:             "";
+        modi:                       "drun,run,power:${powermenu}";
+        show-icons:                 true;
+        display-drun:               " Apps";
+        display-run:                " Run";
+        display-filebrowser:        " Files";
+        display-window:             " Windows";
+        display-power:              " Power";
         drun-display-format:        "{name}";
+        drun-match-fields:          "name,generic";
         window-format:              "{w} · {c} · {t}";
     }
 
@@ -36,15 +50,17 @@ let
     * {
         font:                        "${config.stylix.fonts.monospace.name} Bold 11";
 
-        background:                  ${rgba c.base00};
-        background-alt:              ${rgba c.base01};
-        foreground:                  ${rgba c.base05};
-        selected:                    ${rgba c.base0D};
-        active:                      ${rgba c.base0B};
-        urgent:                      ${rgba c.base0F};
+        /* Muted Koda Dark Palette */
+        background:                  ${rgba c.base00}; /* Pure Dark Base */
+        background-alt:              ${rgba c.base01}; /* Muted Surface Gray */
+        selected-muted:              ${rgba c.base02}; /* Soft Highlight Surface */
+        foreground:                  ${rgba c.base04}; /* Low-contrast Text */
+        foreground-emphasis:         ${rgba c.base06}; /* Soft Bright Text */
+        accent-muted:                ${rgba c.base0A}; /* Warm Muted Sand/Gold */
+        urgent:                      ${rgba c.base08}; /* Soft Red */
 
-        border-colour:               var(selected);
-        handle-colour:               var(foreground);
+        border-colour:               var(background-alt);
+        handle-colour:               var(accent-muted);
         background-colour:           var(background);
         foreground-colour:           var(foreground);
         alternate-background:        var(background-alt);
@@ -52,65 +68,64 @@ let
         normal-foreground:           var(foreground);
         urgent-background:           var(urgent);
         urgent-foreground:           var(background);
-        active-background:           var(active);
-        active-foreground:            var(background);
-        selected-normal-background:  var(selected);
-        selected-normal-foreground:  var(background);
-        selected-urgent-background:  var(active);
+        active-background:           var(selected-muted);
+        active-foreground:           var(foreground-emphasis);
+        
+        /* Selection States: Low contrast & Muted */
+        selected-normal-background:  var(selected-muted);
+        selected-normal-foreground:  var(foreground-emphasis);
+        
+        selected-urgent-background:  var(urgent);
         selected-urgent-foreground:  var(background);
-        selected-active-background:  var(urgent);
-        selected-active-foreground:  var(background);
+        selected-active-background:  var(selected-muted);
+        selected-active-foreground:  var(foreground-emphasis);
         alternate-normal-background: var(background);
         alternate-normal-foreground: var(foreground);
         alternate-urgent-background: var(urgent);
         alternate-urgent-foreground: var(background);
-        alternate-active-background: var(active);
-        alternate-active-foreground: var(background);
+        alternate-active-background: var(selected-muted);
+        alternate-active-foreground: var(foreground-emphasis);
     }
 
     /*****----- Main Window -----*****/
     window {
         transparency:                "real";
-        layer:                       "bottom";
-        location:                    north;
-        anchor:                      north;
+        location:                    center;
+        anchor:                      center;
         fullscreen:                  false;
-        width:                       100%;
+        width:                       800px;
         x-offset:                    0px;
         y-offset:                    0px;
-
-        children:                    [ horibox ];
 
         enabled:                     true;
         margin:                      0px;
         padding:                     0px;
-        border:                      0px solid;
+        border:                      2px solid;
         border-radius:               0px;
-        border-color:                @border-colour;
+        border-color:                var(border-colour);
         cursor:                      "default";
-        background-color:            @background-colour;
-    }
-
-    /*****----- Horizontal Box -----*****/
-    horibox {
-        spacing:                     0px;
-        background-color:            @background-colour;
-        text-color:                  @foreground-colour;
-        orientation:                 horizontal;
-        children:                    [ "prompt", "textbox-prompt-colon","entry", "listview" ];
+        background-color:            var(background-colour);
     }
 
     /*****----- Main Box -----*****/
     mainbox {
         enabled:                     true;
-        spacing:                     20px;
+        spacing:                     10px;
         margin:                      0px;
-        padding:                     40px;
+        padding:                     20px;
         border:                      0px solid;
-        border-radius:               0px 0px 0px 0px;
-        border-color:                @border-colour;
+        border-color:                var(border-colour);
         background-color:            transparent;
-        children:                    [ "inputbar", "message", "listview", "mode-switcher" ];
+        children:                    [ "inputbar", "message", "custombox" ];
+    }
+
+    /*****----- Custom Box -----*****/
+    custombox {
+        spacing:                     10px;
+        background-color:            var(background-colour);
+        text-color:                  var(foreground-colour);
+        orientation:                 horizontal;
+        children:                    [ "mode-switcher", "listview" ];
     }
 
     /*****----- Inputbar -----*****/
@@ -118,37 +133,35 @@ let
         enabled:                     true;
         spacing:                     10px;
         margin:                      0px;
-        padding:                     8px;
+        padding:                     8px 12px;
         border:                      0px solid;
-        border-radius:               4px;
-        border-color:                @border-colour;
-        background-color:            @alternate-background;
-        text-color:                  @foreground-colour;
-        children:                    [ "prompt", "entry" ];
+        border-radius:               0px;
+        border-color:                var(border-colour);
+        background-color:            var(alternate-background);
+        text-color:                  var(foreground-colour);
+        children:                    [ "textbox-prompt-colon", "entry" ];
     }
+
     prompt {
         enabled:                     true;
-        padding:                     10px;
         background-color:            inherit;
         text-color:                  inherit;
     }
     textbox-prompt-colon {
         enabled:                     true;
-        padding:                     10px 0px 10px 0px;
+        padding:                     5px 0px;
         expand:                      false;
-        str:                         "::";
+        str:                         "";
         background-color:            inherit;
         text-color:                  inherit;
     }
     entry {
         enabled:                     true;
-        padding:                     10px;
-        expand:                      false;
-        width:                       20em;
+        padding:                     5px 0px;
         background-color:            inherit;
         text-color:                  inherit;
         cursor:                      text;
-        placeholder:                 "search...";
+        placeholder:                 "Search...";
         placeholder-color:           inherit;
     }
     num-filtered-rows {
@@ -180,43 +193,43 @@ let
     listview {
         enabled:                     true;
         columns:                     1;
-        lines:                       100;
+        lines:                       8;
         cycle:                       true;
         dynamic:                     true;
-        scrollbar:                   false;
-        layout:                      horizontal;
+        scrollbar:                   true;
+        layout:                      vertical;
         reverse:                     false;
         fixed-height:                true;
         fixed-columns:               true;
-
-        spacing:                     10px;
+        
+        spacing:                     5px;
         margin:                      0px;
         padding:                     0px;
         border:                      0px solid;
         border-radius:               0px;
-        border-color:                @border-colour;
+        border-color:                var(border-colour);
         background-color:            transparent;
-        text-color:                  @foreground-colour;
+        text-color:                  var(foreground-colour);
         cursor:                      "default";
     }
     scrollbar {
-        handle-width:                5px ;
-        handle-color:                @handle-colour;
-        border-radius:               8px;
-        background-color:            @alternate-background;
+        handle-width:                5px;
+        handle-color:                var(handle-colour);
+        border-radius:               0px;
+        background-color:            var(alternate-background);
     }
 
     /*****----- Elements -----*****/
     element {
         enabled:                     true;
-        spacing:                     8px;
+        spacing:                     10px;
         margin:                      0px;
-        padding:                     10px 8px;
+        padding:                     10px;
         border:                      0px solid;
         border-radius:               0px;
-        border-color:                @border-colour;
+        border-color:                var(border-colour);
         background-color:            transparent;
-        text-color:                  @foreground-colour;
+        text-color:                  var(foreground-colour);
         cursor:                      pointer;
     }
     element normal.normal {
@@ -273,27 +286,31 @@ let
     /*****----- Mode Switcher -----*****/
     mode-switcher {
         enabled:                     true;
+        expand:                      false;
+        orientation:                 vertical;
         spacing:                     10px;
         margin:                      0px;
-        padding:                     0px;
+        padding:                     0px 0px;
         border:                      0px solid;
-        border-radius:               4px;
-        border-color:                @border-colour;
-        background-color:            @alternate-background;
-        text-color:                  @foreground-colour;
+        border-radius:               0px;
+        border-color:                var(border-colour);
+        background-color:            transparent;
+        text-color:                  var(foreground-colour);
     }
     button {
-        padding:                     8px;
+        padding:                     0px 20px 0px 20px;
         border:                      0px solid;
-        border-radius:               4px;
-        border-color:                @border-colour;
-        background-color:            transparent;
+        border-radius:               0px;
+        border-color:                var(border-colour);
+        background-color:            var(alternate-background);
         text-color:                  inherit;
+        vertical-align:              0.5;
+        horizontal-align:            0.0;
         cursor:                      pointer;
     }
     button selected {
-        background-color:            var(normal-foreground);
-        text-color:                  var(normal-background);
+        background-color:            var(selected-normal-background);
+        text-color:                  var(selected-normal-foreground);
     }
 
     /*****----- Message -----*****/
@@ -303,44 +320,42 @@ let
         padding:                     0px;
         border:                      0px solid;
         border-radius:               0px 0px 0px 0px;
-        border-color:                @border-colour;
+        border-color:                var(border-colour);
         background-color:            transparent;
-        text-color:                  @foreground-colour;
+        text-color:                  var(foreground-colour);
     }
     textbox {
-        padding:                     8px;
+        padding:                     12px;
         border:                      0px solid;
         border-radius:               0px;
-        border-color:                @border-colour;
-        background-color:            @alternate-background;
-        text-color:                  @foreground-colour;
+        border-color:                var(border-colour);
+        background-color:            var(alternate-background);
+        text-color:                  var(foreground-colour);
         vertical-align:              0.5;
         horizontal-align:            0.0;
         highlight:                   none;
-        placeholder-color:           @foreground-colour;
+        placeholder-color:           var(foreground-colour);
         blink:                       true;
         markup:                      true;
     }
     error-message {
-        padding:                     0px;
-        border:                      0px solid;
+        padding:                     10px;
+        border:                      2px solid;
         border-radius:               0px;
-        border-color:                @border-colour;
-        background-color:            @background-colour;
-        text-color:                  @foreground-colour;
+        border-color:                var(border-colour);
+        background-color:            var(background-colour);
+        text-color:                  var(foreground-colour);
     }
   '';
 in
 {
-  # Use our own themed layout instead of stylix's default rofi theme.
   stylix.targets.rofi.enable = false;
 
-  # Drop the rasi into rofi's themes directory; referenced by name below.
-  xdg.dataFile."rofi/themes/type-1-style-10.rasi".text = theme;
+  xdg.dataFile."rofi/themes/koda.rasi".text = theme;
 
   programs.rofi = {
     enable = true;
     package = pkgs.rofi;
-    theme = "type-1-style-10";
+    theme = "koda";
   };
 }
