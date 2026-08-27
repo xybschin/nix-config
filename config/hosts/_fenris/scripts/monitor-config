@@ -35,14 +35,14 @@ apply_profile() {
     sleep 0.5
 
     if [[ "$profile" == "profile2" ]]; then
-        hyprctl keyword monitor "DP-2,disable"
-        for ws in $(seq 1 10); do
-            hyprctl dispatch "hl.dsp.workspace.move({id = $ws, monitor = \"HDMI-A-1\"})" 2>/dev/null || true
-        done
-    elif [[ "$profile" == "profile3" || "$profile" == "profile4" ]]; then
         hyprctl keyword monitor "HDMI-A-1,disable"
         for ws in $(seq 1 10); do
             hyprctl dispatch "hl.dsp.workspace.move({id = $ws, monitor = \"DP-2\"})" 2>/dev/null || true
+        done
+    elif [[ "$profile" == "profile3" || "$profile" == "profile4" ]]; then
+        hyprctl keyword monitor "DP-2,disable"
+        for ws in $(seq 1 10); do
+            hyprctl dispatch "hl.dsp.workspace.move({id = $ws, monitor = \"HDMI-A-1\"})" 2>/dev/null || true
         done
     fi
 }

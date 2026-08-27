@@ -134,7 +134,7 @@ When tackling a request:
 ### Shared Features (`config/shared/`)
 - **`stylix.nix`** — dark polarity, base16 Koda Dark scheme (vendored `_stylix/koda-dark.yaml`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper. Imported only by `shared.desktop`.
 - **`desktop.nix`** — imports `stylix`, `_desktop/{waybar,font.nix,zen-browser.nix,rofi,wayland-env.nix,hyprpaper}`. Packages: nautilus, feh, udiskie, dconf automount.
-- **`wm-hyprland.nix`** — `_desktop/wm/hyprland/` Lua config files (mkOutOfStoreSymlink), stylix-generated `hypr/colors.lua`, hyprlock, hyprpolkitagent. Scripts: `rofi-launch`, `rofi-monitor-menu`.
+- **`wm-hyprland.nix`** — `_desktop/wm/hyprland/` Lua config files (mkOutOfStoreSymlink), stylix-generated `hypr/colors.lua`, hyprlock, hyprpolkitagent. Script: `rofi-launch`.
 - **`vscode.nix`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (fenris only)
 - **`_desktop/waybar/`** — bottom bar (stylix colors, playerctl via `scrolling-playerctl`), sops secret `openrouter` (EnvironmentFile after `sops-nix.service`).
 - **`_desktop/rofi/`** — custom adi1090x type-1 style-10 theme, recolored with stylix colors.
