@@ -16,6 +16,7 @@
       {
         position = "bottom";
         layer = "bottom";
+        margin = "4";
         modules-left = [
           "hyprland/workspaces"
           "custom/media"
@@ -101,7 +102,7 @@
         @define-color base0F      #${c.base0F};
 
         window#waybar {
-            border-top: 1px solid @base01;
+            border: 1px solid @base01;
         }
 
         window#waybar, tooltip {
@@ -152,6 +153,7 @@
             border-top: 1px solid @base01;
             background-color: @base01;
             color: @base04;
+            margin: 2px;
         }
 
         #workspaces button.active {

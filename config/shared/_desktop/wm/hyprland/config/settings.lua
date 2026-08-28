@@ -2,8 +2,8 @@ local C = require("colors")
 
 hl.config({
 	general = {
-		gaps_in = 0,
-		gaps_out = { bottom = 1 },
+		gaps_in = 2,
+		gaps_out = { bottom = 0, left = 4, right = 4, top = 4 },
 		border_size = 1,
 		col = {
 			active_border = C.base04,
@@ -16,8 +16,8 @@ hl.config({
 	decoration = {
 		rounding = 0,
 		rounding_power = 1.0,
-		active_opacity = 1.0,
-		inactive_opacity = 1.0,
+		active_opacity = 0.99,
+		inactive_opacity = 0.97,
 		dim_special = 0.6,
 		blur = {
 			enabled = true,
@@ -25,7 +25,7 @@ hl.config({
 			passes = 4,
 			special = true,
 		},
-		shadow = { enabled = true },
+		shadow = { enabled = false },
 	},
 	animations = { enabled = false },
 	input = {
