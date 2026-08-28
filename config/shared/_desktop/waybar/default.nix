@@ -87,24 +87,25 @@
         c = config.lib.stylix.colors;
       in
       ''
-        @define-color base00 #${c.base00};
-        @define-color base01 #${c.base01};
-        @define-color base03 #${c.base03};
-        @define-color base04 #${c.base04};
-        @define-color base05 #${c.base05};
-        @define-color base08 #${c.base08};
-        @define-color base0A #${c.base0A};
-        @define-color base0D #${c.base0D};
-        @define-color base0C #${c.base0C};
-        @define-color base0E #${c.base0E};
-        @define-color base0F #${c.base0F};
+        @define-color base00      #${c.base00};
+        @define-color base00Alpha alpha(#${c.base00}, 0.67);
+        @define-color base01      #${c.base01};
+        @define-color base03      #${c.base03};
+        @define-color base04      #${c.base04};
+        @define-color base05      #${c.base05};
+        @define-color base08      #${c.base08};
+        @define-color base0A      #${c.base0A};
+        @define-color base0D      #${c.base0D};
+        @define-color base0C      #${c.base0C};
+        @define-color base0E      #${c.base0E};
+        @define-color base0F      #${c.base0F};
 
         window#waybar {
             border-top: 1px solid @base01;
         }
 
         window#waybar, tooltip {
-            background: @base00;
+            background: @base00Alpha;
             color: @base05;
         }
 

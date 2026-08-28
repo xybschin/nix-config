@@ -6,7 +6,7 @@
 
 let
   c = config.lib.stylix.colors;
-  rgba = hex: "#${hex}FF";
+  rgba = hex: alpha: "#${hex}${alpha}";
 
   powermenu = pkgs.writeShellScript "rofi-powermenu" ''
     shutdown=" Shutdown"
@@ -51,15 +51,16 @@ let
         font:                        "${config.stylix.fonts.monospace.name} Bold 11";
 
         /* Muted Koda Dark Palette */
-        background:                  ${rgba c.base00}; /* Pure Dark Base */
-        background-alt:              ${rgba c.base01}; /* Muted Surface Gray */
-        selected-muted:              ${rgba c.base02}; /* Soft Highlight Surface */
-        foreground:                  ${rgba c.base04}; /* Low-contrast Text */
-        foreground-emphasis:         ${rgba c.base06}; /* Soft Bright Text */
-        accent-muted:                ${rgba c.base0A}; /* Warm Muted Sand/Gold */
-        urgent:                      ${rgba c.base08}; /* Soft Red */
+        background:                  ${rgba c.base00 "AA"}; 
+        background-alt:              ${rgba c.base01 "AA"}; 
+        selected-muted:              ${rgba c.base02 "1A"}; 
+        foreground:                  ${rgba c.base04 "FF"}; 
+        foreground-emphasis:         ${rgba c.base06 "FF"}; 
+        accent-muted:                ${rgba c.base0A "FF"}; 
+        urgent:                      ${rgba c.base08 "FF"}; 
+        border:                      ${rgba c.base01 "11"}; 
 
-        border-colour:               var(background-alt);
+        border-colour:               var(border);
         handle-colour:               var(accent-muted);
         background-colour:           var(background);
         foreground-colour:           var(foreground);
@@ -100,7 +101,7 @@ let
         enabled:                     true;
         margin:                      0px;
         padding:                     0px;
-        border:                      2px solid;
+        border:                      12px solid;
         border-radius:               0px;
         border-color:                var(border-colour);
         cursor:                      "default";
@@ -113,8 +114,6 @@ let
         spacing:                     10px;
         margin:                      0px;
         padding:                     20px;
-        border:                      0px solid;
-        border-color:                var(border-colour);
         background-color:            transparent;
         children:                    [ "inputbar", "message", "custombox" ];
     }
@@ -124,8 +123,9 @@ let
         spacing:                     10px;
         background-color:            var(background-colour);
         text-color:                  var(foreground-colour);
-        orientation:                 horizontal;
+        orientation:                 vertical;
         children:                    [ "mode-switcher", "listview" ];
+        background-color:            transparent;
     }
 
     /*****----- Inputbar -----*****/
@@ -137,14 +137,14 @@ let
         border:                      0px solid;
         border-radius:               0px;
         border-color:                var(border-colour);
-        background-color:            var(alternate-background);
+        background-color:            transparent;
         text-color:                  var(foreground-colour);
         children:                    [ "textbox-prompt-colon", "entry" ];
     }
 
     prompt {
         enabled:                     true;
-        background-color:            inherit;
+        background-color:            transparent;
         text-color:                  inherit;
     }
     textbox-prompt-colon {
@@ -158,7 +158,7 @@ let
     entry {
         enabled:                     true;
         padding:                     5px 0px;
-        background-color:            inherit;
+        background-color:            transparent;
         text-color:                  inherit;
         cursor:                      text;
         placeholder:                 "Search...";
@@ -226,14 +226,14 @@ let
         margin:                      0px;
         padding:                     10px;
         border:                      0px solid;
-        border-radius:               0px;
+        border-radius:               8px;
         border-color:                var(border-colour);
         background-color:            transparent;
         text-color:                  var(foreground-colour);
         cursor:                      pointer;
     }
     element normal.normal {
-        background-color:            var(normal-background);
+        background-color:            transparent;
         text-color:                  var(normal-foreground);
     }
     element normal.urgent {
@@ -257,7 +257,7 @@ let
         text-color:                  var(selected-active-foreground);
     }
     element alternate.normal {
-        background-color:            var(alternate-normal-background);
+        background-color:            transparent;
         text-color:                  var(alternate-normal-foreground);
     }
     element alternate.urgent {
@@ -287,29 +287,29 @@ let
     mode-switcher {
         enabled:                     true;
         expand:                      false;
-        orientation:                 vertical;
+        orientation:                 horizontal;
         spacing:                     10px;
         margin:                      0px;
-        padding:                     0px 0px;
+        padding:                     10px;
         border:                      0px solid;
-        border-radius:               0px;
+        border-radius:               9px;
         border-color:                var(border-colour);
         background-color:            transparent;
         text-color:                  var(foreground-colour);
     }
     button {
-        padding:                     0px 20px 0px 20px;
+        padding:                     8px 0px 8px 0px;
         border:                      0px solid;
-        border-radius:               0px;
+        border-radius:               8px;
         border-color:                var(border-colour);
-        background-color:            var(alternate-background);
+        background-color:            var(background);
         text-color:                  inherit;
-        vertical-align:              0.5;
-        horizontal-align:            0.0;
+        vertical-align:              0.0;
+        horizontal-align:            0.5;
         cursor:                      pointer;
     }
     button selected {
-        background-color:            var(selected-normal-background);
+        background-color:            var(alternate-background);
         text-color:                  var(selected-normal-foreground);
     }
 
