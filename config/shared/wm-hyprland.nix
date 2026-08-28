@@ -15,6 +15,7 @@
     {
       imports = [
         ./_desktop/hyprpaper
+        ./_desktop/quickshell
         ./_desktop/wm/hyprland/hyprlock.nix
       ];
 
