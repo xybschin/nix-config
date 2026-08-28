@@ -1,7 +1,7 @@
 { ... }:
 {
-  # Stylix sets wallpaper path via stylix.image, but we need to enable hyprpaper
-  # since stylix's hyprland target is disabled (Lua config)
+  # Only runs the daemon; hyprpaper.conf is managed by hand, not by Nix
+  # (home-manager only writes it when services.hyprpaper.settings is set).
   services.hyprpaper.enable = true;
 
   home.file.wallpapers.source = ./wallpapers;

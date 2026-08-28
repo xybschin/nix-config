@@ -58,7 +58,8 @@
 
         targets = {
           hyprland.enable = false;
-          hyprpaper.enable = true;
+          # Wallpaper config is managed manually in ~/.config/hypr/hyprpaper.conf
+          hyprpaper.enable = false;
         };
       };
 
