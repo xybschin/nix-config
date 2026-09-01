@@ -21,7 +21,7 @@ hl.config({
 		dim_special = 0.6,
 		blur = {
 			enabled = true,
-			size = 1,
+			size = 5,
 			passes = 4,
 			special = true,
 		},

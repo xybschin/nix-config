@@ -51,14 +51,14 @@ let
         font:                        "${config.stylix.fonts.monospace.name} Bold 11";
 
         /* Muted Koda Dark Palette */
-        background:                  ${rgba c.base00 "AA"}; 
-        background-alt:              ${rgba c.base01 "AA"}; 
+        background:                  ${rgba c.base00 "CC"}; 
+        background-alt:              ${rgba c.base01 "CC"}; 
         selected-muted:              ${rgba c.base02 "1A"}; 
         foreground:                  ${rgba c.base04 "FF"}; 
         foreground-emphasis:         ${rgba c.base06 "FF"}; 
         accent-muted:                ${rgba c.base0A "FF"}; 
         urgent:                      ${rgba c.base08 "FF"}; 
-        border:                      ${rgba c.base01 "11"}; 
+        border:                      ${rgba c.base01 "AA"}; 
 
         border-colour:               var(border);
         handle-colour:               var(accent-muted);
@@ -101,7 +101,7 @@ let
         enabled:                     true;
         margin:                      0px;
         padding:                     0px;
-        border:                      12px solid;
+        border:                      1px solid;
         border-radius:               0px;
         border-color:                var(border-colour);
         cursor:                      "default";

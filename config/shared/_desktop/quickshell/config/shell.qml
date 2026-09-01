@@ -9,8 +9,9 @@ ShellRoot {
         applyProcess.running = false
         applyProcess.command = [
             "bash", "-c",
+            `mkdir -p "$HOME/.config/hypr" && ` +
             `hyprctl hyprpaper wallpaper ",${path}" && ` +
-            `printf "preload = %s\\nwallpaper = ,%s\\n" "${path}" "${path}" > "$HOME/.config/hypr/hyprpaper.conf"`
+            `printf 'wallpaper {\\n  monitor =\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${path}" > "$HOME/.config/hypr/hyprpaper.conf"`
         ]
         applyProcess.running = true
     }
@@ -86,7 +87,7 @@ ShellRoot {
 
         implicitHeight: 170
         color: "transparent"
-        visible: true
+        visible: false
 
         exclusiveZone: visible ? implicitHeight : 0
 
@@ -102,7 +103,7 @@ ShellRoot {
                 anchors.bottomMargin: 0
                 anchors.topMargin: 2
                 orientation: ListView.Horizontal
-                spacing: 1
+                spacing: 2
                 clip: true
                 model: bar.wallpapers
 
@@ -127,16 +128,16 @@ ShellRoot {
                     id: card
                     required property var modelData
 
-                    width: height * 16 / 9
+                    width: Math.round(height * 16 / 9)
                     height: wallpaperList.height
                     color: "#101010"
-                    border.width: 10
+                    border.width: 1
                     border.color: hoverArea.containsMouse ? "#777777" : "#272727"
-                    clip: true
 
                     Image {
                         anchors.fill: parent
-                        anchors.margins: 1
+                        anchors.margins: card.border.width
+                        clip: true  
                         source: (card.modelData && card.modelData.original) ? "file://" + card.modelData.original : ""
                         fillMode: Image.PreserveAspectCrop
                         asynchronous: true
