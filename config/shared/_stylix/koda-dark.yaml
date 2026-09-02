@@ -1,18 +1,18 @@
 scheme: "Koda Dark"
 author: "oskarnurm"
-base00: "101010" # Background (bg)
-base01: "272727" # Selection / Lighter Background (line)
-base02: "474747" # UI Elements / Secondary (dim)
-base03: "50585d" # Comments, Line Numbers (comment)
-base04: "777777" # Dark Foreground / Muted Operators (keyword/type/operator)
-base05: "ffffff" # Main Code / Regular Text (fg)
-base06: "d9ba73" # Accent Foreground (const/warning)
-base07: "ffffff" # High Contrast / Focus (border/emphasis/func/string)
-base08: "b0b0b0" # Variables -> Main FG
-base09: "d9ba73" # Numbers / Constants -> Warm Accent
-base0A: "d9ba73" # Classes / Types -> Warm Accent
-base0B: "ffffff" # Strings -> High Contrast White
-base0C: "777777" # Regex / Escapes -> Neutral Gray
-base0D: "ffffff" # Functions / Methods -> High Contrast White
-base0E: "777777" # Keywords / Control -> Neutral Gray
-base0F: "ff7676" # Errors / Warnings Only -> Soft Red
+base00: "101010" # #101010 Background (bg)
+base01: "272727" # #272727 Selection / Lighter Background (line)
+base02: "474747" # #474747 UI Elements / Secondary (dim)
+base03: "50585d" # #50585d Comments, Line Numbers (comment)
+base04: "777777" # #777777 Dark Foreground / Muted Operators (keyword/type/operator)
+base05: "ffffff" # #ffffff Main Code / Regular Text (fg)
+base06: "d9ba73" # #d9ba73 Accent Foreground (const/warning)
+base07: "ffffff" # #ffffff High Contrast / Focus (border/emphasis/func/string)
+base08: "b0b0b0" # #b0b0b0 Variables -> Main FG
+base09: "d9ba73" # #d9ba73 Numbers / Constants -> Warm Accent
+base0A: "d9ba73" # #d9ba73 Classes / Types -> Warm Accent
+base0B: "ffffff" # #ffffff Strings -> High Contrast White
+base0C: "777777" # #777777 Regex / Escapes -> Neutral Gray
+base0D: "ffffff" # #ffffff Functions / Methods -> High Contrast White
+base0E: "777777" # #777777 Keywords / Control -> Neutral Gray
+base0F: "ff7676" # #ff7676 Errors / Warnings Only -> Soft Red

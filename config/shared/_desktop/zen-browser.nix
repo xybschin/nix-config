@@ -1,10 +1,13 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
   ...
 }:
 let
+  c = config.lib.stylix.colors.withHashtag;
+
   pkgsUnfree = import inputs.nixpkgs {
     inherit (pkgs.stdenv.hostPlatform) system;
     config.allowUnfree = true;
@@ -22,10 +25,7 @@ in
     enable = true;
     profileNames = [ "Default" ];
     colors.override = {
-      # Interactive accent (borders/links/icon fills/urlbar selection): muted gray,
-      # matching hyprland's active_border (base04) and waybar's active-workspace fill
-      # (base0C), instead of the scheme's pure-white base0D.
-      base0D-hex = "777777";
+      base02-hex = c.base01;
     };
   };
 
@@ -73,6 +73,32 @@ in
           };
         }
       ];
+
+      userChrome = lib.mkAfter ''
+        #urlbar[zen-floating-urlbar="true"] {
+          background: ${c.base00} !important;
+        }
+
+        #urlbar[zen-floating-urlbar="true"] .urlbar-background {
+          background: ${c.base00} !important;
+        }
+
+        .urlbarView-row {
+          &[selected] {
+            --zen-selected-bg: ${c.base01} !important; 
+            --zen-selected-color: ${c.base05};
+            background-color: ${c.base01} !important;
+          }
+        }
+
+        .tab-background {
+          &:is([selected], [multiselected]) {
+            background-color: ${c.base01} !important;
+            outline-color: var(--tab-selected-outline-color);
+            box-shadow: var(--tab-box-shadow-selected);
+          }
+        }
+      '';
     };
   };
 }
