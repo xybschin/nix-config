@@ -17,9 +17,9 @@
 
         icons = {
           enable = true;
-          package = pkgs.kdePackages.breeze-icons;
-          light = "breeze";
-          dark = "breeze";
+          package = pkgs.whitesur-icon-theme;
+          light = "WhiteSur";
+          dark = "WhiteSur";
         };
 
         image = ./_desktop/hyprpaper/wallpapers/single/nix-wallpaper-nineish-dark-gray.png;

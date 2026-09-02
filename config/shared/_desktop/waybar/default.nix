@@ -150,10 +150,13 @@
         }
 
         #workspaces button {
-            border-top: 1px solid @base01;
             background-color: @base01;
             color: @base04;
-            margin: 2px;
+            margin: 2px 0px 2px 1px;
+        }
+
+        #workspaces button:nth-child(1) {
+            margin: 2px 0px 2px 2px;
         }
 
         #workspaces button.active {
@@ -176,10 +179,6 @@
 
   xdg.configFile."waybar/scripts".source = config.lib.file.mkOutOfStoreSymlink ./scripts;
 
-  # OpenRouter API key for the openrouter-credits widget. Encrypted via sops
-  # and decrypted at activation by the sops-nix user service. waybar must
-  # order after sops-nix and read the key via EnvironmentFile (not
-  # environment.d, which races with sops-nix decryption).
   sops.gnupg.home = "${config.home.homeDirectory}/.gnupg";
   sops.secrets.openrouter = {
     sopsFile = ../../../../secrets/openrouter.env;
