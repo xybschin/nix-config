@@ -357,5 +357,8 @@ in
     enable = true;
     package = pkgs.rofi;
     theme = "koda";
+    extraConfig = {
+      terminal = "ghostty";
+    };
   };
 }
