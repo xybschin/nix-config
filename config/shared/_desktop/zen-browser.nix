@@ -21,6 +21,12 @@ in
   stylix.targets.zen-browser = {
     enable = true;
     profileNames = [ "Default" ];
+    colors.override = {
+      # Interactive accent (borders/links/icon fills/urlbar selection): muted gray,
+      # matching hyprland's active_border (base04) and waybar's active-workspace fill
+      # (base0C), instead of the scheme's pure-white base0D.
+      base0D-hex = "777777";
+    };
   };
 
   programs.zen-browser = {
