@@ -33,6 +33,11 @@
         "hyprland/workspaces" = {
           all-outputs = true;
           warp-on-scroll = false;
+          persistent-workspaces = [
+            1
+            2
+            3
+          ];
         };
         clock = {
           format = "{:%Y-%d-%m %H:%M}";
