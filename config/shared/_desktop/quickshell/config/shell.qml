@@ -1,24 +1,46 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Wayland
+import Quickshell.Hyprland
 
 ShellRoot {
     id: root
 
-    function setWallpaper(path) {
+    // Empty string means the bar is closed. Otherwise holds the name of the
+    // Hyprland monitor the bar is currently open on.
+    property string activeMonitor: ""
+    property var wallpapers: []
+    // Monitor name -> wallpaper path, so each display can keep its own pick.
+    property var monitorWallpapers: ({})
+
+    function setWallpaper(path, monitor) {
+        if (!monitor || monitor.length === 0) return
+
+        root.monitorWallpapers = Object.assign({}, root.monitorWallpapers, { [monitor]: path })
+
+        let script = `mkdir -p "$HOME/.config/hypr" && printf '' > "$HOME/.config/hypr/hyprpaper.conf"`
+        for (const mon in root.monitorWallpapers) {
+            const p = root.monitorWallpapers[mon]
+            script += ` && printf 'wallpaper {\\n  monitor = ${mon}\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${p}" >> "$HOME/.config/hypr/hyprpaper.conf"`
+        }
+        script += ` && hyprctl hyprpaper wallpaper "${monitor},${path}"`
+
         applyProcess.running = false
-        applyProcess.command = [
-            "bash", "-c",
-            `mkdir -p "$HOME/.config/hypr" && ` +
-            `hyprctl hyprpaper wallpaper ",${path}" && ` +
-            `printf 'wallpaper {\\n  monitor =\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${path}" > "$HOME/.config/hypr/hyprpaper.conf"`
-        ]
+        applyProcess.command = ["bash", "-c", script]
         applyProcess.running = true
     }
 
     function refreshWallpapers() {
         listProcess.running = false
         listProcess.running = true
+    }
+
+    function openBar(monitorName) {
+        root.activeMonitor = (monitorName && monitorName.length > 0)
+            ? monitorName
+            : (Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : "")
+        root.refreshWallpapers()
     }
 
     Process {
@@ -29,17 +51,19 @@ ShellRoot {
         target: "wallpaperBar"
 
         function toggle(): void {
-            bar.visible = !bar.visible
-            if (bar.visible) root.refreshWallpapers()
+            if (root.activeMonitor.length > 0) {
+                root.activeMonitor = ""
+            } else {
+                root.openBar("")
+            }
         }
 
         function show(): void {
-            bar.visible = true
-            root.refreshWallpapers()
+            root.openBar("")
         }
 
         function hide(): void {
-            bar.visible = false
+            root.activeMonitor = ""
         }
     }
 
@@ -58,7 +82,7 @@ ShellRoot {
                 const lines = text.split("\n").map(s => s.trim()).filter(s => s.length > 0)
                 const parsed = lines.map(f => ({ original: f }))
                 if (parsed.length > 0) {
-                    bar.wallpapers = parsed
+                    root.wallpapers = parsed
                 } else {
                     console.log("wallpaperBar: scan returned 0 results, keeping previous list")
                 }
@@ -74,98 +98,109 @@ ShellRoot {
         }
     }
 
-    PanelWindow {
-        id: bar
+    Variants {
+        model: Quickshell.screens
 
-        property var wallpapers: []
+        PanelWindow {
+            id: bar
+            required property var modelData
+            screen: modelData
 
-        anchors {
-          left: true
-          right: true
-          bottom: true
-        }
+            property bool active: root.activeMonitor === modelData.name
 
-        implicitHeight: 170
-        color: "transparent"
-        visible: false
+            anchors {
+              left: true
+              right: true
+              bottom: true
+            }
 
-        exclusiveZone: visible ? implicitHeight : 0
-
-        Rectangle {
-            anchors.fill: parent
+            implicitHeight: 170
             color: "transparent"
+            visible: active
 
-            ListView {
-                id: wallpaperList
+            exclusiveZone: active ? implicitHeight : 0
+
+            WlrLayershell.keyboardFocus: active ? WlrLayershell.OnDemand : WlrLayershell.None
+
+            Rectangle {
                 anchors.fill: parent
-                anchors.leftMargin: 4
-                anchors.rightMargin: 4
-                anchors.bottomMargin: 0
-                anchors.topMargin: 2
-                orientation: ListView.Horizontal
-                spacing: 2
-                clip: true
-                model: bar.wallpapers
+                color: "transparent"
+                focus: bar.active
 
-                boundsBehavior: Flickable.StopAtBounds
-                boundsMovement: Flickable.StopAtBounds
+                Keys.onEscapePressed: root.activeMonitor = ""
 
-                WheelHandler {
-                    acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                    onWheel: event => {
-                        let maxScroll = Math.max(0, wallpaperList.contentWidth - wallpaperList.width)
-                        wallpaperList.contentX = Math.max(
-                            0,
-                            Math.min(
-                                maxScroll,
-                                wallpaperList.contentX - event.angleDelta.y
+                ListView {
+                    id: wallpaperList
+                    anchors.fill: parent
+                    anchors.leftMargin: 4
+                    anchors.rightMargin: 4
+                    anchors.bottomMargin: 0
+                    anchors.topMargin: 2
+                    orientation: ListView.Horizontal
+                    spacing: 2
+                    clip: true
+                    model: root.wallpapers
+
+                    boundsBehavior: Flickable.StopAtBounds
+                    boundsMovement: Flickable.StopAtBounds
+
+                    WheelHandler {
+                        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                        onWheel: event => {
+                            let maxScroll = Math.max(0, wallpaperList.contentWidth - wallpaperList.width)
+                            wallpaperList.contentX = Math.max(
+                                0,
+                                Math.min(
+                                    maxScroll,
+                                    wallpaperList.contentX - event.angleDelta.y
+                                )
                             )
-                        )
-                    }
-                }
-
-                delegate: Rectangle {
-                    id: card
-                    required property var modelData
-
-                    width: Math.round(height * 16 / 9)
-                    height: wallpaperList.height
-                    color: "#101010"
-                    border.width: 1
-                    border.color: hoverArea.containsMouse ? "#777777" : "#272727"
-
-                    Image {
-                        anchors.fill: parent
-                        anchors.margins: card.border.width
-                        clip: true  
-                        source: (card.modelData && card.modelData.original) ? "file://" + card.modelData.original : ""
-                        fillMode: Image.PreserveAspectCrop
-                        asynchronous: true
-                        smooth: true
-                        cache: true
-                        sourceSize.width: 320
-                        sourceSize.height: 180
+                        }
                     }
 
-                    MouseArea {
-                        id: hoverArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: {
-                            if (card.modelData && card.modelData.original) {
-                              root.setWallpaper(card.modelData.original)
-                              bar.visible = false
+                    delegate: Rectangle {
+                        id: card
+                        required property var modelData
+
+                        width: Math.round(height * 16 / 9)
+                        height: wallpaperList.height
+                        color: "#101010"
+                        border.width: 1
+                        border.color: hoverArea.containsMouse ? "#777777" : "#272727"
+
+                        Image {
+                            anchors.fill: parent
+                            anchors.margins: card.border.width
+                            clip: true
+                            source: (card.modelData && card.modelData.original) ? "file://" + card.modelData.original : ""
+                            fillMode: Image.PreserveAspectCrop
+                            asynchronous: true
+                            smooth: true
+                            cache: true
+                            sourceSize.width: 320
+                            sourceSize.height: 180
+                        }
+
+                        MouseArea {
+                            id: hoverArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: {
+                                if (card.modelData && card.modelData.original) {
+                                  root.setWallpaper(card.modelData.original, bar.modelData.name)
+                                  root.activeMonitor = ""
+                                }
                             }
                         }
                     }
-                }
 
-                Text {
-                    anchors.centerIn: parent
-                    visible: wallpaperList.count === 0
-                    text: "No wallpapers found in ~/wallpapers/single"
-                    color: "#a6adc8"
+                    Text {
+                        anchors.centerIn: parent
+                        visible: wallpaperList.count === 0
+                        text: "No wallpapers found in ~/wallpapers/single"
+                        color: "#a6adc8"
+                    }
                 }
             }
         }
