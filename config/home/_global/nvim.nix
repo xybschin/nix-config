@@ -23,6 +23,8 @@ in
     lua-language-server
     cmake-language-server
     docker-language-server
+    typescript-language-server
+    typescript
 
     # Formatter
     nixfmt

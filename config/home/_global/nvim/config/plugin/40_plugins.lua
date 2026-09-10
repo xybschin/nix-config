@@ -57,6 +57,8 @@ now_if_args(function()
 		"lua",
 		"vimdoc",
 		"markdown",
+		"typescript",
+		"tsx",
 		-- Add here more languages with which you want to use tree-sitter
 		-- To see available languages:
 		-- - Execute `:=require('nvim-treesitter').get_available()`
@@ -113,6 +115,7 @@ now_if_args(function()
 		"nil_ls",
 		"docker_language_server",
 		"gols",
+		"ts_ls",
 	})
 end)
 
@@ -139,6 +142,10 @@ later(function()
 			sh = { "beautysh" },
 			yaml = { "yamlfmt" },
 			json = { "prettier" },
+			javascript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescript = { "prettier" },
+			typescriptreact = { "prettier" },
 			go = { "gofmt", "goimports" },
 			nix = { "nixfmt" },
 		},
