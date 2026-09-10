@@ -98,6 +98,18 @@ in
             box-shadow: var(--tab-box-shadow-selected);
           }
         }
+
+        .urlbar-background {
+          #urlbar:not([breakout-extend]) & {
+            margin: 3px !important;
+          }
+        }
+
+        .urlbar-background {
+          :root:not([zen-single-toolbar="true"]) & {
+            border-radius: 6px !important;
+          }
+        }
       '';
     };
   };
