@@ -112,7 +112,7 @@
         }
 
         window#waybar, tooltip {
-            background: @base00Alpha;
+            background: @base00;
             color: @base05;
         }
 
