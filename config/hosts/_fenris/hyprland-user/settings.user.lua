@@ -31,7 +31,10 @@ hl.monitor({ output = "DP-3", disabled = true })
 -- Per-profile gap overrides
 -- ---------------------------------------------------------------------------
 if profile == "profile1" then
-	hl.config({ general = { gaps_out = { left = 2 } } })
+	-- DP-2/HDMI-A-1 are independent outputs (PBP ultrawide); gaps_out.right (DP-2) +
+	-- gaps_out.left (HDMI-A-1) sum at the seam, so both must equal gaps_in for the
+	-- seam to match the visible gap between tiled windows (2 * gaps_in).
+	hl.config({ general = { gaps_out = { top = 4, right = 2, bottom = 0, left = 2 } } })
 end
 
 -- ---------------------------------------------------------------------------
