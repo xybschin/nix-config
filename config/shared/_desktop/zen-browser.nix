@@ -110,6 +110,49 @@ in
             border-radius: 6px !important;
           }
         }
+
+        :root[zen-single-toolbar="true"]:not([customizing]) {
+          & #zen-appcontent-navbar-wrapper {
+            :root[zen-has-bookmarks] &, &[should-hide="true"] {
+              @media -moz-pref("zen.view.hide-window-controls") {
+                &:not([zen-has-hover="true"]):not([has-popup-menu]):not([zen-compact-mode-active]) {
+                  & .titlebar-buttonbox-container {
+                    max-height: 100% !important;
+                  }
+                  height: var(--zen-toolbar-height) !important;
+                  opacity: 1 !important;
+                }
+              }
+            }
+          }
+        }
+
+        :root:not([inDOMFullscreen="true"]):not([chromehidden~="location"]):not([chromehidden~="toolbar"]) {
+          @media (not -moz-pref("zen.view.shift-down-site-on-hover")) and -moz-pref("zen.view.hide-window-controls") {
+            & .browserSidebarContainer:is(.deck-selected, [zen-split="true"]) .browserContainer {
+              #tabbrowser-tabpanels[has-toolbar-hovered="true"] & {
+                margin-top: 0 !important;
+              }
+            }
+          }
+        }
+
+        .bookmark-item {
+          padding: 4px 8px !important;
+        }
+
+        .bookmark-item > .toolbarbutton-icon {
+          display: none;
+        }
+
+        .bookmark-item > .toolbarbutton-text {
+          text-transform: lowercase;
+          font-size: 14px;
+        }
+
+        #PersonalToolbar {
+          padding-left: 0px !important;
+        }
       '';
     };
   };

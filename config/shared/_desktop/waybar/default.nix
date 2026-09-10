@@ -16,7 +16,7 @@
       {
         position = "bottom";
         layer = "bottom";
-        margin = "4 2";
+        margin = "2";
         modules-left = [
           "hyprland/workspaces"
           "custom/media"
@@ -33,11 +33,11 @@
         "hyprland/workspaces" = {
           all-outputs = true;
           warp-on-scroll = false;
-          persistent-workspaces = [
-            1
-            2
-            3
-          ];
+          persistent-workspaces = {
+            "1" = [ ];
+            "2" = [ ];
+            "3" = [ ];
+          };
         };
         clock = {
           format = "{:%Y-%d-%m %H:%M}";
@@ -99,6 +99,7 @@
         @define-color base03      #${c.base03};
         @define-color base04      #${c.base04};
         @define-color base05      #${c.base05};
+        @define-color base07      #${c.base07};
         @define-color base08      #${c.base08};
         @define-color base0A      #${c.base0A};
         @define-color base0D      #${c.base0D};

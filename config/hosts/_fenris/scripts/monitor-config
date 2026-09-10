@@ -63,6 +63,7 @@ main() {
 
     systemctl --user restart hyprpaper.service
     systemctl --user restart waybar.service
+    hyprctl reload
 }
 
 main "$@"
