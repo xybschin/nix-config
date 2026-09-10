@@ -23,8 +23,10 @@ in
     lua-language-server
     cmake-language-server
     docker-language-server
-
-    # Formatter
+    typescript-language-server
+    tailwindcss-language-server
+    tree-sitter
+    gcc
     nixfmt
     prettier
     beautysh
