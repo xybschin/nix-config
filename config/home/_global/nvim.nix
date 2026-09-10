@@ -24,9 +24,9 @@ in
     cmake-language-server
     docker-language-server
     typescript-language-server
-    typescript
-
-    # Formatter
+    tailwindcss-language-server
+    tree-sitter
+    gcc
     nixfmt
     prettier
     beautysh

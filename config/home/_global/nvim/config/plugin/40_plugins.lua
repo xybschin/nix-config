@@ -57,8 +57,10 @@ now_if_args(function()
 		"lua",
 		"vimdoc",
 		"markdown",
+		-- These need 'tree-sitter' CLI + a C compiler to build (see nvim.nix)
 		"typescript",
 		"tsx",
+		"css",
 		-- Add here more languages with which you want to use tree-sitter
 		-- To see available languages:
 		-- - Execute `:=require('nvim-treesitter').get_available()`
@@ -116,6 +118,7 @@ now_if_args(function()
 		"docker_language_server",
 		"gols",
 		"ts_ls",
+		"tailwindcss",
 	})
 end)
 
