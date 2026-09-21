@@ -1,18 +1,23 @@
--- User-specific window and layer rules for gaming
+local function slugify(str)
+	return str:lower():gsub("%s+", "-")
+end
 
--- Game-specific rules
-hl.window_rule({
-	name = "world-of-warcraft",
-	match = { title = "World of Warcraft" },
-	border_size = 0,
-	float = false,
-})
+local function apply_game_window_rules(titles)
+	for _, title in ipairs(titles) do
+		hl.window_rule({
+			name = slugify(title),
+			match = { title = title },
+			border_size = 0,
+			float = false,
+			fullscreen = true,
+			workspace = "10",
+		})
+	end
+end
 
-hl.window_rule({
-	name = "diablo-iv",
-	match = { title = "Diablo IV" },
-	border_size = 0,
-	float = false,
+apply_game_window_rules({
+	"World of Warcraft",
+	"Diablo IV",
 })
 
 -- Feh image viewer: floating, centered, 75% size

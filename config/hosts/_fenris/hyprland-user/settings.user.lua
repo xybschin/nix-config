@@ -30,6 +30,7 @@ hl.monitor({ output = "DP-3", disabled = true })
 -- ---------------------------------------------------------------------------
 -- Workspace assignment
 -- ---------------------------------------------------------------------------
+local gaming_workspace = "10"
 if profile == "profile1" then
 	-- Odd workspaces on DP-2 (left), even on HDMI-A-1 (right)
 	for i = 1, 10 do
@@ -45,6 +46,7 @@ if profile == "profile1" then
 			})
 		end
 	end
+	hl.workspace_rule({ workspace = gaming_workspace, gaps_in = 0, gaps_out = 0, monitor = "DP-2" })
 else
 	local active = (profile == "profile2") and "DP-2" or "HDMI-A-1"
 	for i = 1, 10 do
@@ -53,4 +55,5 @@ else
 			monitor = active,
 		})
 	end
+	hl.workspace_rule({ workspace = gaming_workspace, gaps_in = 0, gaps_out = 0, monitor = active })
 end

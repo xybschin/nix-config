@@ -32,12 +32,17 @@
           "tray"
         ];
         "hyprland/workspaces" = {
+          format = "{icon}";
           all-outputs = true;
           warp-on-scroll = false;
           persistent-workspaces = {
             "1" = [ ];
             "2" = [ ];
             "3" = [ ];
+            "10" = [ ];
+          };
+          format-icons = {
+            "10" = "G";
           };
         };
         clock = {
