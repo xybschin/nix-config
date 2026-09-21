@@ -46,7 +46,7 @@
           };
         };
         clock = {
-          format = "{:%Y-%d-%m %H:%M}";
+          format = "{:%Y-%m-%d %H:%M}";
           format-alt = "{:%Y-%m-%d}";
         };
         cpu = {
@@ -118,7 +118,7 @@
         }
 
         window#waybar, tooltip {
-            background: @base00;
+            background: @base00Alpha;
             color: @base05;
         }
 
@@ -162,7 +162,6 @@
         }
 
         #workspaces button {
-            background-color: @base01;
             color: @base04;
             margin: 2px 0px 2px 1px;
         }
@@ -172,7 +171,6 @@
         }
 
         #workspaces button.active {
-            background-color: @base0C;
             color: @base07;
         }
 
