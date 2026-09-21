@@ -16,7 +16,8 @@
       {
         position = "bottom";
         layer = "bottom";
-        margin = "2";
+        margin = "0";
+        height = 48;
         modules-left = [
           "hyprland/workspaces"
           "custom/media"

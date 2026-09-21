@@ -33,12 +33,12 @@
 
         fonts = {
           sansSerif = {
-            package = pkgs.inter;
-            name = "Inter";
+            package = pkgs.segoe-ui;
+            name = "Segoe-UI";
           };
           serif = {
-            package = pkgs.inter;
-            name = "Inter";
+            package = pkgs.segoe-ui;
+            name = "Segoe-UI";
           };
           monospace = {
             package = pkgs.nerd-fonts.jetbrains-mono;

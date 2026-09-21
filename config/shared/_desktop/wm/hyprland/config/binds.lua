@@ -1,7 +1,7 @@
 local mainMod = "SUPER"
 
 -- Power controls
-hl.bind(mainMod .. " + CTRL + s", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'poweroff'"))
+hl.bind(mainMod .. " + CTRL + p", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'poweroff'"))
 hl.bind(mainMod .. " + CTRL + r", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'reboot'"))
 
 -- Window/Session actions

@@ -3,21 +3,6 @@
   inputs,
   ...
 }:
-let
-  segoe-ui = pkgs.stdenvNoCC.mkDerivation {
-    name = "segoe-ui";
-    src = pkgs.fetchFromGitHub {
-      owner = "mrbvrz";
-      repo = "segoe-ui-linux";
-      rev = "master";
-      sha256 = "sha256-0KXfNu/J1/OUnj0jeQDnYgTdeAIHcV+M+vCPie6AZcU=";
-    };
-    installPhase = ''
-      mkdir -p $out/share/fonts/truetype
-      cp -r $src/font/* $out/share/fonts/truetype/
-    '';
-  };
-in
 {
   home.packages = with pkgs; [
     segoe-ui

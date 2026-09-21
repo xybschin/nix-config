@@ -45,6 +45,8 @@ let
               };
               sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
               users.${host.username} = {
+                nixpkgs.overlays = [ inputs.self.overlays.default ];
+                nixpkgs.config.allowUnfree = true;
                 imports = homeModules host ++ [ (homeUser host) ];
               };
             };
