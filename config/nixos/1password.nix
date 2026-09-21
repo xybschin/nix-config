@@ -12,6 +12,7 @@
         text = ''
           zen-bin
           zen
+          brave
         '';
         mode = "0755";
       };

@@ -13,6 +13,7 @@
       "bluetooth"
       "boot"
       "1password"
+      "brave-browser"
       "gnome-keyring"
       "gaming"
       "razer"
