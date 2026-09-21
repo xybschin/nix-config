@@ -8,7 +8,7 @@ hl.bind(mainMod .. " + CTRL + r", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'rebo
 hl.bind(mainMod .. " + q", hl.dsp.window.close())
 hl.bind(mainMod .. " + f", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + t", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + m", hl.dsp.exit())
+hl.bind(mainMod .. " + m", hl.dsp.exec_cmd("loginctl terminate-user $USER"))
 
 -- Dwindle layout
 hl.bind(mainMod .. " + o", hl.dsp.layout("togglesplit"))
@@ -25,7 +25,7 @@ hl.bind(mainMod .. " + SHIFT + p", hl.dsp.exec_cmd("hyprpicker --autocopy"))
 -- Application shortcuts
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("ghostty"))
 hl.bind(mainMod .. " + r", hl.dsp.exec_cmd("rofi -show drun"))
-hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("ghostty -e ranger ~"))
+hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("nautilus"))
 hl.bind("CTRL + SHIFT + Space", hl.dsp.exec_cmd("1password --quick-access"))
 
 -- Special workspace
@@ -87,3 +87,5 @@ hl.bind(
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2%-"),
 	{ locked = true, repeating = true }
 )
+
+hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
