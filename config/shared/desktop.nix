@@ -12,6 +12,7 @@ in
       ./_desktop/waybar
       ./_desktop/font.nix
       ./_desktop/zen-browser.nix
+      ./_desktop/brave-browser.nix
       ./_desktop/rofi
       ./_desktop/wayland-env.nix
       ./_desktop/hyprpaper

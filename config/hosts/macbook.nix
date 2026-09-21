@@ -20,6 +20,7 @@
 
       homebrew.casks = [
         "zen-browser"
+        "brave-browser"
       ];
     };
 
