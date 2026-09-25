@@ -11,6 +11,7 @@ local function apply_game_window_rules(titles)
 			float = false,
 			fullscreen = true,
 			workspace = "10",
+			render_unfocused = true,
 		})
 	end
 end
