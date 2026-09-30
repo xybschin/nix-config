@@ -76,6 +76,25 @@ let
     bind ^A last-window
 
     bind z resize-pane -Z
+
+    bind-key -r S-Up    resize-pane -U 5
+    bind-key -r S-Down  resize-pane -D 5
+    bind-key -r S-Left  resize-pane -L 5
+    bind-key -r S-Right resize-pane -R 5
+
+    bind -T resize Escape switch-client -T root
+    bind -T resize Enter  switch-client -T root
+
+    set -s user-keys[0] "\e[96~"
+    set -s user-keys[1] "\e[97~"
+    set -s user-keys[2] "\e[98~"
+    set -s user-keys[3] "\e[99~"
+
+    bind-key -n User0 select-pane -L
+    bind-key -n User1 select-pane -D
+    bind-key -n User2 select-pane -U
+    bind-key -n User3 select-pane -R
+
     bind l refresh-client
 
     bind s split-window -v
