@@ -128,10 +128,10 @@
           "audio/mpeg" = "vlc.desktop";
           "audio/ogg" = "vlc.desktop";
           "audio/flac" = "vlc.desktop";
-          "text/html" = "zen-twilight.desktop";
-          "application/xhtml+xml" = "zen-twilight.desktop";
-          "x-scheme-handler/http" = "zen-twilight.desktop";
-          "x-scheme-handler/https" = "zen-twilight.desktop";
+          "text/html" = "brave-browser.desktop";
+          "application/xhtml+xml" = "brave-browser.desktop";
+          "x-scheme-handler/http" = "brave-browser.desktop";
+          "x-scheme-handler/https" = "brave-browser.desktop";
           "inode/directory" = "org.gnome.Nautilus.desktop";
         };
       };
