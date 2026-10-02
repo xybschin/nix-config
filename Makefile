@@ -11,6 +11,11 @@ darwin:
 home:
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1 home-manager switch --impure --flake .#$(user)@$(host)
 
+make up:
+	nix flake update
+	git add flake.lock
+	git commit -m "chore: bump dependencies"
+
 .PHONY: nixos darwin home clean-all
 
 clean-all:
