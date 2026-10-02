@@ -87,17 +87,3 @@ hl.bind(
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2%-"),
 	{ locked = true, repeating = true }
 )
-
-hl.plugin.load("/home/you/.local/share/hyprland/plugins/hypr-altswitch.so")
-hl.bind("ALT + Tab", function()
-	hl.plugin.altswitch.next()
-end)
-hl.bind("ALT + SHIFT + Tab", function()
-	hl.plugin.altswitch.prev()
-end)
-hl.bind("ALT + Alt_L", function()
-	hl.plugin.altswitch.commit()
-end, { release = true, non_consuming = true })
-hl.bind("ALT + Alt_R", function()
-	hl.plugin.altswitch.commit()
-end, { release = true, non_consuming = true })
