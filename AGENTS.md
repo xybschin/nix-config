@@ -108,7 +108,7 @@ When tackling a request:
 - **`common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, hyprland, xybschin), flakes, zsh, stateVersion 25.11, stylix overlays disabled
 - **`common-desktop`** — shared desktop infra: US keyboard, NetworkManager, polkit, zramSwap, gparted, gnumake, wl-clipboard
 - **`desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
-- **`gaming`** — Steam (gamemode), Lutris (openldap FHS fix), Discord, Spotify, wowup-cf, protonup-rs
+- **`gaming`** — Steam (gamemode), faugus-launcher (UMU-Launcher for Windows games, no FHS chroot), Discord, Spotify, wowup-cf. MangoHud comes from the `home.mangohud` feature, not here.
 - **`razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
 - **`logiops`** — LogiOps HID++ driver for Logitech devices; MX Master 3S: DPI=1000, SmartShift on (threshold 30), HiRes scroll (fenris only)
 - **`virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes (fenris only)
