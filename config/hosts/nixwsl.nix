@@ -75,6 +75,7 @@
         python3
         nodejs
         bun
+        dotnet-sdk_10
         (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
 
         # bd/beads issue tracker for AI-supervised coding workflows. Taken
