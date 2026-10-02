@@ -35,7 +35,9 @@
         enable = true;
         wslConf.automount.root = "/mnt";
         defaultUser = "dev";
-        interop.register = true;
+        # interop.register stays false: WSL2 already registers WSLInterop itself
+        # and makes /proc/sys/fs/binfmt_misc read-only, so re-registering makes
+        # systemd-binfmt.service fail on every switch.
       };
 
       services.logind.enable = true;
@@ -73,6 +75,7 @@
         python3
         nodejs
         bun
+        dotnet-sdk_10
         (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
 
         # bd/beads issue tracker for AI-supervised coding workflows. Taken
