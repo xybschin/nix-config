@@ -174,5 +174,5 @@ let
   '';
 in
 {
-  xdg.dataFile."rofi/themes/koda.rasi".text = theme;
+  xdg.dataFile."rofi/themes/koda-launcher.rasi".text = theme;
 }
