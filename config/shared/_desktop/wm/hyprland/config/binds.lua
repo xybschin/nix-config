@@ -56,6 +56,9 @@ end
 
 hl.bind(mainMod .. " + g", hl.dsp.focus({ workspace = "10" }))
 
+-- Back to the previously focused workspace
+hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
+
 -- Mouse bindings
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
