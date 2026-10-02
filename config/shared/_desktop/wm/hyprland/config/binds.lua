@@ -1,7 +1,7 @@
 local mainMod = "SUPER"
 
 -- Power controls
-hl.bind(mainMod .. " + CTRL + p", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'poweroff'"))
+hl.bind(mainMod .. " + CTRL + p", hl.dsp.exec_cmd("rofi-powermenu"))
 hl.bind(mainMod .. " + CTRL + r", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'reboot'"))
 
 -- Window/Session actions
@@ -24,7 +24,7 @@ hl.bind(mainMod .. " + SHIFT + p", hl.dsp.exec_cmd("hyprpicker --autocopy"))
 
 -- Application shortcuts
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("ghostty"))
-hl.bind(mainMod .. " + r", hl.dsp.exec_cmd("rofi -show drun"))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("rofi -show drun"))
 hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("nautilus"))
 hl.bind("CTRL + SHIFT + Space", hl.dsp.exec_cmd("1password --quick-access"))
 
@@ -88,4 +88,16 @@ hl.bind(
 	{ locked = true, repeating = true }
 )
 
-hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
+hl.plugin.load("/home/you/.local/share/hyprland/plugins/hypr-altswitch.so")
+hl.bind("ALT + Tab", function()
+	hl.plugin.altswitch.next()
+end)
+hl.bind("ALT + SHIFT + Tab", function()
+	hl.plugin.altswitch.prev()
+end)
+hl.bind("ALT + Alt_L", function()
+	hl.plugin.altswitch.commit()
+end, { release = true, non_consuming = true })
+hl.bind("ALT + Alt_R", function()
+	hl.plugin.altswitch.commit()
+end, { release = true, non_consuming = true })
