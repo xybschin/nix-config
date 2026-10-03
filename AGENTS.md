@@ -105,7 +105,7 @@ When tackling a request:
 | `macbook` | `aarch64-darwin` | `bjarne` | Apple Silicon MacBook (nix-darwin, homebrew, Touch ID sudo) |
 
 ### NixOS Features (`config/nixos/`)
-- **`common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, hyprland, xybschin), flakes, zsh, stateVersion 25.11, stylix overlays disabled
+- **`common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, xybschin), flakes, zsh, stateVersion 25.11, stylix overlays disabled
 - **`common-desktop`** — shared desktop infra: US keyboard, NetworkManager, polkit, zramSwap, gparted, gnumake, wl-clipboard
 - **`desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
 - **`gaming`** — Steam (gamemode), faugus-launcher (UMU-Launcher for Windows games, no FHS chroot), Discord, Spotify, wowup-cf. MangoHud comes from the `home.mangohud` feature, not here.
