@@ -33,10 +33,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-    };
-
     waybar-audio-control = {
       url = "github:xybschin/waybar-audio-control";
     };
