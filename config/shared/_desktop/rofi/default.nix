@@ -8,13 +8,18 @@ let
   rgba = hex: alpha: "#${hex}${alpha}";
   colors = ''
     * {
-        background:      ${rgba c.base00 "FF"};
-        background-alt:  ${rgba c.base01 "FF"};
-        foreground:      ${rgba c.base08 "FF"};
-        foreground-dim:  ${rgba c.base04 "FF"};
-        selected:        ${rgba c.base05 "FF"};
-        urgent:          ${rgba c.base0F "FF"};
-        active:          ${rgba c.base0A "FF"};
+        bg:          ${rgba c.base00 "55"};
+        bg-alt:      ${rgba c.base01 "88"};
+        fg:          ${rgba c.base08 "FF"};
+        fg-dim:      ${rgba c.base04 "FF"};
+        fg-selected: ${rgba c.base05 "AA"};
+        highlight:   ${rgba c.base05 "11"};
+        border:      ${rgba c.base01 "88"};
+        urgent:      ${rgba c.base0F "FF"};
+        active:      ${rgba c.base0A "FF"};
+        fg-bright:   ${rgba c.base05 "FF"};
+        fg-muted:    ${rgba c.base03 "FF"};
+        bg-surface:  ${rgba c.base02 "88"};
     }
   '';
 in

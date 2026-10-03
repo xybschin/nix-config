@@ -10,24 +10,11 @@ configuration {
   window-format:       "{w} · {c} · {t}";
 }
 
-* {
-    background:        ${rgba c.base00 "FF"};
-    background-dim:    ${rgba c.base01 "FF"};
-    foreground:        ${rgba c.base08 "FF"};
-    foreground-dim:    ${rgba c.base04 "FF"};
-    foreground-error:  ${rgba c.base0F "FF"};
-    foreground-alert:  ${rgba c.base0A "FF"};
-    accent:            ${rgba c.base05 "FF"};
-    border-color:      ${rgba c.base01 "FF"};
-
-    font: "JetBrainsMono Nerd Font 11";
-}
-
 window {
-    background-color:  @background;
+    background-color:  @bg;
     border:            1px;
-    border-color:      @border-color;
-    border-radius:     0px;
+    border-color:      @border;
+    border-radius:     14px;
     width:             700px;
     padding:           0px;
     location:          center;
@@ -35,21 +22,21 @@ window {
 }
 
 mainbox {
-    background-color:  @background;
+    background-color:  @bg;
     children:          [ mode-switcher-bar, inputbar, listview, message ];
     spacing:           0px;
 }
 
 mode-switcher {
-    background-color:  @background;
+    background-color:  @bg;
     border:            0px 0px 1px 0px;
-    border-color:      @border-color;
+    border-color:      @border;
     padding:           0px;
     spacing:           0px;
 }
 
 mode-switcher-bar {
-    background-color:  @background-dim;
+    background-color:  @bg-alt;
     fixed-height:      32px;
     children:          [ mode-switcher ];
     expand:            false;
@@ -57,22 +44,22 @@ mode-switcher-bar {
 
 button {
     border:            1px;
-    border-color:      @border-color;
-    background-color:  @background;
-    text-color:        @foreground;
+    border-color:      @border;
+    background-color:  @bg;
+    text-color:        @fg;
     padding:           2px 20px;
     expand:            false;
     font:              "JetBrainsMono Nerd Font 9";
 }
 
 button selected {
-    background-color:  @background-dim;
-    text-color:        @accent;
+    background-color:  @highlight;
+    text-color:        @fg-selected;
 }
 
 inputbar {
-    background-color:  @background;
-    text-color:        @foreground;
+    background-color:  @bg;
+    text-color:        @fg;
     padding:           16px 18px;
     spacing:           10px;
     children:          [ entry ];
@@ -80,20 +67,20 @@ inputbar {
 
 prompt {
     background-color:  transparent;
-    text-color:        @foreground-dim;
+    text-color:        @fg-dim;
 }
 
 entry {
     background-color:  transparent;
-    text-color:        @foreground-dim;
+    text-color:        @fg-dim;
     placeholder:       "Search...";
-    placeholder-color: @foreground-dim;
+    placeholder-color: @fg-dim;
 }
 
 listview {
-    background-color:  @background;
+    background-color:  @bg;
     border:            1px 0px 0px 0px;
-    border-color:      @border-color;
+    border-color:      @border;
     spacing:           4px;
     lines:             6;
     columns:           1;
@@ -103,21 +90,21 @@ listview {
 
 element {
     background-color:  transparent;
-    text-color:        @foreground;
+    text-color:        @fg;
     padding:           10px 12px;
     spacing:           10px;
     orientation:       horizontal;
 }
 
 element selected {
-    background-color:  @background-dim;
-    text-color:        @accent;
+    background-color:  @highlight;
+    text-color:        @fg-selected;
     border:            1px;
-    border-color:      @border-color;
+    border-color:      @border;
 }
 
 element-icon {
-    size:              24px;
+    size:              48px;
     background-color:  transparent;
     vertical-align:    0.5;
 }
@@ -135,22 +122,22 @@ message {
     padding:           0px;
     border:            0px solid;
     border-radius:     0px 0px 0px 0px;
-    border-color:      @border-color;
+    border-color:      @border;
     background-color:  transparent;
-    text-color:        @foreground;
+    text-color:        @fg;
 }
 
 textbox {
     padding:           12px;
     border:            0px solid;
     border-radius:     0px;
-    border-color:      @border-color;
-    background-color:  @background-dim;
-    text-color:        @foreground-alert;
+    border-color:      @border;
+    background-color:  @bg-alt;
+    text-color:        @active;
     vertical-align:    0.5;
     horizontal-align:  0.0;
     highlight:         none;
-    placeholder-color: @foreground;
+    placeholder-color: @fg;
     blink:             true;
     markup:            true;
 }
@@ -159,7 +146,7 @@ error-message {
     padding:           10px;
     border:            2px solid;
     border-radius:     0px;
-    border-color:      @border-color;
-    background-color:  @background;
-    text-color:        @foreground-error;
+    border-color:      @border;
+    background-color:  @bg;
+    text-color:        @urgent;
 }

@@ -7,7 +7,7 @@ configuration {
 * {
     /* Geometry */
     box-spacing:       14px;
-    box-margin:        20px;
+    box-margin:        8px;
     inputbar-spacing:  0px;
     list-spacing:      14px;
     general-padding:   10px 20px;
@@ -24,10 +24,10 @@ window {
     width:             620px;
     margin:            0px;
     padding:           0px;
-    border:            0px;
-    border-radius:     0px;
-    border-color:      @background-alt;
-    background-color:  @background;
+    border:            2px;
+    border-radius:     14px;
+    border-color:      @border;
+    background-color:  @bg;
 }
 
 mainbox {
@@ -36,7 +36,7 @@ mainbox {
     margin:            0px;
     padding:           var(box-margin);
     border:            0px solid;
-    border-color:      @selected;
+    border-color:      @highlight;
     background-color:  transparent;
     children:          [ listview ];
 }
@@ -57,9 +57,9 @@ listview {
     padding:           0px;
     border:            0px solid;
     border-radius:     0px;
-    border-color:      @selected;
+    border-color:      @highlight;
     background-color:  transparent;
-    text-color:        @foreground;
+    text-color:        @fg;
     cursor:            "default";
 }
 
@@ -70,9 +70,9 @@ element {
     padding:           var(element-padding);
     border:            0px solid;
     border-radius:     var(element-radius);
-    border-color:      @selected;
-    background-color:  @background-alt;
-    text-color:        @foreground;
+    border-color:      @highlight;
+    background-color:  @bg;
+    text-color:        @fg;
     cursor:            pointer;
     orientation:       vertical;
     children:          [ element-text ];
@@ -89,6 +89,24 @@ element-text {
 }
 
 element selected.normal {
-    background-color:  var(selected);
-    text-color:        var(background);
+    background-color:  @highlight;
+    text-color:        @fg-selected;
+}
+
+element normal.urgent {
+    text-color:        @urgent;
+}
+
+element normal.active {
+    text-color:        @active;
+}
+
+element selected.urgent {
+    background-color:  @highlight;
+    text-color:        @urgent;
+}
+
+element selected.active {
+    background-color:  @highlight;
+    text-color:        @active;
 }
