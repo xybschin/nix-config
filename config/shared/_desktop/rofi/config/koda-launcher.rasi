@@ -116,6 +116,10 @@ element-text {
     horizontal-align:  0.0;
 }
 
+element-text selected.normal {
+    highlight: bold underline;
+}
+
 message {
     enabled:           true;
     margin:            0px;

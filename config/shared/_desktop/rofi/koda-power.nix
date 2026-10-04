@@ -12,15 +12,19 @@ let
     reboot='󰜉'
     lock='󰌾'
     logout='󰍃'
+    cancel='󰜺'
+
+    run() { hyprctl dispatch "hl.dsp.exec_cmd(\"$1\")" >/dev/null 2>&1; }
+
     if [ -z "$1" ]; then
         printf '%s\0Shutdown\n%s\0Reboot\n%s\0Lock screen\n%s\0Log out\n%s\0Cancel\n' \
             "$shutdown" "$reboot" "$lock" "$logout" "$cancel"
     else
         case "$1" in
-            "$shutdown") hyprshutdown --post-cmd 'poweroff' ;;
-            "$reboot")   hyprshutdown --post-cmd 'reboot' ;;
-            "$lock")     hyprlock ;;
-            "$logout")   hyprctl dispatch 'hl.dsp.exit()' ;;
+            "$shutdown") run "hyprshutdown -t 'Shutting down...' --post-cmd 'systemctl poweroff'" ;;
+            "$reboot")   run "hyprshutdown -t 'Restarting...' --post-cmd 'systemctl reboot'" ;;
+            "$lock")     hyprlock >/dev/null 2>&1 ;;
+            "$logout")   run "hyprshutdown" ;;
             *)           exit 0 ;;
         esac
     fi
