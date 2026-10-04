@@ -59,3 +59,8 @@ hl.window_rule({
 	match = { class = "^(spotify)$" },
 	workspace = "special:magic silent",
 })
+
+hl.window_rule({
+	match = { title = "^(Battle.net-Setup)$" },
+	border_size = 0,
+})
