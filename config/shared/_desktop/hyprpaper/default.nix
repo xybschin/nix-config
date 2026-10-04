@@ -1,8 +1,9 @@
-{ ... }:
+{ config, configRoot, ... }:
+let
+  wallpapersDir = "${configRoot}/config/shared/_desktop/hyprpaper/wallpapers/single";
+in
 {
-  # Only runs the daemon; hyprpaper.conf is managed by hand, not by Nix
-  # (home-manager only writes it when services.hyprpaper.settings is set).
   services.hyprpaper.enable = true;
 
-  home.file.wallpapers.source = ./wallpapers;
+  home.file.wallpapers.source = config.lib.file.mkOutOfStoreSymlink "${wallpapersDir}";
 }
