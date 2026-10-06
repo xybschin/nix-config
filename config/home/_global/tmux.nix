@@ -40,8 +40,8 @@ let
     set -g @prefix_highlight_output_suffix ""
 
     set -g pane-border-style 'fg=${c.base01}'
-    set -g pane-active-border-style 'fg=${c.base0C}'
-    set -g pane-border-lines single
+    set -g pane-active-border-style 'fg=${c.base0F}'
+    set -g pane-border-lines heavy
     set -g pane-border-indicators both
 
     setw -g window-status-separator " - "
