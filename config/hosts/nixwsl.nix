@@ -51,6 +51,8 @@
       ];
     };
 
+    # Same Home is activated standalone on Ubuntu WSL (`make home`).
+    home.standalone = true;
     home.features = [
       "global"
       "1password"

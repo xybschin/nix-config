@@ -85,6 +85,11 @@
                     type = lib.types.deferredModule;
                     default = { };
                   };
+                  standalone = lib.mkOption {
+                    type = lib.types.bool;
+                    default = false;
+                    description = "Also expose this Home as homeConfigurations.\"user@host\" for `home-manager switch`.";
+                  };
                 };
               };
             };
