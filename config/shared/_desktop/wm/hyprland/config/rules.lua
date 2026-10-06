@@ -5,6 +5,14 @@ hl.window_rule({
 	suppress_event = "maximize",
 })
 
+hl.window_rule({
+	name = "1Password Quick Access",
+	match = { class = "com.onepassword.OnePassword", float = true },
+	center = true,
+  stay_focused = true,
+  pin = true,
+})
+
 -- Fix XWayland dragging issues
 hl.window_rule({
 	name = "fix-xwayland-drags",

@@ -1,7 +1,7 @@
 local mainMod = "SUPER"
 
 -- Power controls
-hl.bind(mainMod .. " + CTRL + p", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'poweroff'"))
+hl.bind(mainMod .. " + CTRL + p", hl.dsp.exec_cmd("rofi-powermenu"))
 hl.bind(mainMod .. " + CTRL + r", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'reboot'"))
 
 -- Window/Session actions
@@ -24,7 +24,7 @@ hl.bind(mainMod .. " + SHIFT + p", hl.dsp.exec_cmd("hyprpicker --autocopy"))
 
 -- Application shortcuts
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("ghostty"))
-hl.bind(mainMod .. " + r", hl.dsp.exec_cmd("rofi -show drun"))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("rofi -show drun"))
 hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("nautilus"))
 hl.bind("CTRL + SHIFT + Space", hl.dsp.exec_cmd("1password --quick-access"))
 
@@ -55,6 +55,9 @@ for i = 1, 10 do
 end
 
 hl.bind(mainMod .. " + g", hl.dsp.focus({ workspace = "10" }))
+
+-- Back to the previously focused workspace
+hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
 
 -- Mouse bindings
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -87,5 +90,3 @@ hl.bind(
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2%-"),
 	{ locked = true, repeating = true }
 )
-
-hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))

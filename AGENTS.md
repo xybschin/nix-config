@@ -105,14 +105,14 @@ When tackling a request:
 | `macbook` | `aarch64-darwin` | `bjarne` | Apple Silicon MacBook (nix-darwin, homebrew, Touch ID sudo) |
 
 ### NixOS Features (`config/nixos/`)
-- **`common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, hyprland, xybschin), flakes, zsh, stateVersion 25.11, stylix overlays disabled
+- **`common`** — always-on basics: timezone Europe/Berlin, locale en_GB.UTF-8/de_DE, unfree, Nix caches (nix-community, claude-code, xybschin), flakes, zsh, stateVersion 25.11, stylix overlays disabled
 - **`common-desktop`** — shared desktop infra: US keyboard, NetworkManager, polkit, zramSwap, gparted, gnumake, wl-clipboard
 - **`desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
-- **`gaming`** — Steam (gamemode), Lutris (openldap FHS fix), Discord, Spotify, wowup-cf, protonup-rs
+- **`gaming`** — Steam (gamemode), faugus-launcher (UMU-Launcher for Windows games, no FHS chroot), Discord, Spotify, wowup-cf. MangoHud comes from the `home.mangohud` feature, not here.
 - **`razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
 - **`logiops`** — LogiOps HID++ driver for Logitech devices; MX Master 3S: DPI=1000, SmartShift on (threshold 30), HiRes scroll (fenris only)
 - **`virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes (fenris only)
-- **`1password`** — `programs._1password` + GUI with zen-bin
+- **`1password`** — `programs._1password` + GUI with brave
 - **`audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects
 - **`bluetooth`** — controller tweaks (FastConnectable, Experimental, JustWorksRepairing)
 - **`boot`** — systemd-boot, configLimit 1, consoleMode=max
@@ -133,14 +133,14 @@ When tackling a request:
 
 ### Shared Features (`config/shared/`)
 - **`stylix.nix`** — dark polarity, base16 Koda Dark scheme (vendored `_stylix/koda-dark.yaml`), Inter + Terminess Nerd Font + Noto Color Emoji, macOS cursor (apple-cursor), breeze icons, wallpaper (artemis-ii-earth.jpg). Targets: hyprland (disabled — uses Lua), hyprpaper. Imported only by `shared.desktop`.
-- **`desktop.nix`** — imports `stylix`, `_desktop/{waybar,font.nix,zen-browser.nix,rofi,wayland-env.nix,hyprpaper}`. Packages: nautilus, feh, udiskie, dconf automount.
+- **`desktop.nix`** — imports `stylix`, `_desktop/{waybar,font.nix,brave-browser.nix,rofi,wayland-env.nix,hyprpaper}`. Packages: nautilus, feh, udiskie, dconf automount.
 - **`wm-hyprland.nix`** — `_desktop/wm/hyprland/` Lua config files (mkOutOfStoreSymlink), stylix-generated `hypr/colors.lua`, hyprlock, hyprpolkitagent. Script: `rofi-launch`.
 - **`vscode.nix`** — VSCode with gnome-libsecret, Vim extension, stylix color theme integration (fenris only)
 - **`_desktop/waybar/`** — bottom bar (stylix colors, playerctl via `scrolling-playerctl`), sops secret `openrouter` (EnvironmentFile after `sops-nix.service`).
 - **`_desktop/rofi/`** — custom adi1090x type-1 style-10 theme, recolored with stylix colors.
 - **`_desktop/hyprpaper/`** — 14 single + 7 ultrawide/split wallpapers for multi-monitor.
 - **`_desktop/font.nix`** — Apple SF, Segoe UI, Nerd Fonts.
-- **`_desktop/zen-browser.nix`** — Zen browser flake integration; unfree addons (onepassword, improved-tube, untrap-for-youtube) are vendored locally because the firefox-addons NUR flake imports its own nixpkgs without an allowUnfree config.
+- **`_desktop/brave-browser.nix`** — Brave as the default browser (`programs.brave`): VA-API flags for AMD, plus uBlock Origin / Vimium / 1Password installed as Chrome Web Store external extensions by ID. Default-browser MIME entries are set in `config/hosts/fenris.nix` to `brave-browser.desktop` (the name nixpkgs' brave package ships — not `brave.desktop`).
 - **`_desktop/wayland-env.nix`** — Wayland env vars.
 
 ### Feature-to-Host Usage

@@ -11,9 +11,11 @@ darwin:
 home:
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1 home-manager switch --impure --flake .#$(user)@$(host)
 
-.PHONY: nixos darwin home check clean-all
+up:
+	nix flake update
+	git add flake.lock
+	git commit -m "chore: bump dependencies"
 
-# Evaluate (not build) every configuration; fails if any one doesn't evaluate.
 check:
 	@export CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1; fail=0; \
 	check() { \
@@ -31,6 +33,8 @@ check:
 	check darwinConfigurations system.drvPath; \
 	check homeConfigurations activationPackage.drvPath; \
 	rm -f /tmp/check-$$$$.log; exit $$fail
+
+.PHONY: nixos darwin home up check clean-all
 
 clean-all:
 	sudo nix-collect-garbage -d

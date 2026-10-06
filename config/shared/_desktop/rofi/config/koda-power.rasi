@@ -1,0 +1,112 @@
+@import "koda-colors"
+
+configuration {
+  show-icons:        false;
+}
+
+* {
+    /* Geometry */
+    box-spacing:       14px;
+    box-margin:        8px;
+    inputbar-spacing:  0px;
+    list-spacing:      14px;
+    general-padding:   10px 20px;
+    general-radius:    12px;
+    element-padding:   47px 0px;
+    element-radius:    16px;
+    element-font:      "JetBrainsMono Nerd Font 24";
+}
+
+window {
+    transparency:      "real";
+    location:          center;
+    anchor:            center;
+    width:             620px;
+    margin:            0px;
+    padding:           0px;
+    border:            2px;
+    border-radius:     14px;
+    border-color:      @border;
+    background-color:  @bg;
+}
+
+mainbox {
+    enabled:           true;
+    spacing:           var(box-spacing);
+    margin:            0px;
+    padding:           var(box-margin);
+    border:            0px solid;
+    border-color:      @highlight;
+    background-color:  transparent;
+    children:          [ listview ];
+}
+
+listview {
+    enabled:           true;
+    columns:           4;
+    lines:             1;
+    cycle:             true;
+    dynamic:           true;
+    scrollbar:         false;
+    layout:            vertical;
+    reverse:           false;
+    fixed-height:      true;
+    fixed-columns:     true;
+    spacing:           var(list-spacing);
+    margin:            0px;
+    padding:           0px;
+    border:            0px solid;
+    border-radius:     0px;
+    border-color:      @highlight;
+    background-color:  transparent;
+    text-color:        @fg;
+    cursor:            "default";
+}
+
+element {
+    enabled:           true;
+    spacing:           0px;
+    margin:            0px;
+    padding:           var(element-padding);
+    border:            0px solid;
+    border-radius:     var(element-radius);
+    border-color:      @highlight;
+    background-color:  @bg;
+    text-color:        @fg;
+    cursor:            pointer;
+    orientation:       vertical;
+    children:          [ element-text ];
+}
+
+element-text {
+    font:              var(element-font);
+    background-color:  transparent;
+    text-color:        inherit;
+    cursor:            inherit;
+    vertical-align:    0.5;
+    horizontal-align:  0.5;
+    expand:            true;
+}
+
+element selected.normal {
+    background-color:  @highlight;
+    text-color:        @fg-selected;
+}
+
+element normal.urgent {
+    text-color:        @urgent;
+}
+
+element normal.active {
+    text-color:        @active;
+}
+
+element selected.urgent {
+    background-color:  @highlight;
+    text-color:        @urgent;
+}
+
+element selected.active {
+    background-color:  @highlight;
+    text-color:        @active;
+}
