@@ -24,11 +24,11 @@ ShellRoot {
             const p = root.monitorWallpapers[mon]
             script += ` && printf 'wallpaper {\\n  monitor = ${mon}\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${p}" >> "$HOME/.config/hypr/hyprpaper.conf"`
         }
-        script += ` && hyprctl hyprpaper wallpaper "${monitor},${path}"`
+        script += ` && hyprctl hyprpaper wallpaper "${monitor},${path},cover"`
 
-        applyProcess.running = false
         applyProcess.command = ["bash", "-c", script]
-        applyProcess.running = true
+        if (!applyProcess.running)
+            applyProcess.running = true
     }
 
     function refreshWallpapers() {
@@ -45,6 +45,14 @@ ShellRoot {
 
     Process {
         id: applyProcess
+
+        stderr: StdioCollector {
+            onStreamFinished: {
+                if (text.trim().length > 0) {
+                    console.log("wallpaperBar apply stderr:", text)
+                }
+            }
+        }
     }
 
     IpcHandler {
@@ -71,7 +79,9 @@ ShellRoot {
         id: listProcess
         command: [
             "bash", "-c",
-            "find \"$HOME/wallpapers/single\" -type f " +
+            // -L: ~/wallpapers is an out-of-store symlink into the repo, and plain
+            // find does not descend into a symlinked argument.
+            "find -L \"$HOME/wallpapers\" -type f " +
             "\\( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.bmp' -o -iname '*.gif' -o -iname '*.tiff' -o -iname '*.avif' \\) " +
             "-print0 | sort -z | tr '\\0' '\\n'"
         ]
@@ -80,11 +90,9 @@ ShellRoot {
         stdout: StdioCollector {
             onStreamFinished: {
                 const lines = text.split("\n").map(s => s.trim()).filter(s => s.length > 0)
-                const parsed = lines.map(f => ({ original: f }))
-                if (parsed.length > 0) {
-                    root.wallpapers = parsed
-                } else {
-                    console.log("wallpaperBar: scan returned 0 results, keeping previous list")
+                root.wallpapers = lines.map(f => ({ original: f }))
+                if (root.wallpapers.length === 0) {
+                    console.log("wallpaperBar: scan returned 0 results in ~/wallpapers")
                 }
             }
         }
@@ -198,7 +206,7 @@ ShellRoot {
                     Text {
                         anchors.centerIn: parent
                         visible: wallpaperList.count === 0
-                        text: "No wallpapers found in ~/wallpapers/single"
+                        text: "No wallpapers found in ~/wallpapers"
                         color: "#a6adc8"
                     }
                 }
