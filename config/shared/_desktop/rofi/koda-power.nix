@@ -22,7 +22,7 @@ let
         case "$1" in
             "$shutdown") run "hyprshutdown -t 'Shutting down...' --post-cmd 'systemctl poweroff'" ;;
             "$reboot")   run "hyprshutdown -t 'Restarting...' --post-cmd 'systemctl reboot'" ;;
-            "$lock")     hyprlock >/dev/null 2>&1 ;;
+            "$lock")     run hyprlock ;;
             "$logout")   run "hyprshutdown" ;;
             *)           exit 0 ;;
         esac
