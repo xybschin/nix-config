@@ -8,7 +8,7 @@ let
   rgba = hex: alpha: "#${hex}${alpha}";
   colors = ''
     * {
-        bg:          ${rgba c.base00 "55"};
+        bg:          ${rgba c.base00 "AA"};
         bg-alt:      ${rgba c.base01 "88"};
         fg:          ${rgba c.base08 "FF"};
         fg-dim:      ${rgba c.base04 "FF"};

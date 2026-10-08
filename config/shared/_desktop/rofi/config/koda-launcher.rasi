@@ -12,23 +12,24 @@ configuration {
 
 window {
     background-color:  @bg;
-    border:            1px;
+    border:            0px  2px 0px 0px;
     border-color:      @border;
-    border-radius:     14px;
+    border-radius:     0px;
     width:             700px;
     padding:           0px;
-    location:          center;
-    anchor:            center;
+    location:          west;
+    anchor:            west;
+    height:            100%;
 }
 
 mainbox {
-    background-color:  @bg;
-    children:          [ mode-switcher-bar, inputbar, listview, message ];
+    background-color:  transparent;
+    children:          [ inputbar, listview, message, mode-switcher-bar ];
     spacing:           0px;
 }
 
 mode-switcher {
-    background-color:  @bg;
+    background-color:  transparent;
     border:            0px 0px 1px 0px;
     border-color:      @border;
     padding:           0px;
@@ -36,20 +37,22 @@ mode-switcher {
 }
 
 mode-switcher-bar {
-    background-color:  @bg-alt;
+    background-color:  #101010AB;
+    border:            2px  0px 0px 0px;
+    border-color:      @border;
     fixed-height:      32px;
     children:          [ mode-switcher ];
     expand:            false;
 }
 
 button {
-    border:            1px;
+    border:            0 2px 0 0;
     border-color:      @border;
-    background-color:  @bg;
+    background-color:  transparent;
     text-color:        @fg;
-    padding:           2px 20px;
+    padding:           4px 20px;
     expand:            false;
-    font:              "JetBrainsMono Nerd Font 9";
+    font:              "JetBrainsMono Nerd Font 10";
 }
 
 button selected {
