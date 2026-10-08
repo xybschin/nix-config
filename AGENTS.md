@@ -110,7 +110,7 @@ When tackling a request:
 - **`desktop`** — Hyprland (UWSM, xwayland), greetd/tuigreet, dconf
 - **`gaming`** — Steam (gamemode), faugus-launcher (UMU-Launcher for Windows games, no FHS chroot), Discord, Spotify, wowup-cf. MangoHud comes from the `home.mangohud` feature, not here.
 - **`razer`** — OpenRazer, polychromatic, auto DPI=1000 (fenris only)
-- **`logiops`** — LogiOps HID++ driver for Logitech devices; MX Master 3S: DPI=1000, SmartShift on (threshold 30), HiRes scroll (fenris only)
+- **`logiops`** — LogiOps HID++ driver for Logitech devices; MX Master 3S: DPI=600, SmartShift off (threshold 255), HiRes scroll; udev rule restarts `logid` on Logitech hidraw add to work around the bluez>=5.77 attach race (fenris only)
 - **`virtualisation`** — libvirtd, qemu_kvm, swtpm, SPICE USB, gnome-boxes (fenris only)
 - **`1password`** — `programs._1password` + GUI with brave
 - **`audio`** — PipeWire (ALSA/32-bit/PulseAudio/JACK), easyeffects

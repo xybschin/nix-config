@@ -31,7 +31,6 @@ hl.config({
 	input = {
 		kb_layout = "eu",
 		follow_mouse = 2,
-		scroll_factor = 2,
 	},
 	dwindle = {
 		preserve_split = true,
