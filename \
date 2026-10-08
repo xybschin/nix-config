@@ -11,7 +11,7 @@ configuration {
 }
 
 window {
-    background-color:  @bg;
+    background-color:  #101010AB;
     border:            0px  2px 0px 0px;
     border-color:      @border;
     border-radius:     0px;
@@ -37,7 +37,7 @@ mode-switcher {
 }
 
 mode-switcher-bar {
-    background-color:  transparent;
+    background-color:  #101010AB;
     border:            2px  0px 0px 0px;
     border-color:      @border;
     fixed-height:      32px;
@@ -46,13 +46,13 @@ mode-switcher-bar {
 }
 
 button {
-    border:            0 2px 0 0;
+    border:            1px;
     border-color:      @border;
-    background-color:  transparent;
+    background-color:  @bg;
     text-color:        @fg;
-    padding:           4px 20px;
+    padding:           2px 20px;
     expand:            false;
-    font:              "JetBrainsMono Nerd Font 10";
+    font:              "JetBrainsMono Nerd Font 9";
 }
 
 button selected {
@@ -61,7 +61,7 @@ button selected {
 }
 
 inputbar {
-    background-color:  transparent;
+    background-color:  @bg;
     text-color:        @fg;
     padding:           16px 18px;
     spacing:           10px;
@@ -81,7 +81,7 @@ entry {
 }
 
 listview {
-    background-color:  transparent;
+    background-color:  @bg;
     border:            1px 0px 0px 0px;
     border-color:      @border;
     spacing:           4px;
