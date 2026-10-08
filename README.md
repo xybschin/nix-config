@@ -24,8 +24,16 @@ make darwin host=<hostname>
 
 ### Rebuild Home Manager (standalone)
 
+Only hosts with `home.standalone = true` (currently `nixwsl`, also used on Ubuntu WSL):
+
 ```bash
-make home user=<username> host=<hostname>
+make home user=dev host=nixwsl
+```
+
+### Check every configuration evaluates
+
+```bash
+make check
 ```
 
 ## Secrets

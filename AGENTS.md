@@ -90,11 +90,11 @@ When tackling a request:
 ### Architecture
 - **Dendritic pattern:** [`flake.nix`](flake.nix) feeds every `.nix` file under [`config/`](config/) into flake-parts via `inputs.import-tree ./config`. Directories prefixed with `_` are **excluded** from auto-import (used for submodules/assets/data).
 - **`config/core.nix`** declares the whole option tree: `config.my.configRoot` (repo path for out-of-store symlinks), `config.my.features.{nixos,home,darwin}` (`attrsOf deferredModule` — feature modules), and `config.my.hosts` (submodule with `system`/`username`/`isWsl` and per-kind `features`/`extraModules`/`configuration`).
-- **`config/outputs.nix`** builds `nixosConfigurations` (x86_64-linux hosts), `darwinConfigurations` (aarch64-darwin), and `homeConfigurations` (`${username}@${host}` for every host). Also injects the home-manager integration modules and the sops-nix home module into both integrated and standalone homes.
+- **`config/outputs.nix`** builds `nixosConfigurations` / `darwinConfigurations` via one table-driven `mkSystem` (kind picked by a `-darwin` suffix on `host.system`), and `homeConfigurations` (`${username}@${host}`) only for hosts with `home.standalone = true` (currently just `nixwsl`, which is also activated standalone on Ubuntu WSL). Every Home is assembled once by `homeFor host` → `{ modules; specialArgs; }` (sops-nix, `overlays.default`, allowUnfree, username/homeDirectory, features, extraModules, configuration; args `inputs`/`configRoot`/`hostUser`/`isWsl`), so integrated and standalone Homes are identical. See [`CONTEXT.md`](CONTEXT.md) for the Host/Home vocabulary.
 - **Feature modules:** a file like `config/home/terminals.nix` defines `config.my.features.home.terminals = { pkgs, ... }: { ... };`. The **outer** lambda only receives flake-parts args (`config`, `lib`, `inputs`) — **`pkgs` is NOT available there**. Any `pkgs`/`hostUser`/`configRoot` usage must live **inside** the feature value lambda, which is evaluated in the home-manager/NixOS/darwin context (where those args exist). Same rule applies to `nixos.configuration` / `home.configuration` values in hosts.
 - Feature-references-feature (e.g. `config/shared/desktop.nix` importing the `shared.stylix` module) requires an attrset module `{ imports = [ ... ]; }` — a bare list is rejected.
 - **Eval gotchas:** import-tree only sees git-tracked files (must `git add` before evaluating). `builtins.getEnv` returns `""` in pure eval, so configRoot uses `CONFIG_ROOT` env with `PWD` fallback and evaluations run with `--impure` (the Makefile does this).
-- All `nixpkgs.config.allowUnfree = true` lives both in `config/nixos/common.nix` (system) and in the `homeUser` wrapper in `config/outputs.nix` (home), because home-manager's pkgs is a separate instance.
+- All `nixpkgs.config.allowUnfree = true` lives both in `config/nixos/common.nix` (system) and in `homeFor` in `config/outputs.nix` (home), because home-manager's pkgs is a separate instance.
 
 ### Hosts
 
@@ -188,5 +188,6 @@ Host-specific extras live in `config/hosts/_fenris/` (hardware, hyprland-user Lu
 ```bash
 make nixos host=<name>       # NixOS host (e.g. fenris, nixwsl)
 make darwin host=macbook     # Darwin host
-make home user=<u> host=<h>  # Standalone home-manager (e.g. make home user=moonz host=fenris)
+make home user=dev host=nixwsl  # Standalone home-manager (only hosts with home.standalone = true)
+make check                      # Evaluate every configuration (no build); run after structural changes
 ```
