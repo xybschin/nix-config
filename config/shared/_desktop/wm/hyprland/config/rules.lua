@@ -9,8 +9,8 @@ hl.window_rule({
 	name = "1Password Quick Access",
 	match = { class = "com.onepassword.OnePassword", float = true },
 	center = true,
-  stay_focused = true,
-  pin = true,
+	stay_focused = true,
+	pin = true,
 })
 
 -- Fix XWayland dragging issues
@@ -42,12 +42,10 @@ hl.layer_rule({
 	name = "rofi-blur",
 	match = { namespace = "rofi" },
 	blur = true,
-	ignore_alpha = 0,
 })
 
 hl.layer_rule({
 	name = "waybar-blur",
 	match = { namespace = "waybar" },
 	blur = true,
-	ignore_alpha = 0.5,
 })
