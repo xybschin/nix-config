@@ -21,12 +21,13 @@ in
       input-field = {
         monitor = "";
         size = "250, 50";
-        outline_thickness = 0;
         dots_size = 0.26;
         dots_spacing = 0.64;
         dots_center = true;
-        fade_on_empty = true;
-        placeholder_text = ''<span color="##${c.base05}"><i>Password...</i></span>'';
+        fade_on_empty = false;
+        outline_thickness = 2;
+        font_color = "rgb(${c.base05})";
+        placeholder_text = ''<span color="##${c.base05}">Password...</span>'';
         hide_input = false;
         position = "0, 50";
         halign = "center";
@@ -39,7 +40,7 @@ in
           text = cmd[update:1000] echo "<b><big> $(date +"%H:%M") </big></b>"
           color = rgba(${c.base04}BF)
           font_size = 64
-          font_family = SF Pro Display
+          font_family = Segoe UI
           position = 0, -70
           halign = center
           valign = center
@@ -49,7 +50,7 @@ in
           text = cmd[update:18000000] echo "<b> "$(date +'%-d %B %Y')" </b>"
           color = rgba(${c.base04}BF)
           font_size = 24
-          font_family = SF Pro Display
+          font_family = Segoe UI
           position = 0, -150
           halign = center
           valign = center
