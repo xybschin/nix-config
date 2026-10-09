@@ -5,15 +5,14 @@ configuration {
 }
 
 * {
-    /* Geometry */
     box-spacing:       14px;
     box-margin:        8px;
     inputbar-spacing:  0px;
     list-spacing:      14px;
-    general-padding:   10px 20px;
+    general-padding:   20px;
     general-radius:    12px;
     element-padding:   47px 0px;
-    element-radius:    16px;
+    element-radius:    14px;
     element-font:      "JetBrainsMono Nerd Font 24";
 }
 
@@ -22,21 +21,16 @@ window {
     location:          center;
     anchor:            center;
     width:             620px;
-    margin:            0px;
-    padding:           0px;
     border:            2px;
     border-radius:     14px;
+    padding:           12px;
     border-color:      @border;
     background-color:  @bg;
 }
 
 mainbox {
     enabled:           true;
-    spacing:           var(box-spacing);
     margin:            0px;
-    padding:           var(box-margin);
-    border:            0px solid;
-    border-color:      @highlight;
     background-color:  transparent;
     children:          [ listview ];
 }
@@ -45,7 +39,6 @@ listview {
     enabled:           true;
     columns:           4;
     lines:             1;
-    cycle:             true;
     dynamic:           true;
     scrollbar:         false;
     layout:            vertical;
@@ -56,7 +49,6 @@ listview {
     margin:            0px;
     padding:           0px;
     border:            0px solid;
-    border-radius:     0px;
     border-color:      @highlight;
     background-color:  transparent;
     text-color:        @fg;
@@ -69,7 +61,7 @@ element {
     margin:            0px;
     padding:           var(element-padding);
     border:            0px solid;
-    border-radius:     var(element-radius);
+    border-radius:     12px;
     border-color:      @highlight;
     background-color:  @bg;
     text-color:        @fg;

@@ -42,10 +42,13 @@ hl.layer_rule({
 	name = "rofi-blur",
 	match = { namespace = "rofi" },
 	blur = true,
+	ignore_alpha = 0.5,
 })
 
 hl.layer_rule({
 	name = "waybar-blur",
 	match = { namespace = "waybar" },
 	blur = true,
+
+	ignore_alpha = 0.5,
 })
