@@ -9,7 +9,6 @@
       programs.dconf.enable = true;
       environment.systemPackages = with pkgs; [
         geary
-        kdePackages.plasma-workspace
       ];
 
       programs.hyprland = {

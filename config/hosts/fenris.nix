@@ -72,6 +72,7 @@
       "mangohud"
       "waybar-audio-control"
       "rvm-webcam"
+      "xembsni"
       "shared.desktop"
       "shared.desktop.wm.hyprland"
       "shared.vscode"
@@ -111,8 +112,6 @@
         tigervnc
         vlc
       ];
-
-      services.xembed-sni-proxy.enable = true;
 
       xdg.mime.enable = true;
       xdg.mimeApps = {

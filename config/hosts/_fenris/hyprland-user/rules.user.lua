@@ -30,21 +30,6 @@ hl.window_rule({
 	center = true,
 })
 
--- XWayland opacity fix for floating windows without title/class
-hl.window_rule({
-	name = "xwayland-opacity-fix",
-	match = {
-		xwayland = true,
-		title = "^$",
-		class = "^xembedsniproxy$",
-	},
-	opacity = 0.0,
-	float = true,
-	no_blur = true,
-	no_focus = true,
-	size = { 0, 0 },
-})
-
 hl.window_rule({
 	match = { class = "^(signal)$" },
 	workspace = "special:magic silent",

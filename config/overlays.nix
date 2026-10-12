@@ -2,6 +2,7 @@
 let
   overlays = [
     (import ./_overlays/segoe-ui.nix)
+    (import ./_overlays/xembsni.nix)
   ];
 in
 {
