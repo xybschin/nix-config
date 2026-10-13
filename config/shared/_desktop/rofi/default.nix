@@ -16,6 +16,7 @@ let
         highlight:   ${rgba c.base05 "11"};
         border:      ${rgba c.base01 "88"};
         urgent:      ${rgba c.base0F "FF"};
+        accent:      ${rgba c.base06 "FF"};
         active:      ${rgba c.base0A "FF"};
         fg-bright:   ${rgba c.base05 "FF"};
         fg-muted:    ${rgba c.base03 "FF"};
