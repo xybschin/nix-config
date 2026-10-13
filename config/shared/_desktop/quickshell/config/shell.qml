@@ -7,12 +7,35 @@ import Quickshell.Hyprland
 ShellRoot {
     id: root
 
+    // QML singletons are created lazily on first access. Without touching the
+    // Hyprland singleton here, its IPC connection (and therefore
+    // Hyprland.focusedMonitor) would only be set up on the first `toggle`
+    // call, making that first keybind press a no-op. Touch it at startup so
+    // focusedMonitor is ready before the bar is ever opened.
+    Component.onCompleted: Hyprland.focusedMonitor
+
     // Empty string means the bar is closed. Otherwise holds the name of the
     // Hyprland monitor the bar is currently open on.
     property string activeMonitor: ""
     property var wallpapers: []
     // Monitor name -> wallpaper path, so each display can keep its own pick.
     property var monitorWallpapers: ({})
+    // Index of the keyboard-highlighted wallpaper while the bar is open.
+    property int selectedIndex: 0
+
+    function moveSelection(delta) {
+        const count = root.wallpapers.length
+        if (count === 0) return
+        root.selectedIndex = Math.max(0, Math.min(count - 1, root.selectedIndex + delta))
+    }
+
+    function activateSelection(monitor) {
+        const wallpaper = root.wallpapers[root.selectedIndex]
+        if (wallpaper && wallpaper.original) {
+            root.setWallpaper(wallpaper.original, monitor)
+            root.activeMonitor = ""
+        }
+    }
 
     function setWallpaper(path, monitor) {
         if (!monitor || monitor.length === 0) return
@@ -36,10 +59,10 @@ except Exception:
 # Remove blocks for this monitor
 import re
 # Pattern: wallpaper { ... monitor = MONITOR ... } (non-greedy across lines)
-pattern = re.compile(r'wallpaper\s*\\{[^\\}]*monitor\\s*=\\s*' + re.escape(mon) + r'[^\\}]*\\}', re.DOTALL)
-new_content = pattern.sub('', content)
+pattern = re.compile(r'wallpaper\\s*\\{[^\\}]*monitor\\s*=\\s*' + re.escape(mon) + r'[^\\}]*\\}', re.DOTALL)
+new_content = pattern.sub('', content).strip()
 with open(path, 'w') as f:
-    f.write(new_content)
+    f.write(new_content + '\\n' if new_content else '')
 " "${confPath}" "${monitor}"`
         // Append the new block for this monitor
         script += ` && printf 'wallpaper {\\n  monitor = ${monitor}\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${path}" >> "${confPath}"`
@@ -56,10 +79,33 @@ with open(path, 'w') as f:
     }
 
     function openBar(monitorName) {
-        root.activeMonitor = (monitorName && monitorName.length > 0)
-            ? monitorName
-            : (Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : "")
+        let name = monitorName
+        if (!name || name.length === 0) {
+            name = Hyprland.focusedMonitor ? Hyprland.focusedMonitor.name : ""
+        }
+        if (!name || name.length === 0) {
+            // focusedMonitor can still be unset on a very early press; nudge
+            // Hyprland and fall back to the first connected screen so the bar
+            // opens regardless.
+            Hyprland.refreshMonitors()
+            name = Quickshell.screens.length > 0 ? Quickshell.screens[0].name : ""
+        }
+        // Select the first wallpaper. The selection change is applied shortly
+        // after the bar becomes visible (see selectFirstTimer): changing it in
+        // the same iteration the layer surface maps batches the change with the
+        // map, and the border repaint is dropped until some other event forces
+        // a frame. Deferring it makes the first card's highlight render.
+        root.selectedIndex = -1
+        root.activeMonitor = name
         root.refreshWallpapers()
+        selectFirstTimer.restart()
+    }
+
+    Timer {
+        id: selectFirstTimer
+        interval: 80
+        repeat: false
+        onTriggered: root.selectedIndex = 0
     }
 
     Process {
@@ -150,23 +196,62 @@ with open(path, 'w') as f:
             WlrLayershell.keyboardFocus: active ? WlrLayershell.OnDemand : WlrLayershell.None
 
             Rectangle {
+                id: keyArea
                 anchors.fill: parent
                 color: "transparent"
                 focus: bar.active
 
                 Keys.onEscapePressed: root.activeMonitor = ""
+                Keys.onLeftPressed: root.moveSelection(-1)
+                Keys.onRightPressed: root.moveSelection(1)
+                Keys.onReturnPressed: root.activateSelection(bar.modelData.name)
+                Keys.onEnterPressed: root.activateSelection(bar.modelData.name)
+
+                Connections {
+                    target: bar
+                    function onActiveChanged() {
+                        if (bar.active) {
+                            keyArea.forceActiveFocus()
+                            if (wallpaperList.count > 0)
+                                wallpaperList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
+                        }
+                    }
+                }
+
+                Connections {
+                    target: root
+                    function onSelectedIndexChanged() {
+                        if (bar.active && wallpaperList.count > 0)
+                            wallpaperList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
+                    }
+                }
+
+                // The wallpaper list is populated asynchronously (find runs in a
+                // Process), so on open the view can be repositioned before the
+                // model is ready and retain a stale scroll offset. Re-apply the
+                // scroll once the delegate count settles.
+                Connections {
+                    target: wallpaperList
+                    function onCountChanged() {
+                        if (bar.active && wallpaperList.count > 0 && root.selectedIndex >= 0)
+                            wallpaperList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
+                    }
+                }
 
                 ListView {
                     id: wallpaperList
                     anchors.fill: parent
-                    anchors.leftMargin: 4
-                    anchors.rightMargin: 4
                     anchors.bottomMargin: 0
                     anchors.topMargin: 2
                     orientation: ListView.Horizontal
                     spacing: 2
                     clip: true
                     model: root.wallpapers
+                    // The list must never steal keyboard focus from keyArea,
+                    // otherwise arrow keys scroll the view instead of moving
+                    // the selection.
+                    focus: false
+                    keyNavigationEnabled: false
 
                     boundsBehavior: Flickable.StopAtBounds
                     boundsMovement: Flickable.StopAtBounds
@@ -187,25 +272,54 @@ with open(path, 'w') as f:
 
                     delegate: Rectangle {
                         id: card
+                        // A delegate that declares any `required property` no
+                        // longer receives the implicit `index`/`modelData`
+                        // context properties, so `index` must be declared too.
+                        required property int index
                         required property var modelData
+
+                        readonly property bool selected: bar.active && index === root.selectedIndex
 
                         width: Math.round(height * 16 / 9)
                         height: wallpaperList.height
                         color: "#101010"
                         border.width: 1
-                        border.color: hoverArea.containsMouse ? "#777777" : "#272727"
+                        border.color: selected ? "#d9ba73" : (hoverArea.containsMouse ? "#777777" : "#272727")
 
-                        Image {
+                        Item {
                             anchors.fill: parent
                             anchors.margins: card.border.width
                             clip: true
-                            source: (card.modelData && card.modelData.original) ? "file://" + card.modelData.original : ""
-                            fillMode: Image.PreserveAspectCrop
-                            asynchronous: true
-                            smooth: true
-                            cache: true
-                            sourceSize.width: 320
-                            sourceSize.height: 180
+
+                            Image {
+                                anchors.fill: parent
+                                source: (card.modelData && card.modelData.original) ? "file://" + card.modelData.original : ""
+                                fillMode: Image.PreserveAspectCrop
+                                asynchronous: true
+                                smooth: true
+                                cache: true
+                                sourceSize.width: 320
+                                sourceSize.height: 180
+                                // Subtle zoom on the selected thumbnail. It is
+                                // scaled inside the clipped frame above so it
+                                // never overflows the card or its 1px border.
+                                scale: card.selected ? 1.12 : 1.0
+                                transformOrigin: Item.Center
+                                Behavior on scale {
+                                    NumberAnimation { duration: 160; easing.type: Easing.OutCubic }
+                                }
+                            }
+                        }
+
+                        // Dim the unselected cards while the bar is open so the
+                        // highlighted one is obvious at a glance.
+                        Rectangle {
+                            anchors.fill: parent
+                            color: "#101010"
+                            opacity: bar.active && root.selectedIndex >= 0 && !card.selected ? 0.55 : 0.0
+                            Behavior on opacity {
+                                NumberAnimation { duration: 90 }
+                            }
                         }
 
                         MouseArea {
@@ -215,6 +329,7 @@ with open(path, 'w') as f:
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
                                 if (card.modelData && card.modelData.original) {
+                                  root.selectedIndex = index
                                   root.setWallpaper(card.modelData.original, bar.modelData.name)
                                   root.activeMonitor = ""
                                 }
