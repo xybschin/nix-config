@@ -19,11 +19,30 @@ ShellRoot {
 
         root.monitorWallpapers = Object.assign({}, root.monitorWallpapers, { [monitor]: path })
 
-        let script = `mkdir -p "$HOME/.config/hypr" && printf '' > "$HOME/.config/hypr/hyprpaper.conf"`
-        for (const mon in root.monitorWallpapers) {
-            const p = root.monitorWallpapers[mon]
-            script += ` && printf 'wallpaper {\\n  monitor = ${mon}\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${p}" >> "$HOME/.config/hypr/hyprpaper.conf"`
-        }
+        const confPath = "$HOME/.config/hypr/hyprpaper.conf"
+        let script = `mkdir -p "$HOME/.config/hypr"`
+        // If conf doesn't exist, create empty
+        script += ` && [ -f "${confPath}" ] || : > "${confPath}"`
+        // Remove any existing wallpaper block for this monitor (handle multi-line blocks)
+        script += ` && python3 -c "
+import sys
+path = sys.argv[1]
+mon = sys.argv[2]
+try:
+    with open(path) as f:
+        content = f.read()
+except Exception:
+    content = ''
+# Remove blocks for this monitor
+import re
+# Pattern: wallpaper { ... monitor = MONITOR ... } (non-greedy across lines)
+pattern = re.compile(r'wallpaper\s*\\{[^\\}]*monitor\\s*=\\s*' + re.escape(mon) + r'[^\\}]*\\}', re.DOTALL)
+new_content = pattern.sub('', content)
+with open(path, 'w') as f:
+    f.write(new_content)
+" "${confPath}" "${monitor}"`
+        // Append the new block for this monitor
+        script += ` && printf 'wallpaper {\\n  monitor = ${monitor}\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${path}" >> "${confPath}"`
         script += ` && hyprctl hyprpaper wallpaper "${monitor},${path},cover"`
 
         applyProcess.command = ["bash", "-c", script]
