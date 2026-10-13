@@ -30,6 +30,12 @@ Only hosts with `home.standalone = true` (currently `nixwsl`, also used on Ubunt
 make home user=dev host=nixwsl
 ```
 
+### WSL note (1password SSH agent)
+
+On WSL, the 1Password SSH bridge (`config/home/1password.nix`) forwards the
+Windows OpenSSH agent via `npiperelay.exe`. This binary must be on the Windows
+`PATH` (i.e. reachable from WSL as `npiperelay.exe`).
+
 ### Check every configuration evaluates
 
 ```bash
