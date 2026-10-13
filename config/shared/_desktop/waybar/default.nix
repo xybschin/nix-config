@@ -193,7 +193,7 @@
         }
 
         .modules-right > widget:last-child > * {
-            margin-right: 0;
+            margin-right: 4;
         }
       '';
   };
