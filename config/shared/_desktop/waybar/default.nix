@@ -19,6 +19,7 @@
         margin = "0";
         height = 48;
         modules-left = [
+          "custom/nixos"
           "hyprland/workspaces"
           "custom/media"
         ];
@@ -80,6 +81,10 @@
           on-scroll-up = "pactl set-source-volume @DEFAULT_SOURCE@ +1%";
           on-scroll-down = "pactl set-source-volume @DEFAULT_SOURCE@ -1%";
         };
+        "custom/nixos" = {
+          format = "";
+          tooltip = false;
+        };
         "custom/media" = {
           format = "NOW PLAYING: {}";
           exec = "${config.xdg.configHome}/waybar/scripts/scrolling-playerctl";
@@ -105,6 +110,8 @@
         @define-color base03      #${c.base03};
         @define-color base04      #${c.base04};
         @define-color base05      #${c.base05};
+        @define-color base05Alpha alpha(#${c.base05}, 0.07);
+        @define-color base06      #${c.base06};
         @define-color base07      #${c.base07};
         @define-color base08      #${c.base08};
         @define-color base0A      #${c.base0A};
@@ -136,8 +143,10 @@
             background: inherit;
         }
 
-        #custom-arch {
-            min-width: 52px;
+        #custom-nixos {
+            margin: 2px 24px 2px 18px;
+            font-size: 20px;
+            color: @base03;
         }
 
         #custom-media {
@@ -161,28 +170,30 @@
             color: @base0C;
         }
 
-        #workspaces button {
+        #workspaces button,
+        .modules-right > widget > *
+        {
             color: @base04;
-            margin: 2px 0px 2px 1px;
-        }
-
-        #workspaces button:nth-child(1) {
-            margin: 2px 0px 2px 2px;
-        }
-
-        #workspaces button.active {
-            color: @base07;
+            background: @base00;
+            border: 1px solid @base05Alpha;
+            border-radius: 3px;
+            padding: 0 10px;
+            margin: 6px 2px 6px 0px;
         }
 
         .modules-right > widget > * {
-            margin: 8px 0;
-            padding: 0 1rem;
-            border-right: 1px solid @base01;
+            color: @base07;
+        }
+
+        #workspaces button.active,
+        #workspaces button.active
+        {
+            background: @base05Alpha;
+            color: @base07;
         }
 
         .modules-right > widget:last-child > * {
             margin-right: 0;
-            border: 0;
         }
       '';
   };
