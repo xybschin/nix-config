@@ -12,14 +12,13 @@ configuration {
 
 window {
     background-color:  @bg;
-    border:            0px  2px 0px 0px;
+    border:            0px 2px 0px 0px;
     border-color:      @border;
-    border-radius:     0px;
+    border-radius:     6px;
     width:             700px;
     padding:           0px;
-    location:          west;
-    anchor:            west;
-    height:            100%;
+    location:          center;
+    anchor:            center;
 }
 
 mainbox {
@@ -107,7 +106,7 @@ element selected {
 }
 
 element-icon {
-    size:              48px;
+    size:              32px;
     background-color:  transparent;
     vertical-align:    0.5;
 }
