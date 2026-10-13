@@ -22,6 +22,10 @@ ShellRoot {
     property var monitorWallpapers: ({})
     // Index of the keyboard-highlighted wallpaper while the bar is open.
     property int selectedIndex: 0
+    // True between openBar() and the deferred first selection (firstSelectTimer)
+    // being applied. While set, selection-driven repositioning is suppressed so
+    // the list is not scrolled before it has laid out.
+    property bool selectingInitial: false
 
     function moveSelection(delta) {
         const count = root.wallpapers.length
@@ -90,22 +94,14 @@ with open(path, 'w') as f:
             Hyprland.refreshMonitors()
             name = Quickshell.screens.length > 0 ? Quickshell.screens[0].name : ""
         }
-        // Select the first wallpaper. The selection change is applied shortly
-        // after the bar becomes visible (see selectFirstTimer): changing it in
-        // the same iteration the layer surface maps batches the change with the
-        // map, and the border repaint is dropped until some other event forces
+        // Select the first wallpaper shortly after the bar becomes visible
+        // (see firstSelectTimer): changing it in the same iteration the layer
+        // surface maps drops the border repaint until some other event forces
         // a frame. Deferring it makes the first card's highlight render.
         root.selectedIndex = -1
+        root.selectingInitial = true
         root.activeMonitor = name
         root.refreshWallpapers()
-        selectFirstTimer.restart()
-    }
-
-    Timer {
-        id: selectFirstTimer
-        interval: 80
-        repeat: false
-        onTriggered: root.selectedIndex = 0
     }
 
     Process {
@@ -155,8 +151,15 @@ with open(path, 'w') as f:
         stdout: StdioCollector {
             onStreamFinished: {
                 const lines = text.split("\n").map(s => s.trim()).filter(s => s.length > 0)
-                root.wallpapers = lines.map(f => ({ original: f }))
-                if (root.wallpapers.length === 0) {
+                const next = lines.map(f => ({ original: f }))
+                // Only replace the model when the result actually differs.
+                // Reassigning an equal list rebuilds the ListView, which races
+                // the just-opened selection and makes the bar jump/repaint.
+                const same = next.length === root.wallpapers.length
+                    && next.every((w, i) => w.original === root.wallpapers[i].original)
+                if (!same)
+                    root.wallpapers = next
+                if (next.length === 0) {
                     console.log("wallpaperBar: scan returned 0 results in ~/wallpapers")
                 }
             }
@@ -212,28 +215,41 @@ with open(path, 'w') as f:
                     function onActiveChanged() {
                         if (bar.active) {
                             keyArea.forceActiveFocus()
-                            if (wallpaperList.count > 0)
-                                wallpaperList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
+                            // Apply the deferred first selection once the
+                            // window is up (see firstSelectTimer).
+                            firstSelectTimer.restart()
                         }
+                    }
+                }
+
+                // Defer the initial selection slightly: selecting in the same
+                // iteration the layer surface maps can drop the border repaint.
+                Timer {
+                    id: firstSelectTimer
+                    interval: 80
+                    repeat: false
+                    onTriggered: {
+                        if (!bar.active) return
+                        root.selectedIndex = 0
+                        root.selectingInitial = false
                     }
                 }
 
                 Connections {
                     target: root
                     function onSelectedIndexChanged() {
-                        if (bar.active && wallpaperList.count > 0)
+                        if (!bar.active || root.selectedIndex < 0) return
+                        if (root.selectingInitial) return
+                        if (wallpaperList.count > 0 && wallpaperList.contentWidth > wallpaperList.width)
                             wallpaperList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
                     }
                 }
 
-                // The wallpaper list is populated asynchronously (find runs in a
-                // Process), so on open the view can be repositioned before the
-                // model is ready and retain a stale scroll offset. Re-apply the
-                // scroll once the delegate count settles.
                 Connections {
                     target: wallpaperList
                     function onCountChanged() {
-                        if (bar.active && wallpaperList.count > 0 && root.selectedIndex >= 0)
+                        if (bar.active && !root.selectingInitial && wallpaperList.count > 0
+                                && root.selectedIndex >= 0 && wallpaperList.contentWidth > wallpaperList.width)
                             wallpaperList.positionViewAtIndex(root.selectedIndex, ListView.Contain)
                     }
                 }
@@ -241,12 +257,14 @@ with open(path, 'w') as f:
                 ListView {
                     id: wallpaperList
                     anchors.fill: parent
-                    anchors.bottomMargin: 0
                     anchors.topMargin: 2
                     orientation: ListView.Horizontal
                     spacing: 2
                     clip: true
-                    model: root.wallpapers
+                    // Populate only while open so the delegates (and their
+                    // cached textures) are rebuilt on every open instead of
+                    // being reused stale after the hidden surface released them.
+                    model: bar.active ? root.wallpapers : []
                     // The list must never steal keyboard focus from keyArea,
                     // otherwise arrow keys scroll the view instead of moving
                     // the selection.
@@ -281,7 +299,11 @@ with open(path, 'w') as f:
                         readonly property bool selected: bar.active && index === root.selectedIndex
 
                         width: Math.round(height * 16 / 9)
-                        height: wallpaperList.height
+                        // Fixed height rather than wallpaperList.height: the
+                        // list's own size is not settled on the first layout
+                        // pass, so sizing delegates from it left the first
+                        // cards inconsistent.
+                        height: bar.implicitHeight - 2
                         color: "#101010"
                         border.width: 1
                         border.color: selected ? "#d9ba73" : (hoverArea.containsMouse ? "#777777" : "#272727")
