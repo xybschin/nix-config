@@ -2,6 +2,7 @@
   config,
   lib,
   modulesPath,
+  pkgs,
   ...
 }:
 
@@ -25,8 +26,10 @@
     "btusb"
     "kvm-amd"
     "v4l2loopback"
+    "ntsync"
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
   fileSystems."/" = {

@@ -2,15 +2,17 @@
 {
   config.my.features.nixos.gaming = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      discord
+      vesktop
       spotify
       wowup-cf
       faugus-launcher
+      amdtop
+      vulkan-tools
     ];
 
     programs = {
       steam.enable = true;
-      gamemode.enable = true; # faugus can use it
+      gamemode.enable = true;
     };
 
     networking.firewall.allowedUDPPorts = [ 5353 ];
