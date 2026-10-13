@@ -26,18 +26,6 @@ hl.window_rule({
 	no_focus = true,
 })
 
--- Workspace rules
-hl.workspace_rule({
-	workspace = "special:magic",
-	gaps_in = 5,
-	gaps_out = {
-		top = 35,
-		right = 35,
-		bottom = 0,
-		left = 35,
-	},
-})
-
 hl.layer_rule({
 	name = "rofi-blur",
 	match = { namespace = "rofi" },
