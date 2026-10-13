@@ -13,9 +13,6 @@ hl.bind(mainMod .. " + m", hl.dsp.exec_cmd("loginctl terminate-user $USER"))
 hl.bind(mainMod .. " + o", hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + p", hl.dsp.window.pseudo())
 
--- Lock screen
-hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("hyprlock"))
-
 -- Screenshots
 hl.bind(mainMod .. " + SHIFT + w", hl.dsp.exec_cmd("hyprshot -m window"))
 hl.bind(mainMod .. " + SHIFT + r", hl.dsp.exec_cmd("hyprshot -m region"))
