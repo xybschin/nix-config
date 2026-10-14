@@ -28,6 +28,7 @@
       "git-identity"
       "1password"
       "coding-agents"
+      "workmux"
       "terminals"
     ];
     home.configuration = { pkgs, ... }: {

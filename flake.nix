@@ -56,6 +56,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    workmux = {
+      url = "github:raine/workmux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Deliberately NOT following our nixpkgs: beads' postPatch rewrites go.mod
     # to the toolchain's Go version, which breaks vendoring against unstable's
     # Go. Upstream pins nixos-25.11 and builds cleanly there.

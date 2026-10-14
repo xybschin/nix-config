@@ -68,6 +68,7 @@
       "git-identity"
       "1password"
       "coding-agents"
+      "workmux"
       "terminals"
       "mangohud"
       "waybar-audio-control"
