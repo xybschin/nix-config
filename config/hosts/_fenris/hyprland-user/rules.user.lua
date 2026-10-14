@@ -35,3 +35,9 @@ hl.window_rule({
 	match = { title = "^(Battle.net-Setup)$" },
 	border_size = 0,
 })
+
+hl.window_rule({
+	match = { title = "win11 on QEMU/KVM" },
+	border_size = 0,
+	float = true,
+})
