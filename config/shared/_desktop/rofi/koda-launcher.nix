@@ -7,23 +7,32 @@
 
 let
   rofiConfigDir = "${configRoot}/config/shared/_desktop/rofi/config";
-  iconsDir = "${configRoot}/config/shared/_desktop/rofi/icons";
-  iconsLinkDir = "${config.xdg.dataHome}/rofi/monitor-icons";
+  # Glyphs in MonitorIcons.ttf (PUA-A): dual, single-left, single-right, ultrawide.
+  glyphDual = "\\U000F5000";
+  glyphSingleLeft = "\\U000F5001";
+  glyphSingleRight = "\\U000F5002";
+  glyphUltrawide = "\\U000F5003";
+
+  monitorIconsFont = pkgs.runCommand "monitor-icons-font" { } ''
+    install -Dm644 ${./fonts/MonitorIcons.ttf} \
+      $out/share/fonts/truetype/MonitorIcons.ttf
+  '';
 
   entries = pkgs.writeShellScript "rofi-monitor-menu-entries" ''
     run() { hyprctl dispatch "hl.dsp.exec_cmd(\"$1\")" >/dev/null 2>&1; }
 
     if [ -z "$1" ]; then
-        printf '%s\0icon\x1f%s\n' \
-            'profile1' '${iconsLinkDir}/monitor-dual.svg' \
-            'profile2' '${iconsLinkDir}/monitor-single-left.svg' \
-            'profile3' '${iconsLinkDir}/monitor-single-right.svg' \
-            'profile4' '${iconsLinkDir}/monitor-ultrawide.svg'
+        printf '%b\n' \
+            '${glyphDual}' \
+            '${glyphSingleLeft}' \
+            '${glyphSingleRight}' \
+            '${glyphUltrawide}'
     else
         case "$1" in
-            profile1|profile2|profile3|profile4)
-                run "${config.xdg.configHome}/hypr/scripts/monitor-config $1"
-                ;;
+            $'${glyphDual}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile1" ;;
+            $'${glyphSingleLeft}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile2" ;;
+            $'${glyphSingleRight}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile3" ;;
+            $'${glyphUltrawide}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile4" ;;
             *) exit 0 ;;
         esac
     fi
@@ -47,16 +56,10 @@ in
       config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-launcher.rasi";
     "rofi/themes/koda-monitor.rasi".source =
       config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-monitor.rasi";
-
-    "rofi/monitor-icons/monitor-dual.svg".source =
-      config.lib.file.mkOutOfStoreSymlink "${iconsDir}/monitor-dual.svg";
-    "rofi/monitor-icons/monitor-single-left.svg".source =
-      config.lib.file.mkOutOfStoreSymlink "${iconsDir}/monitor-single-left.svg";
-    "rofi/monitor-icons/monitor-single-right.svg".source =
-      config.lib.file.mkOutOfStoreSymlink "${iconsDir}/monitor-single-right.svg";
-    "rofi/monitor-icons/monitor-ultrawide.svg".source =
-      config.lib.file.mkOutOfStoreSymlink "${iconsDir}/monitor-ultrawide.svg";
   };
 
-  home.packages = [ monitorMenu ];
+  home.packages = [
+    monitorMenu
+    monitorIconsFont
+  ];
 }
