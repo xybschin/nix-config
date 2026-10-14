@@ -207,7 +207,7 @@
         #workspaces button.active
         {
             background: @base05Alpha;
-            color: @base07;
+            color: @base06;
         }
 
         .modules-right > widget:last-child > * {
