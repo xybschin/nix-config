@@ -139,7 +139,6 @@
       xdg.configFile."hypr/rules.user.lua".source = ./_fenris/hyprland-user/rules.user.lua;
       xdg.configFile."hypr/autostart.user.lua".source = ./_fenris/hyprland-user/autostart.user.lua;
       xdg.configFile."hypr/settings.user.lua".source = ./_fenris/hyprland-user/settings.user.lua;
-      xdg.configFile."hypr/scripts/rofi-monitor-menu".source = ./_fenris/scripts/rofi-monitor-menu;
       xdg.configFile."hypr/scripts/monitor-config".source = ./_fenris/scripts/monitor-config;
     };
   };

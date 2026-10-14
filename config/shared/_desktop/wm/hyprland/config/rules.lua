@@ -26,6 +26,16 @@ hl.window_rule({
 	no_focus = true,
 })
 
+hl.window_rule({
+	name = "floating-pip",
+	match = {
+		class = "brave-browser",
+		title = "Picture-in-picture",
+	},
+	float = true,
+	pin = true,
+})
+
 hl.layer_rule({
 	name = "rofi-blur",
 	match = { namespace = "rofi" },
