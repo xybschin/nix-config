@@ -24,7 +24,6 @@
           "custom/media"
         ];
         modules-right = [
-          "custom/notification"
           "pulseaudio#source"
           "pulseaudio"
           "network"
@@ -32,6 +31,7 @@
           "cpu"
           "clock"
           "tray"
+          "custom/notification"
         ];
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -114,7 +114,6 @@
           on-click-middle = "swaync-client -d -sw";
           escape = true;
         };
-
       }
     ];
 
