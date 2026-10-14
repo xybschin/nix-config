@@ -1,8 +1,8 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   c = config.lib.stylix.colors.withHashtag;
 in
-{
+lib.mkIf config.my.coding-agents.claude-code.enable {
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;

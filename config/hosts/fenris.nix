@@ -127,6 +127,11 @@
         '';
       in
       {
+      my.coding-agents = {
+        claude-code.enable = false;
+        copilot.enable = false;
+      };
+
       services.hypridle = {
         enable = true;
         settings = {

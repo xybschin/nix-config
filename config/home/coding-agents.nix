@@ -14,6 +14,7 @@
     in
     {
       imports = [
+        ./_coding-agents/options.nix
         ./_coding-agents/claude-code.nix
         ./_coding-agents/copilot-cli.nix
         ./_coding-agents/opencode.nix
