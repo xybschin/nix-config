@@ -43,6 +43,9 @@ let
     set -g pane-active-border-style 'fg=${c.base0F}'
     set -g pane-border-lines heavy
     set -g pane-border-indicators both
+    set -g pane-border-status top
+    set -g pane-border-format '#[fg=${c.base04},bg=${c.base01}] #{pane_index}: #{pane_title} #[default]'
+    set -g allow-rename on
 
     setw -g window-status-separator " - "
     setw -g window-status-format "#[fg=${c.base08},bg=${c.base01}] #I #[fg=${c.base08},bg=${c.base00}] #W "
