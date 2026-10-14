@@ -57,6 +57,7 @@
       "global"
       "1password"
       "coding-agents"
+      "workmux"
     ];
     home.configuration = { pkgs, inputs, ... }: {
       # Enables CLI theming (opencode, zsh, fzf, lazygit, ...) with koda-dark
