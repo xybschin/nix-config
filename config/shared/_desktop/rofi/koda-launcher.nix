@@ -1,17 +1,22 @@
 {
   config,
   configRoot,
+  lib,
   pkgs,
   ...
 }:
 
 let
   rofiConfigDir = "${configRoot}/config/shared/_desktop/rofi/config";
-  # Glyphs in MonitorIcons.ttf (PUA-A): dual, single-left, single-right, ultrawide.
-  glyphDual = "\\U000F5000";
-  glyphSingleLeft = "\\U000F5001";
-  glyphSingleRight = "\\U000F5002";
-  glyphUltrawide = "\\U000F5003";
+  monitorProfiles = config.my.rofi.monitorProfiles;
+
+  # Emits one $'…' escaped glyph per profile (rendered by MonitorIcons.ttf).
+  glyphArgs = lib.concatMapStringsSep " " (p: "$'${p.glyph}'") monitorProfiles;
+
+  # One `case` arm per profile, matching the selected glyph to its profile.
+  caseArms = lib.concatMapStrings (
+    p: "        $'${p.glyph}') run \"${config.xdg.configHome}/hypr/scripts/monitor-config ${p.name}\" ;;\n"
+  ) monitorProfiles;
 
   monitorIconsFont = pkgs.runCommand "monitor-icons-font" { } ''
     install -Dm644 ${./fonts/MonitorIcons.ttf} \
@@ -22,18 +27,12 @@ let
     run() { hyprctl dispatch "hl.dsp.exec_cmd(\"$1\")" >/dev/null 2>&1; }
 
     if [ -z "$1" ]; then
-        printf '%b\n' \
-            '${glyphDual}' \
-            '${glyphSingleLeft}' \
-            '${glyphSingleRight}' \
-            '${glyphUltrawide}'
+        for g in ${glyphArgs}; do
+            printf '%s\n' "$g"
+        done
     else
         case "$1" in
-            $'${glyphDual}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile1" ;;
-            $'${glyphSingleLeft}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile2" ;;
-            $'${glyphSingleRight}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile3" ;;
-            $'${glyphUltrawide}') run "${config.xdg.configHome}/hypr/scripts/monitor-config profile4" ;;
-            *) exit 0 ;;
+    ${caseArms}        *) exit 0 ;;
         esac
     fi
   '';
@@ -51,15 +50,34 @@ let
   };
 in
 {
-  xdg.dataFile = {
-    "rofi/themes/koda-launcher.rasi".source =
-      config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-launcher.rasi";
-    "rofi/themes/koda-monitor.rasi".source =
-      config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-monitor.rasi";
+  options.my.rofi.monitorProfiles = lib.mkOption {
+    type = lib.types.listOf (lib.types.submodule {
+      options = {
+        name = lib.mkOption {
+          type = lib.types.str;
+          description = "Profile name passed to hypr/scripts/monitor-config.";
+        };
+        glyph = lib.mkOption {
+          type = lib.types.str;
+          description = "bash $'…' escaped glyph rendered by the MonitorIcons font.";
+        };
+      };
+    });
+    default = [ ];
+    description = "Monitor layout profiles exposed by the rofi monitor menu.";
   };
 
-  home.packages = [
-    monitorMenu
-    monitorIconsFont
-  ];
+  config = {
+    xdg.dataFile = {
+      "rofi/themes/koda-launcher.rasi".source =
+        config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-launcher.rasi";
+      "rofi/themes/koda-monitor.rasi".source =
+        config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-monitor.rasi";
+    };
+
+    home.packages = lib.mkIf (monitorProfiles != [ ]) [
+      monitorMenu
+      monitorIconsFont
+    ];
+  };
 }

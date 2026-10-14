@@ -77,7 +77,55 @@
       "shared.desktop.wm.hyprland"
       "shared.vscode"
     ];
-    home.configuration = { pkgs, ... }: {
+    home.configuration =
+      { pkgs, lib, ... }:
+      let
+        monitorProfiles = [
+          { name = "profile1"; glyph = "\\U000F5000"; }
+          { name = "profile2"; glyph = "\\U000F5001"; }
+          { name = "profile3"; glyph = "\\U000F5002"; }
+          { name = "profile4"; glyph = "\\U000F5003"; }
+        ];
+
+        monitorConfig = pkgs.writeShellScript "monitor-config" ''
+          set -euo pipefail
+          readonly STATE_DIR="''${XDG_STATE_HOME:-"$HOME/.local/state"}"
+          readonly STATE_FILE="$STATE_DIR/hyprland-monitor-profile"
+          mkdir -p "$STATE_DIR"
+
+          validate_profile() {
+              case "$1" in
+          ${lib.concatMapStrings (p: "        ${p.name}) ;;\n") monitorProfiles}        *)
+                      printf 'Unknown profile: %s\n' "$1" >&2
+                      exit 1
+                      ;;
+              esac
+          }
+
+          apply_profile() {
+              validate_profile "$1"
+              printf '%s\n' "$1" > "$STATE_FILE"
+          }
+
+          main() {
+              if [[ $# -eq 0 ]]; then
+                  if [[ -f "$STATE_FILE" ]]; then
+                      apply_profile "$(cat "$STATE_FILE")"
+                  else
+                      apply_profile "${(builtins.head monitorProfiles).name}"
+                  fi
+              else
+                  apply_profile "$1"
+              fi
+
+              hyprctl reload
+              systemctl --user restart hyprpaper.service waybar.service
+          }
+
+          main "$@"
+        '';
+      in
+      {
       services.hypridle = {
         enable = true;
         settings = {
@@ -139,7 +187,9 @@
       xdg.configFile."hypr/rules.user.lua".source = ./_fenris/hyprland-user/rules.user.lua;
       xdg.configFile."hypr/autostart.user.lua".source = ./_fenris/hyprland-user/autostart.user.lua;
       xdg.configFile."hypr/settings.user.lua".source = ./_fenris/hyprland-user/settings.user.lua;
-      xdg.configFile."hypr/scripts/monitor-config".source = ./_fenris/scripts/monitor-config;
+      my.rofi.monitorProfiles = monitorProfiles;
+
+      xdg.configFile."hypr/scripts/monitor-config".source = monitorConfig;
     };
   };
 }
