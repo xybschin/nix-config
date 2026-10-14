@@ -24,6 +24,7 @@
           "custom/media"
         ];
         modules-right = [
+          "custom/notification"
           "pulseaudio#source"
           "pulseaudio"
           "network"
@@ -96,6 +97,24 @@
           icon-size = 16;
           spacing = 10;
         };
+        "custom/notification" = {
+          format = "{icon}";
+          tooltip = true;
+          tooltip-format = "{% if title %}{}: {% endif %}{body}";
+          format-icons = {
+            notification = "";
+            none = "";
+            dnd-notification = "";
+            dnd-none = "";
+          };
+          return-type = "json";
+          exec = "swaync-client -swb";
+          on-click = "swaync-client -t -sw";
+          on-click-right = "swaync-client -d -sw";
+          on-click-middle = "swaync-client -d -sw";
+          escape = true;
+        };
+
       }
     ];
 

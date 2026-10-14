@@ -87,3 +87,8 @@ hl.bind(
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2%-"),
 	{ locked = true, repeating = true }
 )
+
+-- Notifications
+hl.bind(mainMod .. " + n", hl.dsp.exec_cmd("swaync-client -t -sw"), { locked = true })
+hl.bind(mainMod .. " + SHIFT + n", hl.dsp.exec_cmd("swaync-client -d -sw"), { locked = true })
+hl.bind(mainMod .. " + CTRL + n", hl.dsp.exec_cmd("swaync-client -C"), { locked = true })
