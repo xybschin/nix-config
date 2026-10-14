@@ -98,21 +98,24 @@
           spacing = 10;
         };
         "custom/notification" = {
-          format = "{icon}";
-          tooltip = true;
-          tooltip-format = "{% if title %}{}: {% endif %}{body}";
-          format-icons = {
-            notification = "";
-            none = "";
-            dnd-notification = "";
-            dnd-none = "";
+          "tooltip" = true;
+          "format" = "{icon}";
+          "format-icons" = {
+            "notification" = "󱅫";
+            "none" = "󰂜";
+            "dnd-notification" = "󰂠";
+            "dnd-none" = "󰪓";
+            "inhibited-notification" = "󰂛";
+            "inhibited-none" = "󰪑";
+            "dnd-inhibited-notification" = "󰂛";
+            "dnd-inhibited-none" = "󰪑";
           };
-          return-type = "json";
-          exec = "swaync-client -swb";
-          on-click = "swaync-client -t -sw";
-          on-click-right = "swaync-client -d -sw";
-          on-click-middle = "swaync-client -d -sw";
-          escape = true;
+          "return-type" = "json";
+          "exec-if" = "which swaync-client";
+          "exec" = "swaync-client -swb";
+          "on-click" = "swaync-client -t -sw";
+          "on-click-right" = "swaync-client -d -sw";
+          "escape" = true;
         };
       }
     ];
@@ -148,7 +151,7 @@
         }
 
         * {
-            font-family: FontAwesome, "Terminess Nerd Font";
+            font-family: FontAwesome, "Terminess Nerd Font Mono";
             font-size: ${toString config.stylix.fonts.sizes.desktop}pt;
         }
 
@@ -163,7 +166,7 @@
 
         #custom-nixos {
             margin: 2px 24px 2px 18px;
-            font-size: 20px;
+            font-size: 42px;
             color: @base03;
         }
 
@@ -207,11 +210,15 @@
         #workspaces button.active
         {
             background: @base05Alpha;
-            color: @base07;
+            color: @base06;
         }
 
         .modules-right > widget:last-child > * {
             margin-right: 4;
+        }
+
+        #custom-notification {
+            font-size: 24px;
         }
       '';
   };
