@@ -7,7 +7,7 @@ configuration {
 window {
     transparency:      "real";
     width:             480px;
-    border-radius:     3px;
+    border-radius:     @radius;
     padding:           4px;
 }
 
@@ -51,7 +51,7 @@ element {
 }
 
 element-text {
-    font:              "JetBrainsMono Nerd Font 18";
+    font:              @font-lg;
     cursor:            inherit;
     horizontal-align:  0.5;
     expand:            true;

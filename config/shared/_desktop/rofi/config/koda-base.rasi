@@ -1,8 +1,15 @@
 @import "koda-colors"
 
+* {
+    border-w:    1px;
+    radius:      3px;
+    radius-lg:   6px;
+    font-lg:     "JetBrainsMono Nerd Font 18";
+}
+
 window {
     background-color:  @bg;
-    border:            1px;
+    border:            @border-w;
     border-color:      @border;
     location:          center;
     anchor:            center;
@@ -15,20 +22,7 @@ mainbox {
 element {
     background-color:  transparent;
     text-color:        @fg;
-    border-radius:     3px;
-}
-
-element-text {
-    background-color:  transparent;
-    text-color:        inherit;
-    vertical-align:    0.5;
-}
-
-element selected.normal {
-    background-color:  @highlight;
-    text-color:        @accent;
-    border:            1px;
-    border-color:      @fg-dim;
+    border-radius:     @radius;
 }
 
 element normal.urgent {
@@ -39,6 +33,13 @@ element normal.active {
     text-color:        @active;
 }
 
+element selected.normal {
+    background-color:  @highlight;
+    text-color:        @accent;
+    border:            @border-w;
+    border-color:      @fg-dim;
+}
+
 element selected.urgent {
     background-color:  @highlight;
     text-color:        @urgent;
@@ -47,4 +48,10 @@ element selected.urgent {
 element selected.active {
     background-color:  @highlight;
     text-color:        @active;
+}
+
+element-text {
+    background-color:  transparent;
+    text-color:        inherit;
+    vertical-align:    0.5;
 }
