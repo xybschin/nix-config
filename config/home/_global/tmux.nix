@@ -41,7 +41,7 @@ let
 
     set -g pane-border-style 'fg=${c.base01}'
     set -g pane-active-border-style 'fg=${c.base04}'
-    set -g pane-border-lines heavy
+    set -g pane-border-lines single
     set -g pane-border-indicators both
     set -g pane-border-status top
     set -g pane-border-format '#[fg=${c.base04},bg=${c.base00}] #{pane_index}: #{pane_title} #[default]'
