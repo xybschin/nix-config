@@ -9,5 +9,16 @@
         "enboaomnljigfhfjfoalacienlhjlfil;https://clients2.google.com/service/update2/crx" # UnTrap for YouTube
       ];
     };
+
+    environment.etc."brave/policies/managed/debullshitinator.json".text = builtins.toJSON {
+      BraveRewardsDisabled = true;
+      BraveWalletDisabled = true;
+      BraveVPNDisabled = 1;
+      BraveAIChatEnabled = false;
+      NewTabPageLocation = "https://search.brave.com";
+      TorDisabled = true;
+      PasswordManagerEnabled = false;
+      DnsOverHttpsMode = "automatic";
+    };
   };
 }
