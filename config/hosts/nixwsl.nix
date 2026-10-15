@@ -58,6 +58,7 @@
       "1password"
       "coding-agents"
       "workmux"
+      "dotnet"
     ];
     home.configuration = { pkgs, inputs, ... }: {
       # Enables CLI theming (opencode, zsh, fzf, lazygit, ...) with koda-dark
@@ -78,7 +79,6 @@
         python3
         nodejs
         bun
-        dotnet-sdk_10
         (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
 
         # bd/beads issue tracker for AI-supervised coding workflows. Taken
