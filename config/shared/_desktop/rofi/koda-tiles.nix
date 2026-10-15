@@ -1,12 +1,9 @@
 {
-  config,
-  configRoot,
   pkgs,
   ...
 }:
 
 let
-  rofiConfigDir = "${configRoot}/config/shared/_desktop/rofi/config";
   entries = pkgs.writeShellScript "rofi-powermenu-entries" ''
     shutdown='󰐥'
     reboot='󰜉'
@@ -35,14 +32,11 @@ let
       rofi \
         -modes "powermenu:${entries}" \
         -show powermenu \
-        -theme koda-power \
+        -theme koda-tiles \
         -no-custom
     '';
   };
 in
 {
-  xdg.dataFile."rofi/themes/koda-power.rasi".source =
-    config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-power.rasi";
-
   home.packages = [ powermenu ];
 }

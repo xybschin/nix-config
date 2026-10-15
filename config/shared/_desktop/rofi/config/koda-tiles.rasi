@@ -1,4 +1,4 @@
-@import "koda-colors"
+@import "koda-base"
 
 configuration {
   show-icons:        false;
@@ -6,20 +6,14 @@ configuration {
 
 window {
     transparency:      "real";
-    location:          center;
-    anchor:            center;
     width:             480px;
-    border:            1px;
     border-radius:     3px;
     padding:           4px;
-    border-color:      @border;
-    background-color:  @bg;
 }
 
 mainbox {
     enabled:           true;
     margin:            0px;
-    background-color:  transparent;
     children:          [ listview ];
 }
 
@@ -49,10 +43,8 @@ element {
     margin:            0px;
     padding:           36px 0px;
     border:            0px solid;
-    border-radius:     3px;
     border-color:      @highlight;
     background-color:  @bg;
-    text-color:        @fg;
     cursor:            pointer;
     orientation:       vertical;
     children:          [ element-text ];
@@ -60,35 +52,7 @@ element {
 
 element-text {
     font:              "JetBrainsMono Nerd Font 18";
-    background-color:  transparent;
-    text-color:        inherit;
     cursor:            inherit;
-    vertical-align:    0.5;
     horizontal-align:  0.5;
     expand:            true;
-}
-
-element selected.normal {
-    background-color:  @highlight;
-    text-color:        @accent;
-    border:            1px;
-    border-color:      @fg-dim;
-}
-
-element normal.urgent {
-    text-color:        @urgent;
-}
-
-element normal.active {
-    text-color:        @active;
-}
-
-element selected.urgent {
-    background-color:  @highlight;
-    text-color:        @urgent;
-}
-
-element selected.active {
-    background-color:  @highlight;
-    text-color:        @active;
 }

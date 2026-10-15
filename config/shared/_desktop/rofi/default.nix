@@ -1,9 +1,11 @@
 {
   config,
+  configRoot,
   pkgs,
   ...
 }:
 let
+  rofiConfigDir = "${configRoot}/config/shared/_desktop/rofi/config";
   c = config.lib.stylix.colors;
   rgba = hex: alpha: "#${hex}${alpha}";
   colors = ''
@@ -28,11 +30,19 @@ in
 {
   imports = [
     ./koda-launcher.nix
-    ./koda-power.nix
+    ./koda-tiles.nix
   ];
 
   stylix.targets.rofi.enable = false;
-  xdg.dataFile."rofi/themes/koda-colors.rasi".text = colors;
+  xdg.dataFile = {
+    "rofi/themes/koda-colors.rasi".text = colors;
+    "rofi/themes/koda-base.rasi".source =
+      config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-base.rasi";
+    "rofi/themes/koda-launcher.rasi".source =
+      config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-launcher.rasi";
+    "rofi/themes/koda-tiles.rasi".source =
+      config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-tiles.rasi";
+  };
 
   programs.rofi = {
     enable = true;

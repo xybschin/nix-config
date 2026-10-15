@@ -1,13 +1,11 @@
 {
   config,
-  configRoot,
   lib,
   pkgs,
   ...
 }:
 
 let
-  rofiConfigDir = "${configRoot}/config/shared/_desktop/rofi/config";
   monitorProfiles = config.my.rofi.monitorProfiles;
 
   # Emits one $'…' escaped glyph per profile (rendered by MonitorIcons.ttf).
@@ -44,7 +42,7 @@ let
       rofi \
         -modes "monitor:${entries}" \
         -show monitor \
-        -theme koda-monitor \
+        -theme koda-tiles \
         -no-custom
     '';
   };
@@ -68,13 +66,6 @@ in
   };
 
   config = {
-    xdg.dataFile = {
-      "rofi/themes/koda-launcher.rasi".source =
-        config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-launcher.rasi";
-      "rofi/themes/koda-monitor.rasi".source =
-        config.lib.file.mkOutOfStoreSymlink "${rofiConfigDir}/koda-monitor.rasi";
-    };
-
     home.packages = lib.mkIf (monitorProfiles != [ ]) [
       monitorMenu
       monitorIconsFont

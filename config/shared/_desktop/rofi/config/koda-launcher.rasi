@@ -1,4 +1,4 @@
-@import "koda-colors"
+@import "koda-base"
 
 configuration {
   modi:                "drun";
@@ -10,18 +10,12 @@ configuration {
 }
 
 window {
-    background-color:  @bg;
-    border:            1px;
-    border-color:      @border;
     border-radius:     6px;
     width:             720px;
     padding:           0px;
-    location:          center;
-    anchor:            center;
 }
 
 mainbox {
-    background-color:  transparent;
     children:          [ inputbar, listview, message ];
     spacing:           0px;
 }
@@ -91,20 +85,10 @@ listview {
 }
 
 element {
-    background-color:  transparent;
-    text-color:        @fg;
     padding:           10px 12px;
     spacing:           10px;
     orientation:       horizontal;
     margin:            6px 12px 0px 12px;
-    border-radius:     3px; 
-}
-
-element selected {
-    background-color:  @highlight;
-    text-color:        @accent;
-    border:            1px;
-    border-color:      @fg-dim;
 }
 
 element-icon {
@@ -114,9 +98,6 @@ element-icon {
 }
 
 element-text {
-    background-color:  transparent;
-    text-color:        inherit;
-    vertical-align:    0.5;
     horizontal-align:  0.0;
 }
 

@@ -1,0 +1,50 @@
+@import "koda-colors"
+
+window {
+    background-color:  @bg;
+    border:            1px;
+    border-color:      @border;
+    location:          center;
+    anchor:            center;
+}
+
+mainbox {
+    background-color:  transparent;
+}
+
+element {
+    background-color:  transparent;
+    text-color:        @fg;
+    border-radius:     3px;
+}
+
+element-text {
+    background-color:  transparent;
+    text-color:        inherit;
+    vertical-align:    0.5;
+}
+
+element selected.normal {
+    background-color:  @highlight;
+    text-color:        @accent;
+    border:            1px;
+    border-color:      @fg-dim;
+}
+
+element normal.urgent {
+    text-color:        @urgent;
+}
+
+element normal.active {
+    text-color:        @active;
+}
+
+element selected.urgent {
+    background-color:  @highlight;
+    text-color:        @urgent;
+}
+
+element selected.active {
+    background-color:  @highlight;
+    text-color:        @active;
+}
