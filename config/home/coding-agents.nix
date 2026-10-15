@@ -10,6 +10,7 @@
     let
       skillsRepo = "https://github.com/xybschin/skills.git";
       skillsLocalPath = "$HOME/.local/share/agent-skills";
+      mattSkills = inputs.mattpocock-skills;
       hmLib = inputs.home-manager.lib.hm;
     in
     {
@@ -61,6 +62,17 @@
               $DRY_RUN_CMD ln -sfn "''${skillDir%/}" "$dest/$skill"
             done
           done
+          # Upstream skills named in the repo's list, linked from the pinned flake input.
+          LIST="$SKILLS_DIR/upstream-skills.txt"
+          if [ -f "$LIST" ]; then
+            while read -r skill; do
+              case "$skill" in "" | \#*) continue ;; esac
+              for skillDir in "${mattSkills}"/skills/*/"$skill"; do
+                [ -d "$skillDir" ] || continue
+                $DRY_RUN_CMD ln -sfn "$skillDir" "$dest/$skill"
+              done
+            done < "$LIST"
+          fi
         done
 
         CMD_DEST="$HOME/.config/opencode/commands"
