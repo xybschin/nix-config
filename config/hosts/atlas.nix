@@ -12,6 +12,7 @@
       "common"
       "server"
       "podman"
+      "infra-network"
       "pihole"
       "traefik"
       "wireguard-server"

@@ -1,6 +1,6 @@
 { ... }:
 {
-  # Traefik as an OCI container on the `infra` network (10.0.2.3). Routing
+  # Traefik as an OCI container on the infra network. Routing
   # uses the file provider only: no container socket is mounted, since a
   # podman socket in a container is root on the host. Backends are reached
   # by their static container IPs.
@@ -89,14 +89,12 @@
         # Major tag: follows v3.x, never jumps to a breaking v4.
         image = "docker.io/library/traefik:v3";
         labels."io.containers.autoupdate" = "registry";
-        networks = [ "infra" ];
         volumes = [
           "${staticConfig}:/etc/traefik/traefik.yml:ro"
           "${dynamicConfig}:/etc/traefik/dynamic.yml:ro"
           "/var/lib/acme/${certDomain}:/certs:ro"
         ];
         extraOptions = [
-          "--ip=10.0.2.3"
           # Unprivileged: nobody + cert-reader group, no capabilities.
           "--user=65534:${toString certGid}"
           "--cap-drop=ALL"
@@ -109,18 +107,24 @@
       };
 
       systemd.services.podman-traefik = {
-        requires = [ "podman-network-infra.service" ];
         # The cert must exist before traefik can serve it (first boot).
         wants = [ "acme-${certDomain}.service" ];
-        after = [
-          "podman-network-infra.service"
-          "acme-${certDomain}.service"
-        ];
+        after = [ "acme-${certDomain}.service" ];
       };
 
       # VPN clients -> traefik only.
-      networking.firewall.extraForwardRules = ''
-        iifname "wg0" oifname "br-infra" ip daddr 10.0.2.3 tcp dport { 80, 443 } accept
-      '';
+      my.infra.services.traefik = {
+        ip = "10.0.2.3";
+        vpnPorts = [
+          {
+            proto = "tcp";
+            port = 80;
+          }
+          {
+            proto = "tcp";
+            port = 443;
+          }
+        ];
+      };
     };
 }

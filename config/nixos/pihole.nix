@@ -1,8 +1,8 @@
 { ... }:
 {
-  # Pi-hole as an OCI container on the `infra` network (10.0.2.2), like the
-  # old VPS. Nothing is published to the host; WireGuard clients reach it
-  # by routing to the container IP (forward rules below).
+  # Pi-hole as an OCI container on the infra network, like the old VPS.
+  # Nothing is published to the host; WireGuard clients reach it by routing
+  # to the container IP (see the infra-network feature).
   config.my.features.nixos.pihole =
     { config, ... }:
     {
@@ -10,7 +10,6 @@
         # Moving tag, updated by podman-auto-update (see podman feature).
         image = "docker.io/pihole/pihole:latest";
         labels."io.containers.autoupdate" = "registry";
-        networks = [ "infra" ];
         capabilities = {
           NET_ADMIN = true;
           SYS_TIME = true;
@@ -28,10 +27,7 @@
         # Pi-hole v6 reads FTLCONF_* env over pihole.toml; the password stays
         # out of the world-readable nix store.
         environmentFiles = [ config.sops.templates."pihole.env".path ];
-        extraOptions = [
-          "--ip=10.0.2.2"
-          "--pids-limit=512"
-        ];
+        extraOptions = [ "--pids-limit=512" ];
       };
 
       sops.secrets.pihole_webserver_password = { };
@@ -41,15 +37,19 @@
 
       systemd.tmpfiles.rules = [ "d /var/lib/pihole 0755 root root -" ];
 
-      systemd.services.podman-pihole = {
-        requires = [ "podman-network-infra.service" ];
-        after = [ "podman-network-infra.service" ];
-      };
-
       # VPN clients -> pihole DNS only.
-      networking.firewall.extraForwardRules = ''
-        iifname "wg0" oifname "br-infra" ip daddr 10.0.2.2 udp dport 53 accept
-        iifname "wg0" oifname "br-infra" ip daddr 10.0.2.2 tcp dport 53 accept
-      '';
+      my.infra.services.pihole = {
+        ip = "10.0.2.2";
+        vpnPorts = [
+          {
+            proto = "udp";
+            port = 53;
+          }
+          {
+            proto = "tcp";
+            port = 53;
+          }
+        ];
+      };
     };
 }
