@@ -28,18 +28,8 @@
       network = "infra";
       networkUnit = "podman-network-${network}.service";
 
-      # Dotted-quad IPv4 helpers (the options only ever hold IPv4).
-      isIpv4 =
-        s:
-        builtins.match "[0-9]{1,3}(\\.[0-9]{1,3}){3}" s != null
-        && lib.all (o: o <= 255) (map lib.toInt (lib.splitString "." s));
-      ipToInt = s: lib.foldl (acc: o: acc * 256 + o) 0 (map lib.toInt (lib.splitString "." s));
-      pow2 = n: lib.foldl (acc: _: acc * 2) 1 (lib.range 1 n);
-
-      subnetAddr = lib.head (lib.splitString "/" cfg.subnet);
-      subnetPrefix = lib.toInt (lib.last (lib.splitString "/" cfg.subnet));
-      blockOf = ip: (ipToInt ip) / (pow2 (32 - subnetPrefix));
-      inSubnet = ip: blockOf ip == blockOf subnetAddr;
+      ipv4 = import ../_lib/ipv4.nix { inherit lib; };
+      inSubnet = ipv4.inSubnet cfg.subnet;
 
       ips = lib.mapAttrsToList (_: s: s.ip) cfg.services;
 
@@ -118,7 +108,7 @@
             message = "infra-network: the `podman` feature is required (nftables with forward filtering).";
           }
           {
-            assertion = isIpv4 cfg.gateway && inSubnet cfg.gateway;
+            assertion = ipv4.isIpv4 cfg.gateway && inSubnet cfg.gateway;
             message = "infra-network: gateway ${cfg.gateway} is not an IPv4 address inside ${cfg.subnet}.";
           }
           {
@@ -127,7 +117,7 @@
           }
         ]
         ++ lib.mapAttrsToList (name: s: {
-          assertion = isIpv4 s.ip && inSubnet s.ip && s.ip != cfg.gateway;
+          assertion = ipv4.isIpv4 s.ip && inSubnet s.ip && s.ip != cfg.gateway;
           message = "infra-network: service `${name}` ip ${s.ip} must be an IPv4 address inside ${cfg.subnet} and not the gateway ${cfg.gateway}.";
         }) cfg.services;
 

@@ -2,15 +2,16 @@
 # Add a WireGuard client to atlas.
 #
 # Generates a keypair and preshared key, stores the PSK in sops, registers the
-# peer in config/hosts/_atlas/wg-peers.json (read by the wireguard-server
-# feature) and writes a ready-to-import client config. The client's private
-# key never touches the repo.
+# peer in the registry file and writes a ready-to-import client config. The
+# client's private key never touches the repo. The address plan (endpoint,
+# DNS, routes, subnet, file paths) and the address allocation come from the
+# wireguard-server feature via `nix eval`; nothing is hardcoded here.
 #
 #   scripts/wg-add-peer.sh <name> [--address 10.0.3.X] [--home-lan]
 #                          [--lan CIDR]... [--out DIR] [--deploy] [--commit]
 #
-#   --address   tunnel address; default: next free one in 10.0.3.0/24
-#   --home-lan  also route the home LAN (10.0.1.0/24) through the tunnel
+#   --address   tunnel address; default: next free one in the tunnel subnet
+#   --home-lan  also route the home LAN through the tunnel
 #   --lan CIDR  LAN behind this peer that atlas should route to it (e.g. a
 #               site-to-site router). Do NOT add it to that router's own
 #               AllowedIPs.
@@ -30,22 +31,15 @@ if [[ -z ${WG_ADD_PEER_IN_NIX:-} ]] && ((missing)); then
         -c "$0" "$@"
 fi
 
-SERVER_ENDPOINT=${WG_SERVER_ENDPOINT:-atlas.bjarneschindler.dev:51820}
-SERVER_DNS=10.0.2.2
-SUBNET_PREFIX=10.0.3
-HOME_LAN=10.0.1.0/24
-TUNNEL_ROUTES=(10.0.2.0/24 10.0.3.1/32) # services + server
-
-usage() { sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 1; }
+usage() { sed -n '2,/^set /p' "$0" | sed '$d; s/^# \{0,1\}//' >&2; exit 1; }
 
 root=$(git rev-parse --show-toplevel)
-peers_file=$root/config/hosts/_atlas/wg-peers.json
-secrets_file=$root/secrets/atlas.yaml
 export SOPS_AGE_KEY_FILE=${SOPS_AGE_KEY_FILE:-$HOME/.config/sops/age/atlas.txt}
 
 name=${1:-}
 [[ -n $name && $name != -* ]] || usage
 shift
+# Also guards the Nix expression below; the feature enforces the same rule.
 [[ $name =~ ^[a-z0-9][a-z0-9_-]*$ ]] || {
     echo "invalid name '$name' (use a-z, 0-9, _ and -)" >&2
     exit 1
@@ -69,25 +63,36 @@ while (($#)); do
     esac
 done
 
+if [[ -n $address ]]; then
+    [[ $address =~ ^[0-9.]+$ ]] || { echo "invalid address '$address'" >&2; exit 1; }
+    address_expr=\"$address\"
+else
+    address_expr=null
+fi
+
+# One evaluation: the address plan, plus the feature's allocation (which also
+# rejects duplicate names and addresses).
+if ! plan=$(CONFIG_ROOT=$root NIXPKGS_ALLOW_UNFREE=1 nix eval --impure --json \
+    "$root#nixosConfigurations.atlas.config.my.wireguard.server" \
+    --apply "w: { info = w.clientInfo; address = w.allocate { name = \"$name\"; address = $address_expr; }; }" \
+    2>/tmp/wg-add-peer.err); then
+    grep -i 'error' /tmp/wg-add-peer.err | tail -n 1 >&2 || cat /tmp/wg-add-peer.err >&2
+    exit 1
+fi
+address=$(jq -r '.address' <<<"$plan")
+info() { jq -r "$1" <<<"$plan"; }
+
+peers_file=$root/$(info .info.peersFile)
+secrets_file=$root/$(info .info.secretsFile)
+psk_key=$(info .info.pskPrefix)$name
+SERVER_ENDPOINT=${WG_SERVER_ENDPOINT:-$(info .info.endpoint)}
+SERVER_DNS=$(info .info.dns)
+HOME_LAN=$(info .info.homeLan)
+PREFIX_LENGTH=$(info .info.prefixLength)
+mapfile -t TUNNEL_ROUTES < <(info '.info.routes[]')
+
 [[ -f $peers_file ]] || { echo "missing $peers_file" >&2; exit 1; }
 [[ -f $SOPS_AGE_KEY_FILE ]] || { echo "missing age key: $SOPS_AGE_KEY_FILE" >&2; exit 1; }
-
-if jq -e --arg n "$name" 'any(.[]; .name == $n)' "$peers_file" >/dev/null; then
-    echo "peer '$name' already exists in $peers_file" >&2
-    exit 1
-fi
-
-if [[ -z $address ]]; then
-    used=$(jq -r '.[].address' "$peers_file")
-    for i in $(seq 2 254); do
-        candidate=$SUBNET_PREFIX.$i
-        if ! grep -qx "$candidate" <<<"$used"; then address=$candidate; break; fi
-    done
-    [[ -n $address ]] || { echo "no free address in $SUBNET_PREFIX.0/24" >&2; exit 1; }
-elif jq -e --arg a "$address" 'any(.[]; .address == $a)' "$peers_file" >/dev/null; then
-    echo "address $address is already in use" >&2
-    exit 1
-fi
 
 # Server public key, derived from the private key in sops.
 server_pub=$(sops -d --extract '["wireguard_private_key"]' "$secrets_file" | wg pubkey)
@@ -97,7 +102,7 @@ pub=$(wg pubkey <<<"$priv")
 psk=$(wg genpsk)
 
 # Store the PSK (sops-nix decrypts it on atlas), then register the peer.
-sops set "$secrets_file" "[\"wireguard_psk_$name\"]" "\"$psk\""
+sops set "$secrets_file" "[\"$psk_key\"]" "\"$psk\""
 
 lan_json=$(printf '%s\n' "${lans[@]:-}" | jq -R . | jq -s 'map(select(. != ""))')
 tmp=$(mktemp)
@@ -119,7 +124,7 @@ conf=$out_dir/wg-$name.conf
     cat >"$conf" <<EOF
 [Interface]
 PrivateKey = $priv
-Address = $address/24
+Address = $address/$PREFIX_LENGTH
 DNS = $SERVER_DNS
 
 [Peer]

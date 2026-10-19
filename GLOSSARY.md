@@ -25,3 +25,17 @@ _Avoid_: Container entry, backend
 **VPN ingress**:
 The set of ports of an infra service that VPN clients are allowed to reach.
 _Avoid_: Forward rule (that is how it is enforced), exposed ports
+
+## WireGuard
+
+**Peer**:
+A device or router allowed to connect to the atlas WireGuard server, with its own tunnel address, public key and preshared key.
+_Avoid_: Client (that is the config a peer imports), device
+
+**Peer registry**:
+The JSON file listing every peer, edited by `scripts/wg-add-peer.sh` and read by the WireGuard server.
+_Avoid_: Peers file, wg-peers
+
+**Tunnel address**:
+The address a peer has inside the WireGuard subnet.
+_Avoid_: VPN IP, client IP

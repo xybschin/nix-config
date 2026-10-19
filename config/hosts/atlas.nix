@@ -24,9 +24,18 @@
       inputs.disko.nixosModules.disko
     ];
     nixos.configuration =
-      { pkgs, ... }:
+      { config, pkgs, ... }:
       {
         networking.hostName = "atlas";
+
+        # The one place the WireGuard and infra networks meet.
+        my.wireguard.server = {
+          peersFile = ./_atlas/wg-peers.json;
+          endpointHost = "atlas.bjarneschindler.dev";
+          clientDns = config.my.infra.services.pihole.ip;
+          clientRoutes = [ config.my.infra.subnet ];
+        };
+        my.infra.vpnInterface = config.my.wireguard.server.interface;
 
         # Static network config — mirrors the VPS provider's cloud-init
         # settings (/etc/network/interfaces.d/50-cloud-init.cfg). No DHCP
