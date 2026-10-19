@@ -11,6 +11,7 @@
     nixos.features = [
       "common"
       "server"
+      "podman"
       "pihole"
       "traefik"
       "wireguard-server"
@@ -56,6 +57,10 @@
             "2a03:4000:8000::fce6"
           ];
         };
+
+        # Addressing is fully static; ignore RAs so the kernel stops
+        # trying (and failing) to install its own default route.
+        boot.kernel.sysctl."net.ipv6.conf.eth0.accept_ra" = 0;
 
         sops = {
           defaultSopsFile = ../../secrets/atlas.yaml;

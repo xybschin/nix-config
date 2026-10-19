@@ -1,86 +1,126 @@
 { ... }:
 {
+  # Traefik as an OCI container on the `infra` network (10.0.2.3). Routing
+  # uses the file provider only: no container socket is mounted, since a
+  # podman socket in a container is root on the host. Backends are reached
+  # by their static container IPs.
   config.my.features.nixos.traefik =
-    { config, ... }:
+    { config, pkgs, ... }:
     let
       certDomain = "bjarneschindler.dev";
+      # Host group that can read the cert; the container joins it by gid.
+      certGid = 2001;
+
+      yaml = pkgs.formats.yaml { };
+
+      staticConfig = yaml.generate "traefik.yml" {
+        entryPoints = {
+          web = {
+            address = ":80";
+            http.redirections.entryPoint = {
+              to = "websecure";
+              scheme = "https";
+              permanent = true;
+            };
+          };
+          websecure.address = ":443";
+        };
+        api.dashboard = true;
+        log.level = "WARN";
+        providers.file.filename = "/etc/traefik/dynamic.yml";
+      };
+
+      dynamicConfig = yaml.generate "dynamic.yml" {
+        http = {
+          routers.pihole = {
+            rule = "Host(`pihole.${certDomain}`)";
+            entryPoints = [ "websecure" ];
+            tls = { };
+            middlewares = [ "pihole-redirect" ];
+            service = "pihole";
+          };
+          middlewares.pihole-redirect.redirectRegex = {
+            regex = "^https://pihole\\.${builtins.replaceStrings [ "." ] [ "\\." ] certDomain}/?$";
+            replacement = "https://pihole.${certDomain}/admin";
+            permanent = true;
+          };
+          services.pihole.loadBalancer.servers = [ { url = "http://10.0.2.2:8080"; } ];
+
+          routers.traefik = {
+            rule = "Host(`traefik.${certDomain}`)";
+            entryPoints = [ "websecure" ];
+            tls = { };
+            service = "api@internal";
+          };
+        };
+        tls.stores.default.defaultCertificate = {
+          certFile = "/certs/fullchain.pem";
+          keyFile = "/certs/key.pem";
+        };
+      };
     in
     {
-      # DNS-01 via the Netcup DNS API — independent of the server's IP family.
+      # DNS-01 via deSEC. bjarneschindler.dev is delegated to deSEC's
+      # nameservers (set at the registrar), so lego writes the challenge TXT
+      # records straight into the zone through the deSEC API.
       security.acme = {
         acceptTerms = true;
         defaults.email = "hello@bjarneschindler.dev";
         certs.${certDomain} = {
           domain = certDomain;
           extraDomainNames = [ "*.${certDomain}" ];
-          dnsProvider = "netcup";
-          environmentFile = config.sops.templates."netcup-acme.env".path;
-          reloadServices = [ "traefik" ];
+          dnsProvider = "desec";
+          # Don't trust the provider's resolver for the propagation check:
+          # it caches stale delegations after nameserver changes.
+          dnsResolver = "1.1.1.1:53";
+          environmentFile = config.sops.templates."desec-acme.env".path;
+          group = "traefik-certs";
+          reloadServices = [ "podman-traefik.service" ];
         };
       };
+      users.groups.traefik-certs.gid = certGid;
 
-      sops.secrets.netcup_customer_number = { };
-      sops.secrets.netcup_api_key = { };
-      sops.secrets.netcup_api_password = { };
-      sops.templates."netcup-acme.env".content = ''
-        NETCUP_CUSTOMER_NUMBER=${config.sops.placeholder.netcup_customer_number}
-        NETCUP_API_KEY=${config.sops.placeholder.netcup_api_key}
-        NETCUP_API_PASSWORD=${config.sops.placeholder.netcup_api_password}
+      sops.secrets.desec_token = { };
+      sops.templates."desec-acme.env".content = ''
+        DESEC_TOKEN=${config.sops.placeholder.desec_token}
       '';
 
-      services.traefik = {
-        enable = true;
-        staticConfigOptions = {
-          entryPoints = {
-            web = {
-              address = ":80";
-              http.redirections.entryPoint = {
-                to = "websecure";
-                scheme = "https";
-                permanent = true;
-              };
-            };
-            websecure.address = ":443";
-          };
-          api.dashboard = true;
-          log.level = "WARN";
-        };
-
-        dynamicConfigOptions = {
-          http.routers.pihole = {
-            rule = "Host(`pihole.bjarneschindler.dev`)";
-            entryPoints = [ "websecure" ];
-            tls = { };
-            middlewares = [ "pihole-redirect" ];
-            service = "pihole";
-          };
-          http.middlewares.pihole-redirect.redirectRegex = {
-            regex = "^https://pihole\\.bjarneschindler\\.dev/?$";
-            replacement = "https://pihole.bjarneschindler.dev/admin";
-            permanent = true;
-          };
-          http.services.pihole.loadBalancer.servers = [ { url = "http://127.0.0.1:8080"; } ];
-
-          http.routers.traefik = {
-            rule = "Host(`traefik.bjarneschindler.dev`)";
-            entryPoints = [ "websecure" ];
-            tls = { };
-            service = "api@internal";
-          };
-
-          tls.stores.default.defaultCertificate = {
-            certFile = "/var/lib/acme/${certDomain}/fullchain.pem";
-            keyFile = "/var/lib/acme/${certDomain}/privkey.pem";
-          };
-        };
+      virtualisation.oci-containers.containers.traefik = {
+        # Major tag: follows v3.x, never jumps to a breaking v4.
+        image = "docker.io/library/traefik:v3";
+        labels."io.containers.autoupdate" = "registry";
+        networks = [ "infra" ];
+        volumes = [
+          "${staticConfig}:/etc/traefik/traefik.yml:ro"
+          "${dynamicConfig}:/etc/traefik/dynamic.yml:ro"
+          "/var/lib/acme/${certDomain}:/certs:ro"
+        ];
+        extraOptions = [
+          "--ip=10.0.2.3"
+          # Unprivileged: nobody + cert-reader group, no capabilities.
+          "--user=65534:${toString certGid}"
+          "--cap-drop=ALL"
+          "--security-opt=no-new-privileges"
+          "--read-only"
+          "--pids-limit=256"
+          # Allow binding :80/:443 without NET_BIND_SERVICE.
+          "--sysctl=net.ipv4.ip_unprivileged_port_start=80"
+        ];
       };
 
-      users.users.traefik.extraGroups = [ "acme" ];
-
-      # The cert must exist before traefik can serve it (first boot).
-      systemd.services.traefik = {
+      systemd.services.podman-traefik = {
+        requires = [ "podman-network-infra.service" ];
+        # The cert must exist before traefik can serve it (first boot).
         wants = [ "acme-${certDomain}.service" ];
-        after = [ "acme-${certDomain}.service" ];
+        after = [
+          "podman-network-infra.service"
+          "acme-${certDomain}.service"
+        ];
       };
+
+      # VPN clients -> traefik only.
+      networking.firewall.extraForwardRules = ''
+        iifname "wg0" oifname "br-infra" ip daddr 10.0.2.3 tcp dport { 80, 443 } accept
+      '';
     };
 }

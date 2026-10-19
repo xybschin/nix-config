@@ -1,55 +1,55 @@
 { ... }:
 {
+  # Pi-hole as an OCI container on the `infra` network (10.0.2.2), like the
+  # old VPS. Nothing is published to the host; WireGuard clients reach it
+  # by routing to the container IP (forward rules below).
   config.my.features.nixos.pihole =
     { config, ... }:
     {
-      services.pihole-ftl = {
-        enable = true;
-        # Reachable only via the trusted wg0 interface; the WAN/LAN
-        # firewall stays closed on 53 and 8080.
-        openFirewallDNS = false;
-        openFirewallWebserver = false;
-        useDnsmasqConfig = true;
-
-        settings = {
-          dns = {
-            listeningMode = "ALL";
-            upstreams = [
-              "9.9.9.9"
-              "2620:fe::fe"
-            ];
-          };
-          webserver.port = "8080";
+      virtualisation.oci-containers.containers.pihole = {
+        # Moving tag, updated by podman-auto-update (see podman feature).
+        image = "docker.io/pihole/pihole:latest";
+        labels."io.containers.autoupdate" = "registry";
+        networks = [ "infra" ];
+        capabilities = {
+          NET_ADMIN = true;
+          SYS_TIME = true;
+          SYS_NICE = true;
         };
-
-        lists = [
-          {
-            description = "StevenBlack hosts";
-            url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
-            enabled = true;
-            type = "block";
-          }
+        volumes = [ "/var/lib/pihole:/etc/pihole" ];
+        environment = {
+          TZ = "Europe/Berlin";
+          FTLCONF_dns_listeningMode = "ALL";
+          FTLCONF_dns_upstreams = "9.9.9.9;2620:fe::fe";
+          FTLCONF_webserver_port = "8080";
+          # Local DNS records for VPN clients; traefik fronts everything.
+          FTLCONF_dns_hosts = "10.0.2.3 pihole.bjarneschindler.dev;10.0.2.3 traefik.bjarneschindler.dev";
+        };
+        # Pi-hole v6 reads FTLCONF_* env over pihole.toml; the password stays
+        # out of the world-readable nix store.
+        environmentFiles = [ config.sops.templates."pihole.env".path ];
+        extraOptions = [
+          "--ip=10.0.2.2"
+          "--pids-limit=512"
         ];
       };
 
-      # Local DNS records for VPN clients. Everything now lives on the
-      # tunnel address. TODO(Phase 0): verify against the old box
-      # (/etc/pihole/hosts, gravity.db custom records) and adjust.
-      services.dnsmasq.settings.address = [
-        "/pihole.bjarneschindler.dev/10.0.3.1"
-        "/traefik.bjarneschindler.dev/10.0.3.1"
-        "/wg.bjarneschindler.dev/10.0.3.1"
-        "/vpn.bjarneschindler.dev/10.0.3.1"
-      ];
-
-      # Pi-hole v6 reads FTLCONF_* environment variables over pihole.toml,
-      # so the UI password stays out of the world-readable nix store.
       sops.secrets.pihole_webserver_password = { };
-      sops.templates."pihole-ftl.env".content = ''
+      sops.templates."pihole.env".content = ''
         FTLCONF_webserver_api_password=${config.sops.placeholder.pihole_webserver_password}
       '';
-      systemd.services.pihole-ftl.serviceConfig.EnvironmentFile = [
-        config.sops.templates."pihole-ftl.env".path
-      ];
+
+      systemd.tmpfiles.rules = [ "d /var/lib/pihole 0755 root root -" ];
+
+      systemd.services.podman-pihole = {
+        requires = [ "podman-network-infra.service" ];
+        after = [ "podman-network-infra.service" ];
+      };
+
+      # VPN clients -> pihole DNS only.
+      networking.firewall.extraForwardRules = ''
+        iifname "wg0" oifname "br-infra" ip daddr 10.0.2.2 udp dport 53 accept
+        iifname "wg0" oifname "br-infra" ip daddr 10.0.2.2 tcp dport 53 accept
+      '';
     };
 }
