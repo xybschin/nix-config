@@ -76,57 +76,85 @@
       "xembsni"
       "shared.desktop"
       "shared.desktop.wm.hyprland"
+      "shared.desktop.monitors"
       "shared.vscode"
     ];
     home.configuration =
-      { pkgs, lib, ... }:
-      let
-        monitorProfiles = [
-          { name = "profile1"; glyph = "\\U000F5000"; }
-          { name = "profile2"; glyph = "\\U000F5001"; }
-          { name = "profile3"; glyph = "\\U000F5002"; }
-          { name = "profile4"; glyph = "\\U000F5003"; }
-        ];
-
-        monitorConfig = pkgs.writeShellScript "monitor-config" ''
-          set -euo pipefail
-          readonly STATE_DIR="''${XDG_STATE_HOME:-"$HOME/.local/state"}"
-          readonly STATE_FILE="$STATE_DIR/hyprland-monitor-profile"
-          mkdir -p "$STATE_DIR"
-
-          validate_profile() {
-              case "$1" in
-          ${lib.concatMapStrings (p: "        ${p.name}) ;;\n") monitorProfiles}        *)
-                      printf 'Unknown profile: %s\n' "$1" >&2
-                      exit 1
-                      ;;
-              esac
-          }
-
-          apply_profile() {
-              validate_profile "$1"
-              printf '%s\n' "$1" > "$STATE_FILE"
-          }
-
-          main() {
-              if [[ $# -eq 0 ]]; then
-                  if [[ -f "$STATE_FILE" ]]; then
-                      apply_profile "$(cat "$STATE_FILE")"
-                  else
-                      apply_profile "${(builtins.head monitorProfiles).name}"
-                  fi
-              else
-                  apply_profile "$1"
-              fi
-
-              hyprctl reload
-              systemctl --user restart hyprpaper.service waybar.service
-          }
-
-          main "$@"
-        '';
-      in
+      { pkgs, ... }:
       {
+      my.monitors = {
+        profiles = [
+          {
+            name = "profile1";
+            glyph = "\\U000F5000";
+            outputs = [
+              {
+                name = "DP-2";
+                mode = "2560x1440@120";
+                position = "0x0";
+                workspaces = [ 1 3 5 7 9 10 ];
+              }
+              {
+                name = "HDMI-A-1";
+                mode = "2560x1440@120";
+                position = "2560x0";
+                workspaces = [ 2 4 6 8 ];
+              }
+            ];
+          }
+          {
+            name = "profile2";
+            glyph = "\\U000F5001";
+            outputs = [
+              {
+                name = "DP-2";
+                mode = "2560x1440@120";
+                position = "0x0";
+                workspaces = [ 1 2 3 4 5 6 7 8 9 10 ];
+              }
+              {
+                name = "HDMI-A-1";
+                enabled = false;
+              }
+            ];
+          }
+          {
+            name = "profile3";
+            glyph = "\\U000F5002";
+            outputs = [
+              {
+                name = "HDMI-A-1";
+                mode = "2560x1440@120";
+                position = "0x0";
+                workspaces = [ 1 2 3 4 5 6 7 8 9 10 ];
+              }
+              {
+                name = "DP-2";
+                enabled = false;
+              }
+            ];
+          }
+          {
+            name = "profile4";
+            glyph = "\\U000F5003";
+            outputs = [
+              {
+                name = "DP-2";
+                mode = "5120x1440@144";
+                position = "0x0";
+                workspaces = [ 1 2 3 4 5 6 7 8 9 10 ];
+              }
+              {
+                name = "HDMI-A-1";
+                enabled = false;
+              }
+            ];
+          }
+        ];
+        alwaysDisabled = [ "DP-3" ];
+        gamingWorkspace = 10;
+      };
+
       my.coding-agents = {
         claude-code.enable = false;
         copilot.enable = false;
@@ -191,11 +219,6 @@
 
       xdg.configFile."hypr/binds.user.lua".source = ./_fenris/hyprland-user/binds.user.lua;
       xdg.configFile."hypr/rules.user.lua".source = ./_fenris/hyprland-user/rules.user.lua;
-      xdg.configFile."hypr/autostart.user.lua".source = ./_fenris/hyprland-user/autostart.user.lua;
-      xdg.configFile."hypr/settings.user.lua".source = ./_fenris/hyprland-user/settings.user.lua;
-      my.rofi.monitorProfiles = monitorProfiles;
-
-      xdg.configFile."hypr/scripts/monitor-config".source = monitorConfig;
     };
   };
 }

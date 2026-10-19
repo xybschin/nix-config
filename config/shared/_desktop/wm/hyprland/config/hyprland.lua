@@ -14,6 +14,7 @@ local function loadUserConfig(filename)
 	end
 end
 
+loadUserConfig("monitors.lua")
 loadUserConfig("settings.user.lua")
 loadUserConfig("binds.user.lua")
 loadUserConfig("rules.user.lua")

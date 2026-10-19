@@ -29,7 +29,6 @@ in
 
 {
   imports = [
-    ./koda-launcher.nix
     ./koda-tiles.nix
   ];
 

@@ -39,3 +39,13 @@ _Avoid_: Peers file, wg-peers
 **Tunnel address**:
 The address a peer has inside the WireGuard subnet.
 _Avoid_: VPN IP, client IP
+
+## Desktop
+
+**Monitor profile**:
+A named monitor layout (which outputs are on, their modes and positions, and which workspaces live where) that can be switched at runtime.
+_Avoid_: Monitor config, display setup, layout preset
+
+**Active profile**:
+The monitor profile recorded in the per-machine state file; the first declared profile when none is recorded.
+_Avoid_: Current monitor, selected layout
