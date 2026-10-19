@@ -1,7 +1,13 @@
 { ... }:
 {
   config.my.features.nixos.wireguard-server =
-    { config, ... }:
+    { config, lib, ... }:
+    let
+      # Managed by scripts/wg-add-peer.sh: one entry per device with its tunnel
+      # address, public key and optional LAN behind it. The preshared key of
+      # each peer lives in sops as wireguard_psk_<name>.
+      peers = builtins.fromJSON (builtins.readFile ../hosts/_atlas/wg-peers.json);
+    in
     {
       networking.wireguard = {
         enable = true;
@@ -9,21 +15,12 @@
           ips = [ "10.0.3.1/24" ];
           listenPort = 51820;
           privateKeyFile = config.sops.secrets.wireguard_private_key.path;
-          peers = [
-            # FRITZ!Box 7530 AX (was wg-easy client 10.0.3.4)
-            {
-              publicKey = "HLiNC/jnmdm5VnP8VxIlkFWg6FN4gXEw1oE4VvaRXV8=";
-              presharedKeyFile = config.sops.secrets.wireguard_psk_fritzbox.path;
-              # Tunnel address plus the home LAN behind the FRITZ!Box, so other
-              # VPN clients can reach it.
-              allowedIPs = [
-                "10.0.3.4/32"
-                "10.0.1.0/24"
-              ];
-            }
-            # TODO: copy the remaining peers from the old box's wg-easy
-            # database (~/infra/etc/wireguard/wg0.json), one entry each.
-          ];
+          peers = map (p: {
+            inherit (p) publicKey;
+            presharedKeyFile = config.sops.secrets."wireguard_psk_${p.name}".path;
+            # Tunnel address, plus any LAN routed behind the peer.
+            allowedIPs = [ "${p.address}/32" ] ++ (p.lan or [ ]);
+          }) peers;
         };
       };
 
@@ -39,7 +36,9 @@
         '';
       };
 
-      sops.secrets.wireguard_private_key = { };
-      sops.secrets.wireguard_psk_fritzbox = { };
+      sops.secrets = {
+        wireguard_private_key = { };
+      }
+      // lib.listToAttrs (map (p: lib.nameValuePair "wireguard_psk_${p.name}" { }) peers);
     };
 }

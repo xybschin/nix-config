@@ -12,6 +12,12 @@ nixos-remote:
 nixos-install:
 	./scripts/nixos-install.sh "$(host)" "$(target)"
 
+# Add a WireGuard client to atlas: generate keys, register, deploy, commit.
+# usage: make wg-peer name=<device> [args="--home-lan"]
+wg-peer:
+	@test -n "$(name)" || { echo "usage: make wg-peer name=<device> [args=\"--home-lan\"]"; exit 1; }
+	./scripts/wg-add-peer.sh "$(name)" --deploy --commit $(args)
+
 darwin:
 	CONFIG_ROOT=$(CONFIG_ROOT) darwin-rebuild switch --flake .#$(host)
 
@@ -26,7 +32,7 @@ up:
 check:
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1 ./scripts/check.sh
 
-.PHONY: nixos nixos-remote nixos-install darwin home up check clean-all
+.PHONY: nixos nixos-remote nixos-install wg-peer darwin home up check clean-all
 
 clean-all:
 	sudo nix-collect-garbage -d
