@@ -63,6 +63,12 @@
         settings."*" = {
           identityAgent = onePassPath;
         };
+        settings.atlas = {
+          hostname = "37.120.171.251";
+          user = "root";
+          identityFile = "~/.ssh/moonz@atlas.bjarneschindler.dev.pub";
+          identitiesOnly = true;
+        };
       };
 
       home.sessionVariables = lib.optionalAttrs (!isDarwin) {

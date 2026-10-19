@@ -1,7 +1,12 @@
 keys:
   - &bjarne F28DC558F4792FCBCC4045141B6CFD2F494F4A52
+  # age key for the atlas server (private half: ~/.config/sops/age/atlas.txt
+  # locally, /var/lib/sops-nix/age/keys.txt on the host)
+  - &atlas age1k4teu8rl6hjuu66xfjj6vkncul5t5uw7d2xuf5vc4ettmg3jhamstltmrc
 creation_rules:
   - path_regex: secrets/.*\.(yaml|json|env|ini)$
     key_groups:
       - pgp:
         - *bjarne
+        age:
+          - *atlas

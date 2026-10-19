@@ -38,7 +38,7 @@
   };
 
   boot.extraModprobeConfig = ''
-    options v4l2loopback devices=1 video_nr=10 card_label="rvm-webcam" exclusive_caps=1
+    options v4l2loopback devices=1 video_nr=10 card_label="Virtual Webcam" exclusive_caps=1
   '';
 
   fileSystems."/mnt/steam-library" = {

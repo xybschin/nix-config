@@ -1,7 +1,9 @@
 { inputs, ... }:
 let
   overlays = [
+    (import ./_overlays/armada-theme.nix)
     (import ./_overlays/segoe-ui.nix)
+    (import ./_overlays/vscode-beads.nix)
     (import ./_overlays/xembsni.nix)
   ];
 in

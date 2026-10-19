@@ -10,15 +10,16 @@
       };
     in
     {
-      # Routed through `programs.vscode` so that stylix's vscode target activates:
-      # it injects the "Stylix" color-theme extension plus font/color settings into
-      # `programs.vscode.profiles.default` (see stylix/modules/vscode/each-config.nix).
       programs.vscode = {
         enable = true;
         package = vscodeWithPasswordStore;
         profiles.default = {
           extensions = with pkgs.vscode-extensions; [
             vscodevim.vim
+            bbenoist.nix
+            davidseptimus.armada-theme
+            planet57.vscode-beads
+            catppuccin.catppuccin-vsc-icons
           ];
           userSettings = import ./_vscode/settings.nix;
         };
