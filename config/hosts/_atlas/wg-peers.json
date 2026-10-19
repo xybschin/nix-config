@@ -1,0 +1,15 @@
+[
+  {
+    "name": "fritzbox",
+    "address": "10.0.3.4",
+    "publicKey": "HLiNC/jnmdm5VnP8VxIlkFWg6FN4gXEw1oE4VvaRXV8=",
+    "lan": [
+      "10.0.1.0/24"
+    ]
+  },
+  {
+    "name": "iphone-bjarne",
+    "address": "10.0.3.2",
+    "publicKey": "hVARbLf6bZkydi10hcbt0Jbj0/Gh6JLb5o7bBpS48is="
+  }
+]
