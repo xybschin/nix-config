@@ -45,10 +45,6 @@
       virtualisation.docker = {
         enable = true;
       };
-
-      environment.systemPackages = with pkgs; [
-        (azure-cli.withExtensions [ azure-cli.extensions.azure-devops ])
-      ];
     };
 
     # Same Home is activated standalone on Ubuntu WSL (`make home`).
