@@ -151,10 +151,7 @@
         gamingWorkspace = 10;
       };
 
-      my.coding-agents = {
-        claude-code.enable = false;
-        copilot.enable = false;
-      };
+      my.coding-agents.agents = [ "opencode" ];
 
       services.hypridle = {
         enable = true;

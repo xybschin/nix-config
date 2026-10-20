@@ -37,7 +37,7 @@ let
     };
   };
 in
-lib.mkIf config.my.coding-agents.copilot.enable {
+lib.mkIf (lib.elem "copilot" config.my.coding-agents.agents) {
   home = {
     packages = [ pkgs.github-copilot-cli ];
     shellAliases.cop = "copilot";

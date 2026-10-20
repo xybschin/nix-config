@@ -3,6 +3,9 @@ graph.json
 graph.html
 .graphify/
 
+# per-clone coding-agent overrides (make with= / .feature-overrides)
+.feature-overrides
+
 # opencode (plugin deps installed locally)
 .opencode/node_modules/
 .opencode/package.json

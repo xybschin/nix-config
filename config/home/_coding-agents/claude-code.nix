@@ -2,7 +2,7 @@
 let
   c = config.lib.stylix.colors.withHashtag;
 in
-lib.mkIf config.my.coding-agents.claude-code.enable {
+lib.mkIf (lib.elem "claude" config.my.coding-agents.agents) {
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;

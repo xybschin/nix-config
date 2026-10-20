@@ -2,7 +2,7 @@
 let
   c = config.lib.stylix.colors.withHashtag;
 in
-{
+lib.mkIf (lib.elem "opencode" config.my.coding-agents.agents) {
   programs.opencode = {
     enable = true;
     enableMcpIntegration = true;
