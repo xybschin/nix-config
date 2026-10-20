@@ -63,3 +63,13 @@ _Avoid_: Icon, codepoint, font char
 **Gaming workspace**:
 The workspace the Monitor profile marks for gaming: gapless wherever a profile pins it, bound to `SUPER + g`, and shown with the G mark in the bar.
 _Avoid_: Game workspace, workspace 10
+
+## Coding agents
+
+**Coding agent**:
+An AI CLI assistant (claude, copilot, opencode) whose binary and configuration the coding-agents feature manages for a host.
+_Avoid_: AI tool, LLM client
+
+**Agent set**:
+The list of coding agents a host gets, declared as `my.coding-agents.agents` and overridden per rebuild by `CODING_AGENTS` — `make ... with=...` wins, else the gitignored `.feature-overrides` file, else the host default; `none` selects an agent-less machine.
+_Avoid_: with arg, feature flags, enable list
