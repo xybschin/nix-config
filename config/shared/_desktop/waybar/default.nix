@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
+let
+  # Owned by the shared.desktop.monitors feature; null when unset.
+  gamingWorkspace = config.my.monitors.gamingWorkspace;
+in
 {
   home.packages = with pkgs; [
     playerctl
@@ -37,14 +41,14 @@
           format = "{icon}";
           all-outputs = true;
           warp-on-scroll = false;
+          # Base list is curated here; the gaming workspace joins from data.
           persistent-workspaces = {
             "1" = [ ];
             "2" = [ ];
             "3" = [ ];
-            "10" = [ ];
-          };
-          format-icons = {
-            "10" = "G";
+          } // lib.optionalAttrs (gamingWorkspace != null) { "${toString gamingWorkspace}" = [ ]; };
+          format-icons = lib.optionalAttrs (gamingWorkspace != null) {
+            "${toString gamingWorkspace}" = "G";
           };
         };
         clock = {

@@ -10,7 +10,7 @@ local function apply_game_window_rules(games)
 			border_size = 0,
 			float = false,
 			fullscreen = true,
-			workspace = "10",
+			workspace = GAMING_WORKSPACE and tostring(GAMING_WORKSPACE),
 			render_unfocused = true,
 		})
 	end

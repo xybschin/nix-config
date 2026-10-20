@@ -197,6 +197,14 @@
             assertion = config.programs.rofi.enable;
             message = "monitors: the rofi menu needs rofi (the `shared.desktop` feature).";
           }
+          {
+            assertion =
+              cfg.gamingWorkspace == null
+              || lib.all (
+                p: lib.any (o: o.enabled && lib.elem cfg.gamingWorkspace o.workspaces) p.outputs
+              ) cfg.profiles;
+            message = "monitors: the gaming workspace must be pinned on an enabled output in every profile.";
+          }
         ]
         ++ lib.concatMap (p: [
           {

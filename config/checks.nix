@@ -340,6 +340,8 @@ let
       workspace_rule = function(o)
         ws[#ws + 1] = o.workspace .. "@" .. o.monitor .. (o.gaps_in and " nogaps" or "")
       end,
+      bind = function(key, action) print("bind " .. key) end,
+      dsp = { focus = function(o) return o end },
       on = function(ev, fn) print("on " .. ev); fn() end,
       exec_cmd = function(c) print("exec " .. c) end,
     }
@@ -350,12 +352,14 @@ let
 
   monExpected = {
     wide = ''
+      bind SUPER + g
       on hyprland.start
       exec /bin/apply
       A-1 2560x1440@120 0x0; B-2 1920x1080@60 2560x0; C-3 off
       1@A-1; 3@A-1 nogaps; 2@B-2
     '';
     solo = ''
+      bind SUPER + g
       on hyprland.start
       exec /bin/apply
       A-1 2560x1440@120 0x0; B-2 off; C-3 off
@@ -363,14 +367,32 @@ let
     '';
   };
 
+  # Same profiles, but no gaming workspace: no global, no bind.
+  monLuaNoGaming = pkgs.writeText "monitors-nogaming.lua" (
+    monGen.renderLua {
+      profiles = monFixture;
+      alwaysDisabled = [ "C-3" ];
+      gamingWorkspace = null;
+      stateFileName = "state";
+      applyScript = "/bin/apply";
+    }
+  );
+
+  monExpectedNoGaming = ''
+    on hyprland.start
+    exec /bin/apply
+    A-1 2560x1440@120 0x0; B-2 1920x1080@60 2560x0; C-3 off
+    1@A-1; 3@A-1; 2@B-2
+  '';
+
   monLuaCheck = pkgs.runCommand "monitors-lua-check" { nativeBuildInputs = [ pkgs.lua5_4 ]; } ''
-    run() { # state-content -> output
+    run() { # state-content [lua-file] -> output
       export XDG_STATE_HOME=$(mktemp -d)
       if [ -n "$1" ]; then echo "$1" > "$XDG_STATE_HOME/state"; fi
-      lua ${monLuaRunner} "$1" ${monLua}
+      lua ${monLuaRunner} "$1" "''${2:-${monLua}}"
     }
-    expect() { # label state expected
-      got=$(run "$2")
+    expect() { # label state expected [lua-file]
+      got=$(run "$2" "$4")
       if [ "$got" != "$3" ]; then
         printf 'FAIL %s\n--- got\n%s\n--- want\n%s\n' "$1" "$got" "$3"; exit 1
       fi
@@ -379,12 +401,14 @@ let
     expect "state solo" solo ${lib.escapeShellArg (lib.removeSuffix "\n" monExpected.solo)}
     expect "unknown state falls back to the first profile" bogus ${lib.escapeShellArg (lib.removeSuffix "\n" monExpected.wide)}
     expect "missing state falls back to the first profile" "" ${lib.escapeShellArg (lib.removeSuffix "\n" monExpected.wide)}
+    expect "no gaming workspace means no bind" wide ${lib.escapeShellArg (lib.removeSuffix "\n" monExpectedNoGaming)} ${monLuaNoGaming}
     touch $out
   '';
 
   evalMon =
     {
       profiles ? monFixture,
+      gamingWorkspace ? null,
       rofi ? true,
     }:
     (inputs.home-manager.lib.homeManagerConfiguration {
@@ -398,7 +422,9 @@ let
             stateVersion = "25.11";
           };
           programs.rofi.enable = rofi;
-          my.monitors.profiles = profiles;
+          my.monitors = {
+            inherit profiles gamingWorkspace;
+          };
         }
       ];
     }).config;
@@ -456,6 +482,9 @@ let
       ];
     };
     "mon: rejects missing rofi" = monRejects { rofi = false; };
+    "mon: accepts gaming workspace pinned in every profile" = monAccepts { gamingWorkspace = 3; };
+    "mon: accepts no gaming workspace" = monAccepts { gamingWorkspace = null; };
+    "mon: rejects gaming workspace missing from a profile" = monRejects { gamingWorkspace = 4; };
   };
 
   monFailed = lib.attrNames (lib.filterAttrs (_: ok: !ok) monTests);

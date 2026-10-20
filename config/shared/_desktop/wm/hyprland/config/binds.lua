@@ -51,8 +51,6 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
-hl.bind(mainMod .. " + g", hl.dsp.focus({ workspace = "10" }))
-
 -- Back to the previously focused workspace
 hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
 
