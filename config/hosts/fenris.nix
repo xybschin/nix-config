@@ -7,8 +7,8 @@
 
     nixos.features = [
       "common"
-      "common-desktop"
       "desktop"
+      "hyprland"
       "audio"
       "bluetooth"
       "boot"
@@ -58,6 +58,7 @@
       };
 
       environment.systemPackages = with pkgs; [
+        geary
         gnupg
         efibootmgr
       ];

@@ -8,6 +8,7 @@
     { config, pkgs, ... }:
     let
       certDomain = "bjarneschindler.dev";
+      piholeIp = config.my.infra.services.pihole.ip;
       # Host group that can read the cert; the container joins it by gid.
       certGid = 2001;
 
@@ -44,7 +45,7 @@
             replacement = "https://pihole.${certDomain}/admin";
             permanent = true;
           };
-          services.pihole.loadBalancer.servers = [ { url = "http://10.0.2.2:8080"; } ];
+          services.pihole.loadBalancer.servers = [ { url = "http://${piholeIp}:8080"; } ];
 
           routers.traefik = {
             rule = "Host(`traefik.${certDomain}`)";

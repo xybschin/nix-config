@@ -5,6 +5,9 @@
   # to the container IP (see the infra-network feature).
   config.my.features.nixos.pihole =
     { config, ... }:
+    let
+      traefikIp = config.my.infra.services.traefik.ip;
+    in
     {
       virtualisation.oci-containers.containers.pihole = {
         # Moving tag, updated by podman-auto-update (see podman feature).
@@ -22,7 +25,7 @@
           FTLCONF_dns_upstreams = "9.9.9.9;2620:fe::fe";
           FTLCONF_webserver_port = "8080";
           # Local DNS records for VPN clients; traefik fronts everything.
-          FTLCONF_dns_hosts = "10.0.2.3 pihole.bjarneschindler.dev;10.0.2.3 traefik.bjarneschindler.dev";
+          FTLCONF_dns_hosts = "${traefikIp} pihole.bjarneschindler.dev;${traefikIp} traefik.bjarneschindler.dev";
         };
         # Pi-hole v6 reads FTLCONF_* env over pihole.toml; the password stays
         # out of the world-readable nix store.

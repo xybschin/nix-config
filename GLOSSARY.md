@@ -12,6 +12,12 @@ _Avoid_: Profile, role, plugin
 A machine declared under `my.hosts.<name>` with its system, user, and the features it uses.
 _Avoid_: Node, machine config
 
+## Self-hosted
+
+**Self-hosted stack**:
+The VPN endpoint, DNS, reverse proxy and containers a machine runs for its own trusted devices, opted into as one feature.
+_Avoid_: infra (that is only the container bridge network), homelab, VPS stack
+
 ## Atlas networking
 
 **Infra network**:

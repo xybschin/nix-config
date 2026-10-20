@@ -10,12 +10,7 @@
 
     nixos.features = [
       "common"
-      "server"
-      "podman"
-      "infra-network"
-      "pihole"
-      "traefik"
-      "wireguard-server"
+      "self-hosted"
     ];
     nixos.extraModules = [
       ./_atlas/hardware.nix
@@ -24,18 +19,16 @@
       inputs.disko.nixosModules.disko
     ];
     nixos.configuration =
-      { config, pkgs, ... }:
+      { pkgs, ... }:
       {
         networking.hostName = "atlas";
 
-        # The one place the WireGuard and infra networks meet.
+        # Host identity for the WireGuard server; the cross-wiring with the
+        # infra network lives in the `self-hosted` feature.
         my.wireguard.server = {
           peersFile = ./_atlas/wg-peers.json;
           endpointHost = "atlas.bjarneschindler.dev";
-          clientDns = config.my.infra.services.pihole.ip;
-          clientRoutes = [ config.my.infra.subnet ];
         };
-        my.infra.vpnInterface = config.my.wireguard.server.interface;
 
         # Static network config — mirrors the VPS provider's cloud-init
         # settings (/etc/network/interfaces.d/50-cloud-init.cfg). No DHCP

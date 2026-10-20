@@ -6,34 +6,30 @@
       ...
     }:
     {
-      programs.dconf.enable = true;
+      services.xserver.xkb = {
+        layout = "us";
+        variant = "";
+      };
+
+      console.keyMap = "us";
+      networking.networkmanager.enable = true;
+
+      security.polkit.enable = true;
+
+      zramSwap.enable = true;
+
+      programs.appimage = {
+        enable = true;
+        binfmt = true;
+      };
+
       environment.systemPackages = with pkgs; [
-        geary
+        gparted
+        gnumake
+        wl-clipboard
       ];
 
-      programs.hyprland = {
-        enable = true;
-        withUWSM = true;
-        xwayland.enable = true;
-      };
-
-      services.greetd = {
-        enable = true;
-        useTextGreeter = true;
-        settings = {
-          default_session = {
-            command =
-              let
-                uwsm-session = pkgs.runCommand "tuigreet-sessions" { } ''
-                  mkdir -p $out
-                  ln -s ${pkgs.hyprland}/share/wayland-sessions/hyprland-uwsm.desktop $out/
-                '';
-              in
-              "${pkgs.tuigreet}/bin/tuigreet --time --asterisks --remember --remember-session --sessions ${uwsm-session}";
-            user = "greeter";
-          };
-        };
-      };
+      programs.dconf.enable = true;
 
       boot.consoleLogLevel = 0;
     };
