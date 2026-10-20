@@ -72,7 +72,6 @@
       "terminals"
       "mangohud"
       "waybar-audio-control"
-      "rvm-webcam"
       "xembsni"
       "shared.desktop"
       "shared.desktop.wm.hyprland"

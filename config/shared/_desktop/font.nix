@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   ...
 }:
 {
@@ -12,8 +11,5 @@
     corefonts
     vista-fonts
     noto-fonts
-    inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-pro
-    inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-mono
-    inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.ny
   ];
 }
