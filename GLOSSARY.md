@@ -56,6 +56,10 @@ _Avoid_: Monitor config, display setup, layout preset
 The monitor profile recorded in the per-machine state file; the first declared profile when none is recorded.
 _Avoid_: Current monitor, selected layout
 
+**Glyph**:
+The MonitorIcons font icon that depicts a Monitor profile's layout, selected by name from `my.monitors.glyphs` (DualActive, DualLeftActive, DualRightActive, Ultrawide) — never by raw codepoint.
+_Avoid_: Icon, codepoint, font char
+
 **Gaming workspace**:
 The workspace the Monitor profile marks for gaming: gapless wherever a profile pins it, bound to `SUPER + g`, and shown with the G mark in the bar.
 _Avoid_: Game workspace, workspace 10

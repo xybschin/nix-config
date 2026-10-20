@@ -5,8 +5,9 @@
   # the `monitor-config` state script and the rofi menu (`rofi-monitor-menu`).
   #
   # The active profile is the name stored in a state file; the first profile
-  # is the default. Names are persisted per machine, so renaming one resets
-  # that machine to the default. Needs rofi with the `koda-tiles` theme (the
+  # is the default. Names are positional (profile1, profile2, …) and
+  # persisted per machine, so reordering profiles changes what a saved state
+  # selects. Needs rofi with the `koda-tiles` theme (the
   # `shared.desktop` feature) and the Hyprland feature (which loads the Lua).
   config.my.features.home."shared.desktop.monitors" =
     {
@@ -19,10 +20,30 @@
       cfg = config.my.monitors;
       gen = import ../_lib/monitors.nix { inherit lib; };
 
+      # Codepoints the bundled MonitorIcons font provides (fc-query: f5000-f5003).
+      availableGlyphs = [
+        "F5000"
+        "F5001"
+        "F5002"
+        "F5003"
+      ];
+
+      # Names and icon escapes are derived, not declared: profile1, profile2, …
+      # and $'…' escapes the shell menu needs. The state file persists names,
+      # so reordering profiles changes what a saved state selects.
+      profiles = lib.imap0 (
+        i: p:
+        p
+        // {
+          name = "profile${toString (i + 1)}";
+          glyph = "\\U000${p.glyph}";
+        }
+      ) cfg.profiles;
+
       # Shared by the script (writes it) and the Lua (reads it).
       stateFileName = "hyprland-monitor-profile";
 
-      default = (lib.head cfg.profiles).name;
+      default = (lib.head profiles).name;
 
       monitorConfig = pkgs.writeShellScript "monitor-config" ''
         set -euo pipefail
@@ -32,7 +53,7 @@
 
         validate_profile() {
             case "$1" in
-        ${lib.concatMapStrings (p: "        ${p.name}) ;;\n") cfg.profiles}        *)
+        ${lib.concatMapStrings (p: "        ${p.name}) ;;\n") profiles}        *)
                     printf 'Unknown profile: %s\n' "$1" >&2
                     exit 1
                     ;;
@@ -65,12 +86,12 @@
       '';
 
       # Emits one $'…' escaped glyph per profile (rendered by MonitorIcons.ttf).
-      glyphArgs = lib.concatMapStringsSep " " (p: "$'${p.glyph}'") cfg.profiles;
+      glyphArgs = lib.concatMapStringsSep " " (p: "$'${p.glyph}'") profiles;
 
       # One `case` arm per profile, matching the selected glyph to its profile.
       caseArms = lib.concatMapStrings (
         p: "        $'${p.glyph}') run \"${monitorConfig} ${p.name}\" ;;\n"
-      ) cfg.profiles;
+      ) profiles;
 
       entries = pkgs.writeShellScript "rofi-monitor-menu-entries" ''
         run() { hyprctl dispatch "hl.dsp.exec_cmd(\"$1\")" >/dev/null 2>&1; }
@@ -103,25 +124,31 @@
           $out/share/fonts/truetype/MonitorIcons.ttf
       '';
 
-      names = map (p: p.name) cfg.profiles;
-      glyphs = map (p: p.glyph) cfg.profiles;
+      glyphs = map (p: p.glyph) profiles;
       unique = l: lib.length l == lib.length (lib.unique l);
     in
     {
       options.my.monitors = {
+        glyphs = lib.mkOption {
+          type = lib.types.attrsOf (lib.types.enum availableGlyphs);
+          default = {
+            DualActive = "F5000";
+            DualLeftActive = "F5001";
+            DualRightActive = "F5002";
+            Ultrawide = "F5003";
+          };
+          readOnly = true;
+          description = "Named icons of the bundled MonitorIcons font, keyed by what they depict; reference as `config.my.monitors.glyphs.<Name>`.";
+        };
         profiles = lib.mkOption {
           default = [ ];
           description = "Layout profiles, in menu order; the first is the default.";
           type = lib.types.listOf (
             lib.types.submodule {
               options = {
-                name = lib.mkOption {
-                  type = lib.types.str;
-                  description = "Profile name; also persisted in the state file.";
-                };
                 glyph = lib.mkOption {
-                  type = lib.types.str;
-                  description = "bash $'…' escaped glyph rendered by the MonitorIcons font.";
+                  type = lib.types.enum availableGlyphs;
+                  description = "Icon that depicts this layout; take one from `my.monitors.glyphs`.";
                 };
                 outputs = lib.mkOption {
                   description = "Every output this profile configures.";
@@ -190,8 +217,8 @@
             message = "monitors: declare at least one profile.";
           }
           {
-            assertion = unique names && unique glyphs;
-            message = "monitors: profile names and glyphs must each be unique.";
+            assertion = unique glyphs;
+            message = "monitors: profile glyphs must be unique.";
           }
           {
             assertion = config.programs.rofi.enable;
@@ -219,7 +246,7 @@
               unique ws && lib.all (o: o.enabled || o.workspaces == [ ]) p.outputs;
             message = "monitors: profile `${p.name}` pins a workspace twice or to a disabled output.";
           }
-        ]) cfg.profiles;
+        ]) profiles;
 
         xdg.configFile."hypr/monitors.lua".text = gen.renderLua {
           inherit (cfg) alwaysDisabled gamingWorkspace;
@@ -237,7 +264,7 @@
                 }
               ) p.outputs;
             }
-          ) cfg.profiles;
+          ) profiles;
           applyScript = toString monitorConfig;
         };
 

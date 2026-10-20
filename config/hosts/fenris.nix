@@ -80,13 +80,12 @@
       "shared.vscode"
     ];
     home.configuration =
-      { pkgs, ... }:
+      { config, pkgs, ... }:
       {
       my.monitors = {
         profiles = [
           {
-            name = "profile1";
-            glyph = "\\U000F5000";
+            glyph = config.my.monitors.glyphs.DualActive;
             outputs = [
               {
                 name = "DP-2";
@@ -103,8 +102,7 @@
             ];
           }
           {
-            name = "profile2";
-            glyph = "\\U000F5001";
+            glyph = config.my.monitors.glyphs.DualLeftActive;
             outputs = [
               {
                 name = "DP-2";
@@ -119,8 +117,7 @@
             ];
           }
           {
-            name = "profile3";
-            glyph = "\\U000F5002";
+            glyph = config.my.monitors.glyphs.DualRightActive;
             outputs = [
               {
                 name = "HDMI-A-1";
@@ -135,8 +132,7 @@
             ];
           }
           {
-            name = "profile4";
-            glyph = "\\U000F5003";
+            glyph = config.my.monitors.glyphs.Ultrawide;
             outputs = [
               {
                 name = "DP-2";
