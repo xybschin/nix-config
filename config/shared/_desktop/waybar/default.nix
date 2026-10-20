@@ -178,14 +178,6 @@ in
             margin-left: 24px;
         }
 
-        #custom-openrouter.warning {
-            color: @base0A;
-        }
-
-        #custom-openrouter.error {
-            color: @base0F;
-        }
-
         #bluetooth.disabled,
         #bluetooth.off {
             color: @base03;
@@ -228,16 +220,4 @@ in
   };
 
   xdg.configFile."waybar/scripts".source = config.lib.file.mkOutOfStoreSymlink ./scripts;
-
-  sops.gnupg.home = "${config.home.homeDirectory}/.gnupg";
-  sops.secrets.openrouter = {
-    sopsFile = ../../../../secrets/openrouter.env;
-    format = "dotenv";
-  };
-
-  systemd.user.services.waybar = {
-    Service.EnvironmentFile = [ config.sops.secrets.openrouter.path ];
-    Unit.After = [ "sops-nix.service" ];
-    Unit.Wants = [ "sops-nix.service" ];
-  };
 }

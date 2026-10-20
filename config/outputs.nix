@@ -18,7 +18,6 @@ let
       isWsl = host.isWsl;
     };
     modules = [
-      inputs.sops-nix.homeManagerModules.sops
       {
         nixpkgs.overlays = [ inputs.self.overlays.default ];
         nixpkgs.config.allowUnfree = true;
