@@ -1,5 +1,3 @@
--- Host-specific bindings for fenris
-
 local mainMod = "SUPER"
 
 hl.bind("CTRL + " .. mainMod .. " + d", hl.dsp.exec_cmd("rofi-monitor-menu"))

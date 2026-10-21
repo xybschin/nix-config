@@ -1,4 +1,3 @@
-# overlays/xembsni.nix
 final: prev: {
   xembsni = final.rustPlatform.buildRustPackage {
     pname = "xembsni";

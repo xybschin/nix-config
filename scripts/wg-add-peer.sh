@@ -112,7 +112,6 @@ jq --arg n "$name" --arg a "$address" --arg k "$pub" --argjson lan "$lan_json" \
 mv "$tmp" "$peers_file"
 git -C "$root" add "$peers_file" "$secrets_file"
 
-# Client config.
 allowed=("${TUNNEL_ROUTES[@]}")
 ((home_lan)) && allowed+=("$HOME_LAN")
 allowed_str=$(IFS=,; echo "${allowed[*]}" | sed 's/,/, /g')

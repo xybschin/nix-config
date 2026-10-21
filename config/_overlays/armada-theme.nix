@@ -1,4 +1,3 @@
-# overlays/armada-theme.nix
 # Not packaged in nixpkgs; fetched from the VS Code Marketplace.
 final: prev: {
   vscode-extensions = prev.vscode-extensions // {

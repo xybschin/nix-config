@@ -1,4 +1,3 @@
--- Suppress maximize events for all windows
 hl.window_rule({
 	name = "suppress-maximize-events",
 	match = { class = ".*" },
@@ -13,7 +12,6 @@ hl.window_rule({
 	pin = true,
 })
 
--- Fix XWayland dragging issues
 hl.window_rule({
 	name = "fix-xwayland-drags",
 	match = {

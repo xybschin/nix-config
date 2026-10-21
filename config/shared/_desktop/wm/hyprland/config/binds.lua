@@ -41,20 +41,16 @@ hl.bind(mainMod .. " + SHIFT + l", hl.dsp.window.move({ direction = "r" }))
 hl.bind(mainMod .. " + SHIFT + k", hl.dsp.window.move({ direction = "u" }))
 hl.bind(mainMod .. " + SHIFT + j", hl.dsp.window.move({ direction = "d" }))
 
--- Center window
 hl.bind(mainMod .. " + SHIFT + c", hl.dsp.window.center())
 
--- Switch workspaces
 for i = 1, 10 do
 	local key = i % 10
 	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- Back to the previously focused workspace
 hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "previous" }))
 
--- Mouse bindings
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
