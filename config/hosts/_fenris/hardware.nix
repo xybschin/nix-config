@@ -29,7 +29,31 @@
     "ntsync"
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Workarounds for out-of-tree modules vs. aggregateModules (nixos-unstable
+  # as of 2026-10-20). Drop each override once its upstream fix reaches the
+  # channel.
+  # - v4l2loopback: kernel.dev now ships System.map, so modules_install runs
+  #   depmod and the package's modules.* files collide with the kernel's.
+  #   https://github.com/NixOS/nixpkgs/issues/576406
+  # - openrazer: installs no per-module .ko.cer, which aggregateModules now
+  #   cats into modules.cer; an empty one is enough. Fixed on master by
+  #   965f876a7 (https://github.com/NixOS/nixpkgs/issues/575192).
+  boot.kernelPackages = pkgs.linuxPackages_latest.extend (
+    _final: prev: {
+      v4l2loopback = prev.v4l2loopback.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          rm -f $out/lib/modules/*/modules.*
+        '';
+      });
+      openrazer = prev.openrazer.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          for ko in $out/lib/modules/*/kernel/drivers/hid/*.ko; do
+            touch "$ko.cer"
+          done
+        '';
+      });
+    }
+  );
   boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
   fileSystems."/" = {
