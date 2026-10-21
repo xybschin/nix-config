@@ -1,13 +1,13 @@
 .DEFAULT_GOAL := nixos
 
-CONFIG_ROOT := $(shell git rev-parse --show-toplevel)
+CONFIG_ROOT := "$(shell git rev-parse --show-toplevel)"
 host ?= $(shell hostname)
 user ?= $(shell echo $$USER)
 
 # Coding agents for this rebuild (claude copilot opencode, or none).
 # Precedence: with= arg > .feature-overrides (gitignored, persists) > host default.
 with ?=
-CODING_AGENTS = $(strip $(if $(with),$(with),$(shell cat $(CONFIG_ROOT)/.feature-overrides 2>/dev/null)))
+CODING_AGENTS = "$(strip $(if $(with),$(with),$(shell cat $(CONFIG_ROOT)/.feature-overrides 2>/dev/null)))"
 
 submodules:
 	git submodule update --init --recursive
