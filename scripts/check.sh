@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Evaluate every flake configuration (nixos/darwin/home) and report failures.
+# Evaluate every flake configuration (nixos/darwin) and report failures.
 set -u
 
 : "${CONFIG_ROOT:=$(git rev-parse --show-toplevel)}"
@@ -31,7 +31,6 @@ check() {
 
 check nixosConfigurations config.system.build.toplevel.drvPath
 check darwinConfigurations system.drvPath
-check homeConfigurations activationPackage.drvPath
 
 echo "$checked checked, $ok ok, $((checked - ok)) failed"
 exit $fail

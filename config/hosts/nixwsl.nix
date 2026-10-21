@@ -47,8 +47,6 @@
       };
     };
 
-    # Same Home is activated standalone on Ubuntu WSL (`make home`).
-    home.standalone = true;
     home.features = [
       "global"
       "1password"
@@ -57,7 +55,7 @@
       "workmux"
       "dotnet"
     ];
-    home.configuration = { pkgs, inputs, ... }: {
+    home.configuration = { pkgs, ... }: {
       # Enables CLI theming (opencode, zsh, fzf, lazygit, ...) with koda-dark
       stylix = {
         enable = true;
@@ -69,19 +67,13 @@
       };
 
       home.packages = with pkgs; [
-        home-manager
         ducker
         htop
         python3
         nodejs
         bun
+        _1password-cli
         (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
-
-        # bd/beads issue tracker for AI-supervised coding workflows. Taken
-        # from the flake's own package set rather than its overlay: beads'
-        # postPatch rewrites go.mod to the toolchain's Go version, which
-        # breaks vendoring against our unstable Go. Upstream pins nixos-25.11.
-        inputs.beads.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
 
       home.sessionPath = [ "$HOME/.bun/bin" ];

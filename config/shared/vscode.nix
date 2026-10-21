@@ -18,7 +18,6 @@
             vscodevim.vim
             bbenoist.nix
             davidseptimus.armada-theme
-            planet57.vscode-beads
             catppuccin.catppuccin-vsc-icons
           ];
           userSettings = import ./_vscode/settings.nix;

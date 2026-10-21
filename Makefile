@@ -2,7 +2,6 @@
 
 CONFIG_ROOT := "$(shell git rev-parse --show-toplevel)"
 host ?= $(shell hostname)
-user ?= $(shell echo $$USER)
 
 # Coding agents for this rebuild (claude copilot opencode, or none).
 # Precedence: with= arg > .feature-overrides (gitignored, persists) > host default.
@@ -31,9 +30,6 @@ wg-peer:
 darwin: submodules
 	CONFIG_ROOT=$(CONFIG_ROOT) CODING_AGENTS=$(CODING_AGENTS) NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake .#$(host)
 
-home: submodules
-	CONFIG_ROOT=$(CONFIG_ROOT) CODING_AGENTS=$(CODING_AGENTS) NIXPKGS_ALLOW_UNFREE=1 home-manager switch --impure --flake .#$(user)@$(host)
-
 up:
 	nix flake update
 	git add flake.lock
@@ -42,7 +38,7 @@ up:
 check:
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1 ./scripts/check.sh
 
-.PHONY: submodules nixos nixos-remote nixos-install wg-peer darwin home up check clean-all
+.PHONY: submodules nixos nixos-remote nixos-install wg-peer darwin up check clean-all
 
 clean-all:
 	sudo nix-collect-garbage -d

@@ -7,9 +7,9 @@
 let
   isDarwin = host: lib.hasSuffix "-darwin" host.system;
 
-  # Everything a Home needs, independent of any System configuration, so the
-  # same Home evaluates identically integrated and standalone. `specialArgs`
-  # must stay separate from `modules`: features use `inputs` inside `imports`.
+  # Everything a Home needs, independent of any System configuration.
+  # `specialArgs` must stay separate from `modules`: features use `inputs`
+  # inside `imports`.
   homeFor = host: {
     specialArgs = {
       inherit inputs;
@@ -76,26 +76,12 @@ let
         ];
     };
 
-  mkHome =
-    host:
-    let
-      home = homeFor host;
-    in
-    inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${host.system};
-      extraSpecialArgs = home.specialArgs;
-      modules = home.modules;
-    };
-
   hostsOfKind = kind: lib.filterAttrs (_: host: kindOf host == kind) config.my.hosts;
 in
 {
   flake = {
     nixosConfigurations = lib.mapAttrs mkSystem (hostsOfKind "nixos");
     darwinConfigurations = lib.mapAttrs mkSystem (hostsOfKind "darwin");
-    homeConfigurations = lib.mapAttrs' (
-      name: host: lib.nameValuePair "${host.username}@${name}" (mkHome host)
-    ) (lib.filterAttrs (_: host: host.home.standalone) config.my.hosts);
     # Shared devenv modules for per-project dev shells (see README).
     devenvModules = config.my.devenvModules;
   };
