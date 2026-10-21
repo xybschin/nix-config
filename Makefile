@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := nixos
+
 CONFIG_ROOT := $(shell git rev-parse --show-toplevel)
 host ?= $(shell hostname)
 user ?= $(shell echo $$USER)
