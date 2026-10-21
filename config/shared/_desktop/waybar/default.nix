@@ -169,7 +169,7 @@ in
         }
 
         #custom-nixos {
-            margin: 2px 24px 2px 18px;
+            margin: 2px 21px;
             font-size: 42px;
             color: @base03;
         }
