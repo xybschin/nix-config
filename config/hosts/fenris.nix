@@ -69,6 +69,7 @@
       "git-identity"
       "1password"
       "coding-agents"
+      "devenv"
       "workmux"
       "terminals"
       "mangohud"

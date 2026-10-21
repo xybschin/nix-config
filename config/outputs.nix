@@ -96,5 +96,7 @@ in
     homeConfigurations = lib.mapAttrs' (
       name: host: lib.nameValuePair "${host.username}@${name}" (mkHome host)
     ) (lib.filterAttrs (_: host: host.home.standalone) config.my.hosts);
+    # Shared devenv modules for per-project dev shells (see README).
+    devenvModules = config.my.devenvModules;
   };
 }

@@ -5,10 +5,7 @@
     let
       # One combined host, so `dotnet --list-sdks/--list-runtimes` sees
       # everything and DOTNET_ROOT has a single place to point at.
-      dotnet = with pkgs.dotnetCorePackages; combinePackages [
-        sdk_11_0
-        sdk_10_0
-      ];
+      dotnet = import ../_lib/dotnet.nix { inherit pkgs; };
     in
     {
       home.packages = [ dotnet ];

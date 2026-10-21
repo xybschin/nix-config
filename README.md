@@ -42,6 +42,40 @@ Windows OpenSSH agent via `npiperelay.exe`. This binary must be on the Windows
 make check
 ```
 
+### Per-project dev shells (devenv)
+
+The `devenv` CLI ships as a home feature (`devenv`, enabled on fenris and
+nixwsl). Each project carries its own `devenv.nix`; shared, pre-configured
+language stacks (go, typescript, dotnet) are exported by this flake as
+`devenvModules`.
+
+```bash
+cd ~/src/my-project
+devenv init --include-envrc   # scaffolds devenv.nix, devenv.yaml, .envrc
+```
+
+Point the project at this repo, then import the stack you need:
+
+```yaml
+# devenv.yaml
+inputs:
+  nix-config:
+    url: github:xybschin/nix-config
+```
+
+```nix
+# devenv.nix
+{ inputs, ... }: {
+  imports = [ inputs.nix-config.devenvModules.typescript ];
+}
+```
+
+Then `direnv allow` (or `devenv shell`). The `.envrc` needs
+`eval "$(devenv direnvrc)"` before `use devenv` — `devenv init --include-envrc`
+writes it for you. `devenv update` bumps the lock when the shared modules
+change. Note: devenv builds environments with its own pinned nixpkgs; pin a
+`nixpkgs` input in `devenv.yaml` if a project needs a different one.
+
 ## Secrets
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.

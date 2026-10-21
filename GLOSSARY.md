@@ -12,6 +12,10 @@ _Avoid_: Profile, role, plugin
 A machine declared under `my.hosts.<name>` with its system, user, and the features it uses.
 _Avoid_: Node, machine config
 
+**Dev shell**:
+A per-project devenv environment entered with `devenv shell` or direnv, whose shared language defaults (go, typescript, dotnet) come from the `devenvModules` this flake exports.
+_Avoid_: flake devShell, toolchain env, devenv config
+
 ## Self-hosted
 
 **Self-hosted stack**:

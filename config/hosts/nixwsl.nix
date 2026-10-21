@@ -53,6 +53,7 @@
       "global"
       "1password"
       "coding-agents"
+      "devenv"
       "workmux"
       "dotnet"
     ];
@@ -69,7 +70,6 @@
 
       home.packages = with pkgs; [
         home-manager
-        devenv
         ducker
         htop
         python3
