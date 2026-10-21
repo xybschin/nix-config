@@ -6,6 +6,9 @@ graph.html
 # per-clone coding-agent overrides (make with= / .feature-overrides)
 .feature-overrides
 
+# Host-local trust anchors, loaded from certs/local/ when present.
+certs/
+
 # opencode (plugin deps installed locally)
 .opencode/node_modules/
 .opencode/package.json

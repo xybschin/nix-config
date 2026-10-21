@@ -5,8 +5,21 @@
       pkgs,
       hostUser,
       inputs,
+      configRoot,
       ...
     }:
+    let
+      localCaDir = "${configRoot}/certs/local";
+      localCaFiles =
+        if builtins.pathExists localCaDir then
+          map (name: builtins.toPath "${localCaDir}/${name}") (
+            builtins.filter (name: builtins.match ".*\\.(crt|pem)" name != null) (
+              builtins.attrNames (builtins.readDir localCaDir)
+            )
+          )
+        else
+          [ ];
+    in
     {
       imports = [
         inputs.stylix.nixosModules.stylix
@@ -50,6 +63,10 @@
           ];
         };
       };
+
+      # Optional host-local trust anchors are folded into security.pki.caBundle,
+      # which the Nix daemon exposes to its network clients.
+      security.pki.certificateFiles = localCaFiles;
 
       fonts.fontconfig = {
         enable = true;
