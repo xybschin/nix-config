@@ -53,6 +53,7 @@
     in
     {
       imports = [
+        inputs.sops-nix.homeManagerModules.sops
         ./_coding-agents/options.nix
         ./_coding-agents/claude-code.nix
         ./_coding-agents/copilot-cli.nix
@@ -61,13 +62,23 @@
 
       my.coding-agents.agents = lib.mkIf (envAgents != null) (lib.mkForce envAgents);
 
+      # Decrypts with the sops PGP key imported into ~/.gnupg (see README).
+      # sops-nix runs on home-manager activation and at login.
+      sops = {
+        defaultSopsFile = ../../secrets/home.yaml;
+        gnupg.home = "${config.home.homeDirectory}/.gnupg";
+        secrets = lib.mkIf (agents != [ ]) {
+          context7_api_key = { };
+        };
+      };
+
       programs.mcp = lib.mkIf (agents != [ ]) {
         enable = true;
         servers = {
           git.command = lib.getExe pkgs.mcp-server-git;
           context7 = {
             url = "https://mcp.context7.com/mcp";
-            headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
+            headers.CONTEXT7_API_KEY = "{file:${config.sops.secrets.context7_api_key.path}}";
           };
         };
       };

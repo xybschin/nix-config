@@ -4,6 +4,12 @@ keys:
   # locally, /var/lib/sops-nix/age/keys.txt on the host)
   - &atlas age1k4teu8rl6hjuu66xfjj6vkncul5t5uw7d2xuf5vc4ettmg3jhamstltmrc
 creation_rules:
+  # User-level secrets for Home Manager, decrypted with the PGP key alone
+  # (private half in 1Password: "sops GPG private key").
+  - path_regex: secrets/home\.yaml$
+    key_groups:
+      - pgp:
+        - *bjarne
   - path_regex: secrets/.*\.(yaml|json|env|ini)$
     key_groups:
       - pgp:

@@ -91,3 +91,17 @@ Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and sto
 ```bash
 nix shell nixpkgs#sops nixpkgs#gnupg -c sops secrets/<file>.env
 ```
+
+### User secrets (Home Manager)
+
+`secrets/home.yaml` holds secrets for the `coding-agents` feature (currently
+`context7_api_key`). It is encrypted to the sops PGP key only, so one key
+decrypts it on every machine. The private key lives in 1Password
+("sops GPG private key", vault Private); import it once per machine:
+
+```bash
+op item get 3f3fu7fw5jggewxcuoagozxjvm --field sops-gpg-private-key.asc:text | gpg --import
+```
+
+The key must not need a passphrase prompt at activation (sops-nix runs
+`gpg` non-interactively).
