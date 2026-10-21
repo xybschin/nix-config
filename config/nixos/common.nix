@@ -12,7 +12,13 @@
       localCaDir = "${configRoot}/certs/local";
       localCaFiles =
         if builtins.pathExists localCaDir then
-          map (name: builtins.toPath "${localCaDir}/${name}") (
+          map (
+            name:
+            builtins.path {
+              path = builtins.toPath "${localCaDir}/${name}";
+              name = "local-ca-${name}";
+            }
+          ) (
             builtins.filter (name: builtins.match ".*\\.(crt|pem)" name != null) (
               builtins.attrNames (builtins.readDir localCaDir)
             )
