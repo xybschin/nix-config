@@ -76,6 +76,11 @@ writes it for you. `devenv update` bumps the lock when the shared modules
 change. Note: devenv builds environments with its own pinned nixpkgs; pin a
 `nixpkgs` input in `devenv.yaml` if a project needs a different one.
 
+This repo uses its own devenv: `direnv allow` loads `devenv.nix` (nil, nixfmt,
+sops, mcp-nixos). The `nixos` MCP server is project-scoped — `.opencode/opencode.json`
+for opencode, and a generated, gitignored `.mcp.json` for Claude Code — so
+it is only available inside this repo's shell, not in the global agent config.
+
 ## Secrets
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.
