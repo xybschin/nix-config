@@ -22,7 +22,6 @@ apply_game_window_rules({
 	{ name = "Steam Games", match = { class = "^steam_app_\\d+$" } },
 })
 
--- Feh image viewer: floating, centered, 75% size
 hl.window_rule({
 	name = "feh",
 	match = { class = "^feh$" },

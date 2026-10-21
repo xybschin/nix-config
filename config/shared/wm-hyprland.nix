@@ -43,7 +43,6 @@
       xdg.configFile."hypr/scripts/rofi-launch".source =
         config.lib.file.mkOutOfStoreSymlink "${scriptsDir}/rofi-launch";
 
-      # Generated from stylix palette
       xdg.configFile."hypr/colors.lua".text =
         let
           c = config.lib.stylix.colors.withHashtag;

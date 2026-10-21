@@ -48,7 +48,6 @@ ShellRoot {
 
         const confPath = "$HOME/.config/hypr/hyprpaper.conf"
         let script = `mkdir -p "$HOME/.config/hypr"`
-        // If conf doesn't exist, create empty
         script += ` && [ -f "${confPath}" ] || : > "${confPath}"`
         // Remove any existing wallpaper block for this monitor (handle multi-line blocks)
         script += ` && python3 -c "
@@ -60,7 +59,6 @@ try:
         content = f.read()
 except Exception:
     content = ''
-# Remove blocks for this monitor
 import re
 # Pattern: wallpaper { ... monitor = MONITOR ... } (non-greedy across lines)
 pattern = re.compile(r'wallpaper\\s*\\{[^\\}]*monitor\\s*=\\s*' + re.escape(mon) + r'[^\\}]*\\}', re.DOTALL)
@@ -68,7 +66,6 @@ new_content = pattern.sub('', content).strip()
 with open(path, 'w') as f:
     f.write(new_content + '\\n' if new_content else '')
 " "${confPath}" "${monitor}"`
-        // Append the new block for this monitor
         script += ` && printf 'wallpaper {\\n  monitor = ${monitor}\\n  path = %s\\n  fit_mode = cover\\n}\\n' "${path}" >> "${confPath}"`
         script += ` && hyprctl hyprpaper wallpaper "${monitor},${path},cover"`
 

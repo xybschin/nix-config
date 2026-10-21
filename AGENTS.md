@@ -19,11 +19,12 @@ Modules register against the schema in `config/core.nix`:
   feature *names* it opts into (plus `extraModules` and `configuration`)
 
 `config/outputs.nix` resolves each host's names through the registry into
-`nixosConfigurations`, `darwinConfigurations`, and `homeConfigurations`.
+`nixosConfigurations` and `darwinConfigurations`, with each host's Home
+integrated as a Home Manager module.
 
 Flow: a file lands under `config/` → registers a feature or host → a host
 lists the feature by name → `outputs.nix` maps names to modules →
-`nixosSystem` / `darwinSystem` / `homeManagerConfiguration` evaluates.
+`nixosSystem` / `darwinSystem` evaluates.
 
 ## Conventions
 

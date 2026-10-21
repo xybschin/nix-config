@@ -20,5 +20,4 @@ loadUserConfig("binds.user.lua")
 loadUserConfig("rules.user.lua")
 loadUserConfig("autostart.user.lua")
 
--- Default autostart (overridable by user config)
 hl.on("hyprland.start", function() end)

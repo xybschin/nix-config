@@ -57,12 +57,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    beads = {
-      url = "github:gastownhall/beads";
-    };
-
-    # Matt Pocock's agent skills; the ones to link are listed in
-    # xybschin/skills' upstream-skills.txt (see config/home/coding-agents.nix).
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;

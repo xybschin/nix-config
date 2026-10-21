@@ -6,7 +6,8 @@ under [`config/`](config/) is auto-imported as a flake-parts module (dirs
 prefixed with `_` are excluded). Modules define feature sets under
 `config.my.features.*`, hosts under `config.my.hosts`, and
 [`config/outputs.nix`](config/outputs.nix) wires them into
-`nixosConfigurations` / `darwinConfigurations` / `homeConfigurations`.
+`nixosConfigurations` / `darwinConfigurations`; each host's Home Manager
+configuration is integrated into its system.
 
 ## Usage
 
@@ -20,14 +21,6 @@ make nixos host=<hostname>
 
 ```bash
 make darwin host=<hostname>
-```
-
-### Rebuild Home Manager (standalone)
-
-Only hosts with `home.standalone = true` (currently `nixwsl`, also used on Ubuntu WSL):
-
-```bash
-make home user=dev host=nixwsl
 ```
 
 ### WSL note (1password SSH agent)

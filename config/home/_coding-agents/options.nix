@@ -15,7 +15,7 @@ in
       agent's binary and writes its configuration (skills, MCP, themes).
 
       Overridable per rebuild without editing this file: the
-      CODING_AGENTS environment variable (passed by `make home with=...`
+      CODING_AGENTS environment variable (passed by `make nixos with=...`
       or read from the gitignored .feature-overrides file) wins when set;
       `none` selects an agent-less machine.
     '';
