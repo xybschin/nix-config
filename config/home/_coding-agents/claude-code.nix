@@ -16,6 +16,7 @@ lib.mkIf (lib.elem "claude" config.my.coding-agents.agents) {
     package = overlay.wrap {
       package = pkgs.claude-code;
       bin = "claude";
+      secretEnv.CONTEXT7_API_KEY = config.sops.secrets.context7_api_key.path;
       prelude = ''
         if [ -f "${overlay.dir}/claude-settings.json" ]; then
           set -- --settings "${overlay.dir}/claude-settings.json" "$@"
@@ -23,6 +24,11 @@ lib.mkIf (lib.elem "claude" config.my.coding-agents.agents) {
       '';
     };
     enableMcpIntegration = true;
+    # Claude expands ${VAR} in headers; the wrapper exports the sops secret.
+    mcpServers.context7 = {
+      url = "https://mcp.context7.com/mcp";
+      headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+    };
     settings = {
       includeCoAuthoredBy = false;
       theme = "custom:koda";

@@ -6,6 +6,9 @@
 #
 #   env                 sourced before launch (secrets, referenced as {env:X})
 #   <agent files>       see each agent's `prelude` in its module
+#
+# `wrap` can also export variables from secret files (e.g. sops-nix paths);
+# a variable already set by `env` or the caller wins.
 let
   dir = "$HOME/.config/coding-agents/local";
 in
@@ -19,14 +22,25 @@ in
       # Shell run after `env` is sourced and before the agent starts. May
       # export variables or `set --` extra arguments.
       prelude ? "",
+      # Variable name -> path of a file holding its value.
+      secretEnv ? { },
     }:
     let
+      exportSecrets = lib.concatStrings (
+        lib.mapAttrsToList (var: path: ''
+          if [ -z "''${${var}-}" ] && [ -r "${path}" ]; then
+            ${var}="$(<"${path}")"
+            export ${var}
+          fi
+        '') secretEnv
+      );
       launcher = pkgs.writeShellScript "${bin}-local-overlay" ''
         if [ -f "${dir}/env" ]; then
           set -a
           . "${dir}/env"
           set +a
         fi
+        ${exportSecrets}
         ${prelude}
         exec ${lib.getExe' package bin} "$@"
       '';

@@ -20,6 +20,13 @@ let
         args = [ ];
         tools = [ "*" ];
       };
+      context7 = {
+        type = "http";
+        url = "https://mcp.context7.com/mcp";
+        # Copilot expands ${VAR}; the wrapper exports the sops secret.
+        headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+        tools = [ "*" ];
+      };
       nixos = {
         type = "local";
         command = lib.getExe pkgs.mcp-nixos;
@@ -35,6 +42,7 @@ lib.mkIf (lib.elem "copilot" config.my.coding-agents.agents) {
       (overlay.wrap {
         package = pkgs.github-copilot-cli;
         bin = "copilot";
+        secretEnv.CONTEXT7_API_KEY = config.sops.secrets.context7_api_key.path;
         # Adds servers on top of the read-only ~/.copilot/mcp-config.json;
         # same-named servers in the local file win.
         prelude = ''
