@@ -1,10 +1,26 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   c = config.lib.stylix.colors.withHashtag;
+  overlay = import ./local-overlay.nix { inherit lib pkgs; };
 in
 lib.mkIf (lib.elem "opencode" config.my.coding-agents.agents) {
   programs.opencode = {
     enable = true;
+    # OPENCODE_CONFIG is merged on top of the generated global config.
+    package = overlay.wrap {
+      package = pkgs.opencode;
+      bin = "opencode";
+      prelude = ''
+        if [ -f "${overlay.dir}/opencode.json" ]; then
+          export OPENCODE_CONFIG="${overlay.dir}/opencode.json"
+        fi
+      '';
+    };
     enableMcpIntegration = true;
     settings = {
       autoupdate = false;

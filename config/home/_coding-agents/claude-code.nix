@@ -1,10 +1,27 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   c = config.lib.stylix.colors.withHashtag;
+  overlay = import ./local-overlay.nix { inherit lib pkgs; };
 in
 lib.mkIf (lib.elem "claude" config.my.coding-agents.agents) {
   programs.claude-code = {
     enable = true;
+    # --settings layers on top of the read-only user settings, so the local
+    # file only adds or overrides keys.
+    package = overlay.wrap {
+      package = pkgs.claude-code;
+      bin = "claude";
+      prelude = ''
+        if [ -f "${overlay.dir}/claude-settings.json" ]; then
+          set -- --settings "${overlay.dir}/claude-settings.json" "$@"
+        fi
+      '';
+    };
     enableMcpIntegration = true;
     settings = {
       includeCoAuthoredBy = false;
