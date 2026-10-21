@@ -12,9 +12,7 @@ graph.html
 .opencode/package-lock.json
 .opencode/bun.lock
 
-# devenv / direnv (generated; .mcp.json and .claude/ are written by devenv)
+# devenv / direnv (generated)
 .devenv/
 .direnv/
-.mcp.json
-.claude/
 devenv.local.nix
