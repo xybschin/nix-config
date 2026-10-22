@@ -15,8 +15,8 @@ lib.mkIf (lib.elem "opencode" config.my.coding-agents.agents) {
       package = pkgs.opencode;
       bin = "opencode";
       prelude = ''
-        if [ -f "${overlay.dir}/opencode.json" ]; then
-          export OPENCODE_CONFIG="${overlay.dir}/opencode.json"
+        if [ -f "${overlay.dir}/opencode/opencode.json" ]; then
+          export OPENCODE_CONFIG="${overlay.dir}/opencode/opencode.json"
         fi
       '';
     };

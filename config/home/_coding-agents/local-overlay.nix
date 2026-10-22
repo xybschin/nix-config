@@ -5,7 +5,9 @@
 # dropping or removing a file takes effect without a rebuild or a new shell.
 #
 #   env                 sourced before launch (secrets, referenced as {env:X})
-#   <agent files>       see each agent's `prelude` in its module
+#   claude/settings.json
+#   copilot/{mcp-config,lsp-config,providers}.json
+#   opencode/opencode.json
 #
 # `wrap` can also export variables from secret files (e.g. sops-nix paths);
 # a variable already set by `env` or the caller wins.

@@ -43,11 +43,26 @@ lib.mkIf (lib.elem "copilot" config.my.coding-agents.agents) {
         package = pkgs.github-copilot-cli;
         bin = "copilot";
         secretEnv.CONTEXT7_API_KEY = config.sops.secrets.context7_api_key.path;
-        # Adds servers on top of the read-only ~/.copilot/mcp-config.json;
-        # same-named servers in the local file win.
+        # Customer-specific, untracked Copilot configuration. Copilot supports
+        # an additive MCP config and an alternate providers file directly. It
+        # has no LSP-config path option, so link its standard location when a
+        # local LSP config is present; `/lsp` then writes to the local file.
+        # The Nix-managed MCP servers remain available, with local
+        # same-named servers taking precedence.
         prelude = ''
-          if [ -f "${overlay.dir}/copilot-mcp.json" ]; then
-            set -- --additional-mcp-config=@"${overlay.dir}/copilot-mcp.json" "$@"
+          localCopilotDir="${overlay.dir}/copilot"
+
+          if [ -f "$localCopilotDir/mcp-config.json" ]; then
+            set -- --additional-mcp-config=@"$localCopilotDir/mcp-config.json" "$@"
+          fi
+
+          if [ -f "$localCopilotDir/providers.json" ]; then
+            export COPILOT_PROVIDERS_CONFIG="$localCopilotDir/providers.json"
+          fi
+
+          if [ -f "$localCopilotDir/lsp-config.json" ]; then
+            mkdir -p "$HOME/.copilot"
+            ln -sfn "$localCopilotDir/lsp-config.json" "$HOME/.copilot/lsp-config.json"
           fi
         '';
       })

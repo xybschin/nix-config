@@ -18,8 +18,8 @@ lib.mkIf (lib.elem "claude" config.my.coding-agents.agents) {
       bin = "claude";
       secretEnv.CONTEXT7_API_KEY = config.sops.secrets.context7_api_key.path;
       prelude = ''
-        if [ -f "${overlay.dir}/claude-settings.json" ]; then
-          set -- --settings "${overlay.dir}/claude-settings.json" "$@"
+        if [ -f "${overlay.dir}/claude/settings.json" ]; then
+          set -- --settings "${overlay.dir}/claude/settings.json" "$@"
         fi
       '';
     };
