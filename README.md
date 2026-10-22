@@ -75,6 +75,26 @@ is project-scoped — `.opencode/opencode.json` runs `mcp-nixos` from the devenv
 shell's `PATH` — so it is only available inside this repo's shell, not in the
 global agent config.
 
+## Claude Code releases
+
+`claude-code` is overlaid (`config/_overlays/claude-code.nix`) to follow
+Anthropic's release feed: the newest release is resolved while the
+configuration is evaluated, so a rebuild lands on the current release instead
+of the one nixpkgs pins.
+
+```bash
+make nixos host=<hostname>   # picks up the newest release
+```
+
+The lookup happens during evaluation, so it needs `--impure` — the Makefile
+and `make check` already pass it. Pin the release with an environment
+variable:
+
+```bash
+CLAUDE_CODE_VERSION=2.1.300 make nixos host=<hostname>   # a specific release
+CLAUDE_CODE_VERSION=nixpkgs  make nixos host=<hostname>   # nixpkgs' version, no network
+```
+
 ## Secrets
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.
