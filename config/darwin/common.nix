@@ -14,10 +14,8 @@
       nix = {
         package = pkgs.nix;
         settings = {
-          substituters = [ "https://claude-code.cachix.org" ];
-          trusted-public-keys = [
-            "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
-          ];
+          # cache.nixos.org and its key come from nix-darwin's defaults; only
+          # the trusted users and the CLI features are set here.
           trusted-users = [ "root" ] ++ [ hostUser ];
           experimental-features = [
             "nix-command"

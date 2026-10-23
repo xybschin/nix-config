@@ -77,3 +77,7 @@ _Avoid_: AI tool, LLM client
 **Agent set**:
 The list of coding agents a host gets, declared as `my.coding-agents.agents` and overridden per rebuild by `CODING_AGENTS` — `make ... with=...` wins, else the gitignored `.feature-overrides` file, else the host default; `none` selects an agent-less machine.
 _Avoid_: with arg, feature flags, enable list
+
+**Rolling release**:
+A package whose newest upstream release is resolved while the configuration is evaluated rather than pinned in nixpkgs — claude-code follows Anthropic's release feed, so every rebuild lands on the current release. `CLAUDE_CODE_VERSION` pins it.
+_Avoid_: auto-update, latest version, unpinned package
