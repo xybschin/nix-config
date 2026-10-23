@@ -8,11 +8,14 @@ Overlay {
     property var entries: []
     property int selected: 0
 
-    readonly property int columns: 4
-    readonly property int menuWidth: 480
+    // One tile per entry, so there are never empty slots. Capped at the
+    // widest layout the menu may use; extra entries wrap onto more rows.
+    readonly property int maxColumns: 5
+    readonly property int columns: Math.max(1, Math.min(entries.length, maxColumns))
+    readonly property int tileSize: 90
     readonly property int padding: 4
     readonly property int spacing: 4
-    readonly property int tileWidth: Math.floor((menuWidth - 2 - 2 * padding - (columns - 1) * spacing) / columns)
+    readonly property int menuWidth: 2 + 2 * padding + columns * tileSize + (columns - 1) * spacing
 
     onOpenChanged: {
         if (open)
@@ -83,8 +86,8 @@ Overlay {
 
                         readonly property bool selected: index === root.selected
 
-                        width: root.tileWidth
-                        height: root.tileWidth
+                        width: root.tileSize
+                        height: root.tileSize
                         radius: Theme.radius
                         color: selected ? Theme.highlight : Theme.bg
                         border.width: 1
