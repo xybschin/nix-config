@@ -58,7 +58,7 @@ in
           }
           // lib.optionalAttrs (gamingWorkspace != null) { "${toString gamingWorkspace}" = [ ]; };
           format-icons = lib.optionalAttrs (gamingWorkspace != null) {
-            "${toString gamingWorkspace}" = "G";
+            "${toString gamingWorkspace}" = "󰸳";
           };
         };
         clock = {
@@ -232,6 +232,7 @@ in
         .modules-right > widget:last-child > * {
             margin-right: 4;
         }
+
         #custom-power,
         #custom-monitor,
         #custom-notification {
