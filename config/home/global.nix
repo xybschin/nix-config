@@ -35,6 +35,7 @@
           jq
           htop
           tldr
+          tuicr
         ]
         ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
           pkgs.systemctl-tui
