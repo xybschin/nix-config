@@ -167,32 +167,6 @@
               ];
             }
             {
-              glyph = config.my.monitors.glyphs.Single;
-              outputs = [
-                {
-                  name = "DP-2";
-                  mode = "preferred";
-                  position = "0x0";
-                  workspaces = [
-                    1
-                    2
-                    3
-                    4
-                    5
-                    6
-                    7
-                    8
-                    9
-                    10
-                  ];
-                }
-                {
-                  name = "HDMI-A-1";
-                  enabled = false;
-                }
-              ];
-            }
-            {
               glyph = config.my.monitors.glyphs.Ultrawide;
               outputs = [
                 {
