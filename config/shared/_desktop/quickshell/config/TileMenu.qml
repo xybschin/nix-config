@@ -84,7 +84,7 @@ Overlay {
                         readonly property bool selected: index === root.selected
 
                         width: root.tileWidth
-                        height: label.implicitHeight + 72
+                        height: root.tileWidth
                         radius: Theme.radius
                         color: selected ? Theme.highlight : Theme.bg
                         border.width: 1
