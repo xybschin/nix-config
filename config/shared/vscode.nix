@@ -3,10 +3,12 @@
   config.my.features.home."shared.vscode" =
     { pkgs, ... }:
     let
-      vscodeWithPasswordStore = pkgs.vscode-with-extensions.override {
-        vscode = pkgs.vscode.override {
-          commandLineArgs = "--password-store=gnome-libsecret";
-        };
+      # NOTE: do not wrap this in `pkgs.vscode-with-extensions`. That wrapper
+      # hard-codes `--extensions-dir` to its own (empty) extension store path,
+      # which makes VS Code ignore the extensions Home Manager links into
+      # `~/.vscode/extensions`.
+      vscodeWithPasswordStore = pkgs.vscode.override {
+        commandLineArgs = "--password-store=gnome-libsecret";
       };
     in
     {
