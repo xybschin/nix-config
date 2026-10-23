@@ -123,7 +123,9 @@ Overlay {
                     font.family: Theme.fontFamily
                     font.pointSize: Theme.fontSize
                     clip: true
-                    focus: true
+
+                    // Too early at completion: the item is not in the window yet.
+                    Component.onCompleted: Qt.callLater(forceActiveFocus)
 
                     onTextChanged: {
                         root.query = text
