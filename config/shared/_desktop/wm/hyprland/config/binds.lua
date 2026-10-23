@@ -5,9 +5,9 @@ hl.bind(mainMod .. " + CTRL + p", hl.dsp.exec_cmd("qs ipc call powermenu toggle"
 
 -- Window/Session actions
 hl.bind(mainMod .. " + q", hl.dsp.window.close())
+hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.kill())
 hl.bind(mainMod .. " + f", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + t", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + m", hl.dsp.exec_cmd("loginctl terminate-user $USER"))
 
 -- Dwindle layout
 hl.bind(mainMod .. " + o", hl.dsp.layout("togglesplit"))
@@ -24,10 +24,6 @@ hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("qs ipc call launcher toggle"))
 hl.bind(mainMod .. " + r", hl.dsp.exec_cmd("qs ipc call launcher toggle"))
 hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("nautilus"))
 hl.bind("CTRL + SHIFT + Space", hl.dsp.exec_cmd("1password --quick-access"))
-
--- Special workspace
-hl.bind(mainMod .. " + s", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + s", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Move window focus with vim keys
 hl.bind(mainMod .. " + h", hl.dsp.focus({ direction = "left" }))
