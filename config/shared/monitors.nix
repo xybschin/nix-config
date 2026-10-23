@@ -2,13 +2,14 @@
 {
   # Monitor profiles: switchable layouts for Hyprland, declared as data.
   # One definition generates the Hyprland Lua (~/.config/hypr/monitors.lua),
-  # the `monitor-config` state script and the rofi menu (`rofi-monitor-menu`).
+  # the `monitor-config` state script and the data for the quickshell
+  # monitor menu (~/.config/koda/monitor-menu.json).
   #
   # The active profile is the name stored in a state file; the first profile
   # is the default. Names are positional (profile1, profile2, …) and
   # persisted per machine, so reordering profiles changes what a saved state
-  # selects. Needs rofi with the `koda-tiles` theme (the
-  # `shared.desktop` feature) and the Hyprland feature (which loads the Lua).
+  # selects. Needs the Hyprland feature (which loads the Lua and runs the
+  # quickshell MonitorMenu).
   config.my.features.home."shared.desktop.monitors" =
     {
       config,
@@ -84,40 +85,6 @@
 
         main "$@"
       '';
-
-      # Emits one $'…' escaped glyph per profile (rendered by MonitorIcons.ttf).
-      glyphArgs = lib.concatMapStringsSep " " (p: "$'${p.glyph}'") profiles;
-
-      # One `case` arm per profile, matching the selected glyph to its profile.
-      caseArms = lib.concatMapStrings (
-        p: "        $'${p.glyph}') run \"${monitorConfig} ${p.name}\" ;;\n"
-      ) profiles;
-
-      entries = pkgs.writeShellScript "rofi-monitor-menu-entries" ''
-        run() { hyprctl dispatch "hl.dsp.exec_cmd(\"$1\")" >/dev/null 2>&1; }
-
-        if [ -z "$1" ]; then
-            for g in ${glyphArgs}; do
-                printf '%s\n' "$g"
-            done
-        else
-            case "$1" in
-        ${caseArms}        *) exit 0 ;;
-            esac
-        fi
-      '';
-
-      monitorMenu = pkgs.writeShellApplication {
-        name = "rofi-monitor-menu";
-        runtimeInputs = [ pkgs.rofi ];
-        text = ''
-          rofi \
-            -modes "monitor:${entries}" \
-            -show monitor \
-            -theme koda-tiles \
-            -no-custom
-        '';
-      };
 
       monitorIconsFont = pkgs.runCommand "monitor-icons-font" { } ''
         install -Dm644 ${./_desktop/monitors/MonitorIcons.ttf} \
@@ -221,10 +188,6 @@
             message = "monitors: profile glyphs must be unique.";
           }
           {
-            assertion = config.programs.rofi.enable;
-            message = "monitors: the rofi menu needs rofi (the `shared.desktop` feature).";
-          }
-          {
             assertion =
               cfg.gamingWorkspace == null
               || lib.all (
@@ -268,10 +231,15 @@
           applyScript = toString monitorConfig;
         };
 
-        home.packages = [
-          monitorMenu
-          monitorIconsFont
-        ];
+        # The quickshell MonitorMenu reads this: one tile per profile.
+        xdg.configFile."koda/monitor-menu.json".text = builtins.toJSON (
+          lib.zipListsWith (p: raw: {
+            codepoint = raw.glyph;
+            command = "${monitorConfig} ${p.name}";
+          }) profiles cfg.profiles
+        );
+
+        home.packages = [ monitorIconsFont ];
       };
     };
 }
