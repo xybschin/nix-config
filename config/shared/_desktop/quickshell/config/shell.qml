@@ -14,6 +14,10 @@ ShellRoot {
     // focusedMonitor is ready before the bar is ever opened.
     Component.onCompleted: Hyprland.focusedMonitor
 
+    Launcher {}
+    PowerMenu {}
+    MonitorMenu {}
+
     // Empty string means the bar is closed. Otherwise holds the name of the
     // Hyprland monitor the bar is currently open on.
     property string activeMonitor: ""

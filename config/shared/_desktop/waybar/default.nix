@@ -1,5 +1,12 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
+  qs = lib.getExe' pkgs.quickshell "qs";
+
   # Owned by the shared.desktop.monitors feature; null when unset.
   gamingWorkspace = config.my.monitors.gamingWorkspace;
 in
@@ -36,6 +43,8 @@ in
           "clock"
           "tray"
           "custom/notification"
+          "custom/monitor"
+          "custom/power"
         ];
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -46,7 +55,8 @@ in
             "1" = [ ];
             "2" = [ ];
             "3" = [ ];
-          } // lib.optionalAttrs (gamingWorkspace != null) { "${toString gamingWorkspace}" = [ ]; };
+          }
+          // lib.optionalAttrs (gamingWorkspace != null) { "${toString gamingWorkspace}" = [ ]; };
           format-icons = lib.optionalAttrs (gamingWorkspace != null) {
             "${toString gamingWorkspace}" = "G";
           };
@@ -89,6 +99,16 @@ in
         "custom/nixos" = {
           format = "";
           tooltip = false;
+        };
+        "custom/power" = {
+          format = "󰐥";
+          tooltip = false;
+          on-click = "${qs} ipc call powermenu toggle";
+        };
+        "custom/monitor" = {
+          format = "󰍺";
+          tooltip = false;
+          on-click = "${qs} ipc call monitormenu toggle";
         };
         "custom/media" = {
           format = "NOW PLAYING: {}";
@@ -212,7 +232,8 @@ in
         .modules-right > widget:last-child > * {
             margin-right: 4;
         }
-
+        #custom-power,
+        #custom-monitor,
         #custom-notification {
             font-size: 24px;
         }

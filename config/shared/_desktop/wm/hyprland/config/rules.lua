@@ -35,7 +35,7 @@ hl.window_rule({
 })
 
 hl.layer_rule({
-	match = { namespace = "^(waybar|rofi|swaync-.*)$" },
+	match = { namespace = "^(waybar|koda-.*|swaync-.*)$" },
 	blur = true,
 	ignore_alpha = 0.5,
 })
