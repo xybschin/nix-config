@@ -21,7 +21,7 @@
       cfg = config.my.monitors;
       gen = import ../_lib/monitors.nix { inherit lib; };
 
-      # Codepoints the bundled MonitorIcons font provides (fc-query: f5000-f5003).
+      # Codepoints the bundled MonitorIcons font provides (fc-query: f5000-f5004).
       availableGlyphs = [
         "F5000"
         "F5001"
