@@ -27,6 +27,7 @@
         "F5001"
         "F5002"
         "F5003"
+        "F5004"
       ];
 
       # Names and icon escapes are derived, not declared: profile1, profile2, …
@@ -103,6 +104,7 @@
             DualLeftActive = "F5001";
             DualRightActive = "F5002";
             Ultrawide = "F5003";
+            Single = "F5004";
           };
           readOnly = true;
           description = "Named icons of the bundled MonitorIcons font, keyed by what they depict; reference as `config.my.monitors.glyphs.<Name>`.";

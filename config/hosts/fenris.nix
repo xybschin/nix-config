@@ -83,136 +83,207 @@
     home.configuration =
       { config, pkgs, ... }:
       {
-      my.monitors = {
-        profiles = [
-          {
-            glyph = config.my.monitors.glyphs.DualActive;
-            outputs = [
-              {
-                name = "DP-2";
-                mode = "2560x1440@120";
-                position = "0x0";
-                workspaces = [ 1 3 5 7 9 10 ];
-              }
-              {
-                name = "HDMI-A-1";
-                mode = "2560x1440@120";
-                position = "2560x0";
-                workspaces = [ 2 4 6 8 ];
-              }
-            ];
-          }
-          {
-            glyph = config.my.monitors.glyphs.DualLeftActive;
-            outputs = [
-              {
-                name = "DP-2";
-                mode = "2560x1440@120";
-                position = "0x0";
-                workspaces = [ 1 2 3 4 5 6 7 8 9 10 ];
-              }
-              {
-                name = "HDMI-A-1";
-                enabled = false;
-              }
-            ];
-          }
-          {
-            glyph = config.my.monitors.glyphs.DualRightActive;
-            outputs = [
-              {
-                name = "HDMI-A-1";
-                mode = "2560x1440@120";
-                position = "0x0";
-                workspaces = [ 1 2 3 4 5 6 7 8 9 10 ];
-              }
-              {
-                name = "DP-2";
-                enabled = false;
-              }
-            ];
-          }
-          {
-            glyph = config.my.monitors.glyphs.Ultrawide;
-            outputs = [
-              {
-                name = "DP-2";
-                mode = "5120x1440@144";
-                position = "0x0";
-                workspaces = [ 1 2 3 4 5 6 7 8 9 10 ];
-              }
-              {
-                name = "HDMI-A-1";
-                enabled = false;
-              }
-            ];
-          }
-        ];
-        alwaysDisabled = [ "DP-3" ];
-        gamingWorkspace = 10;
-      };
-
-      my.coding-agents.agents = [ "opencode" ];
-
-      services.hypridle = {
-        enable = true;
-        settings = {
-          general = {
-            after_sleep_cmd = "hyprctl dispatch dpms on";
-            ignore_dbus_inhibit = false;
-          };
-
-          listener = [
+        my.monitors = {
+          profiles = [
             {
-              timeout = 300;
-              on-timeout = "hyprlock";
+              glyph = config.my.monitors.glyphs.DualActive;
+              outputs = [
+                {
+                  name = "DP-2";
+                  mode = "2560x1440@120";
+                  position = "0x0";
+                  workspaces = [
+                    1
+                    3
+                    5
+                    7
+                    9
+                    10
+                  ];
+                }
+                {
+                  name = "HDMI-A-1";
+                  mode = "2560x1440@120";
+                  position = "2560x0";
+                  workspaces = [
+                    2
+                    4
+                    6
+                    8
+                  ];
+                }
+              ];
             }
             {
-              timeout = 360;
-              on-timeout = "hyprctl dispatch dpms off";
-              on-resume = "hyprctl dispatch dpms on";
+              glyph = config.my.monitors.glyphs.DualLeftActive;
+              outputs = [
+                {
+                  name = "DP-2";
+                  mode = "2560x1440@120";
+                  position = "0x0";
+                  workspaces = [
+                    1
+                    2
+                    3
+                    4
+                    5
+                    6
+                    7
+                    8
+                    9
+                    10
+                  ];
+                }
+                {
+                  name = "HDMI-A-1";
+                  enabled = false;
+                }
+              ];
             }
             {
-              timeout = 1800;
-              on-timeout = "systemctl hibernate";
+              glyph = config.my.monitors.glyphs.DualRightActive;
+              outputs = [
+                {
+                  name = "HDMI-A-1";
+                  mode = "2560x1440@120";
+                  position = "0x0";
+                  workspaces = [
+                    1
+                    2
+                    3
+                    4
+                    5
+                    6
+                    7
+                    8
+                    9
+                    10
+                  ];
+                }
+                {
+                  name = "DP-2";
+                  enabled = false;
+                }
+              ];
+            }
+            {
+              glyph = config.my.monitors.glyphs.Single;
+              outputs = [
+                {
+                  name = "DP-2";
+                  mode = "preferred";
+                  position = "0x0";
+                  workspaces = [
+                    1
+                    2
+                    3
+                    4
+                    5
+                    6
+                    7
+                    8
+                    9
+                    10
+                  ];
+                }
+                {
+                  name = "HDMI-A-1";
+                  enabled = false;
+                }
+              ];
+            }
+            {
+              glyph = config.my.monitors.glyphs.Ultrawide;
+              outputs = [
+                {
+                  name = "DP-2";
+                  mode = "5120x1440@144";
+                  position = "0x0";
+                  workspaces = [
+                    1
+                    2
+                    3
+                    4
+                    5
+                    6
+                    7
+                    8
+                    9
+                    10
+                  ];
+                }
+                {
+                  name = "HDMI-A-1";
+                  enabled = false;
+                }
+              ];
             }
           ];
+          alwaysDisabled = [ "DP-3" ];
+          gamingWorkspace = 10;
         };
-      };
 
-      home.packages = with pkgs; [
-        obsidian
-        signal-desktop
-        python3
-        nodejs
-        tigervnc
-        vlc
-      ];
+        my.coding-agents.agents = [ "opencode" ];
 
-      xdg.mime.enable = true;
-      xdg.mimeApps = {
-        enable = true;
-        defaultApplications = {
-          "application/pdf" = "org.pwmt.zathura.desktop";
-          "image/png" = "feh.desktop";
-          "image/jpeg" = "feh.desktop";
-          "image/gif" = "feh.desktop";
-          "video/mp4" = "vlc.desktop";
-          "video/webm" = "vlc.desktop";
-          "video/x-matroska" = "vlc.desktop";
-          "audio/mpeg" = "vlc.desktop";
-          "audio/ogg" = "vlc.desktop";
-          "audio/flac" = "vlc.desktop";
-          "text/html" = "brave-browser.desktop";
-          "application/xhtml+xml" = "brave-browser.desktop";
-          "x-scheme-handler/http" = "brave-browser.desktop";
-          "x-scheme-handler/https" = "brave-browser.desktop";
-          "inode/directory" = "org.gnome.Nautilus.desktop";
+        services.hypridle = {
+          enable = true;
+          settings = {
+            general = {
+              after_sleep_cmd = "hyprctl dispatch dpms on";
+              ignore_dbus_inhibit = false;
+            };
+
+            listener = [
+              {
+                timeout = 300;
+                on-timeout = "hyprlock";
+              }
+              {
+                timeout = 360;
+                on-timeout = "hyprctl dispatch dpms off";
+                on-resume = "hyprctl dispatch dpms on";
+              }
+              {
+                timeout = 1800;
+                on-timeout = "systemctl hibernate";
+              }
+            ];
+          };
         };
-      };
 
-      xdg.configFile."hypr/binds.user.lua".source = ./_fenris/hyprland-user/binds.user.lua;
-      xdg.configFile."hypr/rules.user.lua".source = ./_fenris/hyprland-user/rules.user.lua;
-    };
+        home.packages = with pkgs; [
+          obsidian
+          signal-desktop
+          python3
+          nodejs
+          tigervnc
+          vlc
+        ];
+
+        xdg.mime.enable = true;
+        xdg.mimeApps = {
+          enable = true;
+          defaultApplications = {
+            "application/pdf" = "org.pwmt.zathura.desktop";
+            "image/png" = "feh.desktop";
+            "image/jpeg" = "feh.desktop";
+            "image/gif" = "feh.desktop";
+            "video/mp4" = "vlc.desktop";
+            "video/webm" = "vlc.desktop";
+            "video/x-matroska" = "vlc.desktop";
+            "audio/mpeg" = "vlc.desktop";
+            "audio/ogg" = "vlc.desktop";
+            "audio/flac" = "vlc.desktop";
+            "text/html" = "brave-browser.desktop";
+            "application/xhtml+xml" = "brave-browser.desktop";
+            "x-scheme-handler/http" = "brave-browser.desktop";
+            "x-scheme-handler/https" = "brave-browser.desktop";
+            "inode/directory" = "org.gnome.Nautilus.desktop";
+          };
+        };
+
+        xdg.configFile."hypr/binds.user.lua".source = ./_fenris/hyprland-user/binds.user.lua;
+        xdg.configFile."hypr/rules.user.lua".source = ./_fenris/hyprland-user/rules.user.lua;
+      };
   };
 }
