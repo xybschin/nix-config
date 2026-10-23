@@ -15,9 +15,7 @@
 #   <Leader>s = Session / workspace
 #   <Leader>t = Terminal
 #
-# NOTE: Stylix also writes into `programs.vscode.profiles.default.userSettings`
-# (workbench.colorTheme = "Stylix" + font settings); those keys merge with the
-# ones below, so both take effect.
+# Theme and font keys live in ../vscode.nix (Stylix's VS Code target is off).
 {
   # ── Editor ──────────────────────────────────────────────────────────────
 
@@ -91,6 +89,9 @@
 
   # no startup screen (mini.starter shows only when nvim is opened without args)
   "workbench.startupEditor" = "none";
+
+  # bump the UI scale a notch
+  "window.zoomLevel" = 1;
 
   # ── Terminal ────────────────────────────────────────────────────────────
 
