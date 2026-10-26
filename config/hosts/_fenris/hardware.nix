@@ -25,7 +25,6 @@
     "bluetooth"
     "btusb"
     "kvm-amd"
-    "v4l2loopback"
     "ntsync"
   ];
 
@@ -54,16 +53,10 @@
       });
     }
   );
-  boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
-
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/2418fd5a-e4f8-4074-98f0-2f61c1ebe083";
     fsType = "ext4";
   };
-
-  boot.extraModprobeConfig = ''
-    options v4l2loopback devices=1 video_nr=10 card_label="Virtual Webcam" exclusive_caps=1
-  '';
 
   fileSystems."/mnt/steam-library" = {
     device = "/dev/disk/by-uuid/d69827d6-b0ff-4195-9f36-df90a10cfaef";

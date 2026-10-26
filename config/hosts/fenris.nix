@@ -23,6 +23,7 @@
       "podman"
       "printing"
       "wireguard"
+      "v4l2loopback"
     ];
     nixos.extraModules = [ ./_fenris/hardware.nix ];
     nixos.configuration = { pkgs, ... }: {
