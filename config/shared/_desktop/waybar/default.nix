@@ -110,7 +110,6 @@ in
         };
         "hyprland/window" = {
           format = "{}";
-          max-length = 60;
           separate-outputs = true;
         };
         tray = {
