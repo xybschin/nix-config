@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace": {
+    "library": ["types"]
+  },
+  "diagnostics": {
+    "globals": ["hl", "GAMING_WORKSPACE"]
+  }
+}
