@@ -20,4 +20,8 @@ loadUserConfig("binds.user.lua")
 loadUserConfig("rules.user.lua")
 loadUserConfig("autostart.user.lua")
 
+-- Load the Super+Tab switcher last, after the user configs, so a failure inside it
+-- cannot keep the files above from loading.
+require("alttab")
+
 hl.on("hyprland.start", function() end)

@@ -38,6 +38,7 @@
         config.lib.file.mkOutOfStoreSymlink "${hyprDir}/settings.lua";
       xdg.configFile."hypr/binds.lua".source = config.lib.file.mkOutOfStoreSymlink "${hyprDir}/binds.lua";
       xdg.configFile."hypr/rules.lua".source = config.lib.file.mkOutOfStoreSymlink "${hyprDir}/rules.lua";
+      xdg.configFile."hypr/alttab.lua".source = config.lib.file.mkOutOfStoreSymlink "${hyprDir}/alttab.lua";
 
       xdg.configFile."hypr/colors.lua".text =
         let
