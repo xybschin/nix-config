@@ -23,11 +23,6 @@ lib.mkIf (lib.elem "opencode" config.my.coding-agents.agents) {
     enableMcpIntegration = true;
     settings = {
       autoupdate = false;
-      lsp.nil = {
-        command = [ "nil" ];
-        extensions = [ ".nix" ];
-        settings.nil.formatting.command = [ "nixfmt" ];
-      };
     };
     tui = {
       theme = lib.mkForce "system";
