@@ -204,7 +204,7 @@
 
         services.lfbw = {
           enable = true;
-          settings.background = "file=${./_fenris/webcam-backgrounds/undercity.jpg}";
+          settings.background = "file=${./_fenris/webcam-backgrounds/pub.png}";
         };
 
         services.hypridle = {
