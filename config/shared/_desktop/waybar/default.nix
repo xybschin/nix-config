@@ -32,7 +32,7 @@ in
         modules-left = [
           "custom/nixos"
           "hyprland/workspaces"
-          "custom/media"
+          "hyprland/window"
         ];
         modules-right = [
           "wireplumber#source"
@@ -108,12 +108,10 @@ in
           tooltip = false;
           on-click = "${qs} ipc call monitormenu toggle";
         };
-        "custom/media" = {
-          format = "NOW PLAYING: {}";
-          exec = "${config.xdg.configHome}/waybar/scripts/scrolling-playerctl";
-          tooltip = true;
-          tooltip-format = "{}";
-          on-click = "playerctl play-pause";
+        "hyprland/window" = {
+          format = "{}";
+          max-length = 60;
+          separate-outputs = true;
         };
         tray = {
           icon-size = 16;
@@ -192,7 +190,7 @@ in
             color: @base03;
         }
 
-        #custom-media {
+        #window {
             margin-left: 24px;
         }
 
