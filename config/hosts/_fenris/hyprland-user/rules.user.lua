@@ -2,6 +2,8 @@ local function slugify(str)
 	return str:lower():gsub("%s+", "-")
 end
 
+local NON_GAMING_WORKSPACE = 1
+
 local function apply_game_window_rules(games)
 	for _, game in ipairs(games) do
 		hl.window_rule({
@@ -12,9 +14,26 @@ local function apply_game_window_rules(games)
 			fullscreen = true,
 			workspace = GAMING_WORKSPACE and tostring(GAMING_WORKSPACE),
 			render_unfocused = true,
+			tag = "+game",
 		})
 	end
 end
+
+local function keep_off_gaming_workspace(w)
+	if not GAMING_WORKSPACE then return end
+	for _, tag in ipairs(w.tags or {}) do
+		if tag == "game" then return end
+	end
+	for _, gw in ipairs(hl.get_windows({ workspace = GAMING_WORKSPACE })) do
+		if gw.address == w.address then
+			hl.dispatch(hl.dsp.window.move({ workspace = NON_GAMING_WORKSPACE, window = w, follow = false }))
+			return
+		end
+	end
+end
+
+hl.on("window.open", keep_off_gaming_workspace)
+hl.on("window.move_to_workspace", keep_off_gaming_workspace)
 
 apply_game_window_rules({
 	{ name = "World of Warcraft", match = { title = "World of Warcraft" } },
