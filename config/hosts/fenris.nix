@@ -204,7 +204,7 @@
 
         services.lfbw = {
           enable = true;
-          settings.background = "file=${./_fenris/webcam-backgrounds/wow-live-wallpaper.mp4}";
+          settings.background = "file=${./_fenris/webcam-backgrounds/undercity.jpg}";
         };
 
         services.hypridle = {
