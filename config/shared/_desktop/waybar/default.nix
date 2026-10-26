@@ -63,7 +63,7 @@ in
         };
         clock = {
           format = "{:%Y-%m-%d %H:%M}";
-          format-alt = "{:%Y-%m-%d}";
+          tooltip = false;
         };
         cpu = {
           format = "CPU {usage}%";
