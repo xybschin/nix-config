@@ -35,8 +35,8 @@ in
           "custom/media"
         ];
         modules-right = [
-          "pulseaudio#source"
-          "pulseaudio"
+          "wireplumber#source"
+          "wireplumber"
           "network"
           "memory"
           "cpu"
@@ -79,22 +79,20 @@ in
           format-disconnected = "DISCONNECTED";
           interval = 4;
         };
-        pulseaudio = {
+        wireplumber = {
           format = "SNK {volume}%";
           format-muted = "SNK 0%";
-          on-click = "pavucontrol --tab 3";
+          on-click = "pwvucontrol";
           on-click-right = "audio-control";
-          on-click-middle = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+          on-click-middle = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         };
-        "pulseaudio#source" = {
-          format = "{format_source}";
-          format-source = "SRC {volume}%";
-          format-source-muted = "SRC 0%";
-          on-click = "pavucontrol --tab 4";
+        "wireplumber#source" = {
+          node-type = "Audio/Source";
+          format = "SRC {volume}%";
+          format-muted = "SRC 0%";
+          on-click = "pwvucontrol";
           on-click-right = "audio-control";
-          on-click-middle = "pactl set-source-mute @DEFAULT_SOURCE@ toggle";
-          on-scroll-up = "pactl set-source-volume @DEFAULT_SOURCE@ +1%";
-          on-scroll-down = "pactl set-source-volume @DEFAULT_SOURCE@ -1%";
+          on-click-middle = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
         };
         "custom/nixos" = {
           format = "";
