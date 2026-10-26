@@ -1,7 +1,10 @@
 local function slugify(str)
-	return str:lower():gsub("%s+", "-")
+	return (str:lower():gsub("%s+", "-"))
 end
 
+local GAMING_WORKSPACE = _G.GAMING_WORKSPACE
+local hl = _G.hl
+local GAME_TAG = "game"
 local NON_GAMING_WORKSPACE = 1
 
 local function apply_game_window_rules(games)
@@ -14,20 +17,38 @@ local function apply_game_window_rules(games)
 			fullscreen = true,
 			workspace = GAMING_WORKSPACE and tostring(GAMING_WORKSPACE),
 			render_unfocused = true,
-			tag = "+game",
+			tag = "+" .. GAME_TAG,
 		})
 	end
 end
 
-local function keep_off_gaming_workspace(w)
-	if not GAMING_WORKSPACE then return end
+local function is_game(w)
 	for _, tag in ipairs(w.tags or {}) do
-		if tag == "game" then return end
+		if tag == GAME_TAG or tag == GAME_TAG .. "*" then
+			return true
+		end
 	end
-	for _, gw in ipairs(hl.get_windows({ workspace = GAMING_WORKSPACE })) do
+	return false
+end
+
+local function keep_off_gaming_workspace(w)
+	if not GAMING_WORKSPACE or is_game(w) then
+		return
+	end
+	local windows = hl.get_windows({ workspace = GAMING_WORKSPACE })
+	local stray = false
+	for _, gw in ipairs(windows) do
 		if gw.address == w.address then
-			hl.dispatch(hl.dsp.window.move({ workspace = NON_GAMING_WORKSPACE, window = w, follow = false }))
-			return
+			stray = true
+		end
+	end
+	if not stray then
+		return
+	end
+	hl.dispatch(hl.dsp.window.move({ workspace = NON_GAMING_WORKSPACE, window = w, follow = true }))
+	for _, gw in ipairs(windows) do
+		if is_game(gw) and gw.fullscreen == 0 then
+			hl.dispatch(hl.dsp.window.fullscreen({ mode = "fullscreen", action = "set", window = gw }))
 		end
 	end
 end
