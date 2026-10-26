@@ -2,7 +2,7 @@
 {
   config.my.features.nixos.audio = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
-      pavucontrol
+      pwvucontrol
       easyeffects
       pulseaudio
     ];
