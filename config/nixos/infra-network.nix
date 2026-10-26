@@ -101,11 +101,17 @@
       };
 
       config = {
+        # Netavark's nftables driver, and filtering of forwarded traffic so the
+        # rules below take effect. Enabling nftables also switches podman's
+        # firewall_driver automatically.
+        networking.nftables.enable = true;
+        networking.firewall.filterForward = true;
+        boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
         assertions = [
           {
-            # What the `podman` feature provides and the forward rules need.
-            assertion = config.networking.nftables.enable && config.networking.firewall.filterForward;
-            message = "infra-network: the `podman` feature is required (nftables with forward filtering).";
+            assertion = config.virtualisation.podman.enable;
+            message = "infra-network: the `podman` feature is required.";
           }
           {
             assertion = ipv4.isIpv4 cfg.gateway && inSubnet cfg.gateway;

@@ -31,11 +31,5 @@
           Persistent = true;
         };
       };
-
-      # Required for netavark's nftables driver (the podman module switches
-      # firewall_driver automatically) and for filtering forwarded traffic.
-      networking.nftables.enable = true;
-      networking.firewall.filterForward = true;
-      boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
     };
 }

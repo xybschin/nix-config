@@ -20,6 +20,7 @@
       "logiops"
       "usb-auto-mount"
       "virtualisation"
+      "podman"
       "printing"
       "wireguard"
     ];
