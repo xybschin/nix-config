@@ -11,6 +11,7 @@
       "hyprland"
       "audio"
       "bluetooth"
+      "librepods"
       "boot"
       "1password"
       "brave-browser"
@@ -264,6 +265,7 @@
           };
         };
 
+        xdg.configFile."hypr/settings.user.lua".source = ./_fenris/hyprland-user/settings.user.lua;
         xdg.configFile."hypr/binds.user.lua".source = ./_fenris/hyprland-user/binds.user.lua;
         xdg.configFile."hypr/rules.user.lua".source = ./_fenris/hyprland-user/rules.user.lua;
       };
