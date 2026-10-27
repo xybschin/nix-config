@@ -6,6 +6,10 @@
   config.my.features.nixos.hyprland =
     { pkgs, ... }:
     {
+      # hyprlock authenticates through its own PAM service; without it, it
+      # falls back to /etc/pam.d/su.
+      security.pam.services.hyprlock = { };
+
       programs.hyprland = {
         enable = true;
         withUWSM = true;

@@ -1,0 +1,15 @@
+# One background block, for one output. @MONITOR@ is the output to draw on
+# (empty: every output); @RESOLVER@ prints the wallpaper hyprpaper has for it.
+# No `path`: hyprlock resolves it through reload_cmd, initially and every
+# reload_time seconds while locked.
+background {
+    monitor = @MONITOR@
+    reload_cmd = @RESOLVER@ @MONITOR@
+    reload_time = 60
+    blur_passes = 4
+    blur_size = 5
+    brightness = 1.000000
+    color = rgb(101010)
+    contrast = 1.000000
+    noise = 0.020000
+}

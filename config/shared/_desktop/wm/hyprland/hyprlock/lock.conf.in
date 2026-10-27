@@ -1,0 +1,51 @@
+# The clock and the password field, on the active monitor profile's first
+# output (@MONITOR@; empty: every output). hyprlock 0.9.6 has no general:grace
+# (it is a CLI flag), which is why it is absent here.
+general {
+    ignore_empty_input = true
+    immediate_render = 1
+}
+
+input-field {
+    monitor = @MONITOR@
+    size = 250, 50
+    check_color = rgb(d9ba73)
+    dots_center = true
+    dots_size = 0.260000
+    dots_spacing = 0.640000
+    dots_rounding = 3
+    fade_on_empty = false
+    fail_color = rgb(ff7676)
+    font_color = rgb(b0b0b0)
+    halign = center
+    hide_input = false
+    inner_color = rgba(10101066)
+    outer_color = rgba(272727AA)
+    outline_thickness = 1
+    placeholder_text = <span>Password</span>
+    position = 0, 200
+    valign = bottom
+    rounding = 3
+}
+
+label {
+    monitor = @MONITOR@
+    text = cmd[update:1000] echo "<b><big> $(date +"%H:%M") </big></b>"
+    color = rgba(FFFFFFAA)
+    font_size = 128
+    font_family = Segoe UI
+    position = 0, 100
+    halign = center
+    valign = center
+}
+
+label {
+    monitor = @MONITOR@
+    text = cmd[update:18000000] echo "<b> "$(date +'%-d %B %Y')" </b>"
+    color = rgba(FFFFFF66)
+    font_size = 20
+    font_family = Segoe UI
+    position = 0, -20
+    halign = center
+    valign = center
+}

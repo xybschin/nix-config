@@ -15,7 +15,7 @@
       imports = [
         ./_desktop/hyprpaper
         ./_desktop/quickshell
-        ./_desktop/wm/hyprland/hyprlock.nix
+        ./_desktop/wm/hyprland/hyprlock
       ];
 
       home.packages = with pkgs; [

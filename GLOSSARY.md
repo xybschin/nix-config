@@ -60,6 +60,10 @@ _Avoid_: Monitor config, display setup, layout preset
 The monitor profile recorded in the per-machine state file; the first declared profile when none is recorded.
 _Avoid_: Current monitor, selected layout
 
+**Lock output**:
+The enabled output of the active monitor profile with the smallest position, leftmost in the layout, where the lock screen's clock and password field render while every enabled output draws its own hyprpaper wallpaper.
+_Avoid_: Primary monitor, lock screen monitor, main display
+
 **Glyph**:
 The MonitorIcons font icon that depicts a Monitor profile's layout, selected by name from `my.monitors.glyphs` (DualActive, DualLeftActive, DualRightActive, Ultrawide) — never by raw codepoint.
 _Avoid_: Icon, codepoint, font char
