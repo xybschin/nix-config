@@ -45,8 +45,29 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+-- Mouse drags conflict with fullscreen games on the gaming workspace, so the
+-- binds no-op while a window there is active (GAMING_WORKSPACE is nil off fenris).
+local function on_gaming_workspace()
+	local gaming = _G.GAMING_WORKSPACE
+	if gaming == nil then
+		return false
+	end
+	local w = hl.get_active_window()
+	return w ~= nil and w.workspace ~= nil and w.workspace.id == gaming
+end
+
+hl.bind(mainMod .. " + mouse:272", function()
+	if on_gaming_workspace() then
+		return { ok = false }
+	end
+	hl.dispatch(hl.dsp.window.drag())
+end, { mouse = true })
+hl.bind(mainMod .. " + mouse:273", function()
+	if on_gaming_workspace() then
+		return { ok = false }
+	end
+	hl.dispatch(hl.dsp.window.resize())
+end, { mouse = true })
 
 -- Media controls
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
