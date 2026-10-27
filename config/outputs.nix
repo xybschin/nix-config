@@ -60,7 +60,13 @@ let
         configRoot = config.my.configRoot;
       };
       modules =
-        (map (f: config.my.features.${kind}.${f}) hostKind.features)
+        [
+          {
+            nixpkgs.overlays = [ inputs.self.overlays.default ];
+            nixpkgs.config.allowUnfree = true;
+          }
+        ]
+        ++ (map (f: config.my.features.${kind}.${f}) hostKind.features)
         ++ hostKind.extraModules
         ++ [
           hostKind.configuration

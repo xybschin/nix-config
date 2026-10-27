@@ -5,6 +5,7 @@
       discord
       spotify
       wowup-cf
+      curseforge
       faugus-launcher
       amdtop
       vulkan-tools
