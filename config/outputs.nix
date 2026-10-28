@@ -59,27 +59,26 @@ let
         hostUser = host.username;
         configRoot = config.my.configRoot;
       };
-      modules =
-        [
-          {
-            nixpkgs.overlays = [ inputs.self.overlays.default ];
-            nixpkgs.config.allowUnfree = true;
-          }
-        ]
-        ++ (map (f: config.my.features.${kind}.${f}) hostKind.features)
-        ++ hostKind.extraModules
-        ++ [
-          hostKind.configuration
-          kinds.${kind}.homeManager
-          {
-            home-manager = {
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = home.specialArgs;
-              users.${host.username}.imports = home.modules;
-            };
-          }
-        ];
+      modules = [
+        {
+          nixpkgs.overlays = [ inputs.self.overlays.default ];
+          nixpkgs.config.allowUnfree = true;
+        }
+      ]
+      ++ (map (f: config.my.features.${kind}.${f}) hostKind.features)
+      ++ hostKind.extraModules
+      ++ [
+        hostKind.configuration
+        kinds.${kind}.homeManager
+        {
+          home-manager = {
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            extraSpecialArgs = home.specialArgs;
+            users.${host.username}.imports = home.modules;
+          };
+        }
+      ];
     };
 
   hostsOfKind = kind: lib.filterAttrs (_: host: kindOf host == kind) config.my.hosts;

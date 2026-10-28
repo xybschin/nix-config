@@ -9,7 +9,8 @@
         lowBatteryPercent = 10;
         idleSeconds = 600;
         effect = "static";
-        color = "#FFFFFF";
+        color = "ffffff";
+        brightness = 15;
       };
 
       razerApply = pkgs.writeShellApplication {
@@ -43,7 +44,7 @@
             --dpi ${toString mouseSettings.dpi} \
             --poll ${toString mouseSettings.pollRate} \
             --battery low ${toString mouseSettings.lowBatteryPercent} idle ${toString mouseSettings.idleSeconds} \
-            -e ${mouseSettings.effect} -c '${mouseSettings.color}'
+            --effect ${mouseSettings.effect} --color '${mouseSettings.color}' --brightness ${toString mouseSettings.brightness}
         '';
       };
     in
@@ -72,7 +73,6 @@
 
       environment.systemPackages = with pkgs; [
         openrazer-daemon
-        polychromatic
         razer-cli
       ];
     };

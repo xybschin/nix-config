@@ -3,7 +3,10 @@
 # (it is a CLI flag), which is why it is absent here.
 general {
     ignore_empty_input = true
-    immediate_render = 1
+}
+
+animations {
+  enabled = false
 }
 
 input-field {

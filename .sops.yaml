@@ -1,18 +1,8 @@
 keys:
-  - &bjarne F28DC558F4792FCBCC4045141B6CFD2F494F4A52
-  # age key for the atlas server (private half: ~/.config/sops/age/atlas.txt
-  # locally, /var/lib/sops-nix/age/keys.txt on the host)
+  - &fenris age174f0tc7ynpasslsay0g2etxkwu483ksf2net8r6ja6c9lk09f59q485w9z
+  - &moonz age1jelsezpulny5hq9glrk4jznk0jrr06kg04z20w84a2cumqdpd50qmcu2qp
   - &atlas age1k4teu8rl6hjuu66xfjj6vkncul5t5uw7d2xuf5vc4ettmg3jhamstltmrc
 creation_rules:
-  # User-level secrets for Home Manager, decrypted with the PGP key alone
-  # (private half in 1Password: "sops GPG private key").
-  - path_regex: secrets/home\.yaml$
+  - path_regex: secrets/.*\.yaml$
     key_groups:
-      - pgp:
-        - *bjarne
-  - path_regex: secrets/.*\.(yaml|json|env|ini)$
-    key_groups:
-      - pgp:
-        - *bjarne
-        age:
-          - *atlas
+      - age: [*moonz, *atlas, *fenris]

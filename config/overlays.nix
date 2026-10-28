@@ -7,6 +7,7 @@ let
     (import ./_overlays/lfbw.nix)
     (import ./_overlays/segoe-ui.nix)
     (import ./_overlays/xembsni.nix)
+    (import ./_overlays/mcp-server-git.nix)
   ];
 in
 {

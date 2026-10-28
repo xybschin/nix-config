@@ -6,6 +6,7 @@
     lua-language-server
     nil
     nixfmt
+    nixfmt-tree
     sops
     mcp-nixos
   ];

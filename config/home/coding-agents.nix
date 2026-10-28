@@ -46,10 +46,11 @@
       wants = agent: lib.elem agent agents;
 
       # Skill dirs per allowed agent; disallowed agents' dirs are not touched.
-      skillDirs =
-        [ "$HOME/.agents/skills" ]
-        ++ lib.optional (wants "claude") "$HOME/.claude/skills"
-        ++ lib.optional (wants "opencode") "$HOME/.config/opencode/skills";
+      skillDirs = [
+        "$HOME/.agents/skills"
+      ]
+      ++ lib.optional (wants "claude") "$HOME/.claude/skills"
+      ++ lib.optional (wants "opencode") "$HOME/.config/opencode/skills";
     in
     {
       imports = [
@@ -62,11 +63,9 @@
 
       my.coding-agents.agents = lib.mkIf (envAgents != null) (lib.mkForce envAgents);
 
-      # Decrypts with the sops PGP key imported into ~/.gnupg (see README).
-      # sops-nix runs on home-manager activation and at login.
       sops = {
-        defaultSopsFile = ../../secrets/home.yaml;
-        gnupg.home = "${config.home.homeDirectory}/.gnupg";
+        defaultSopsFile = ../../secrets/secrets.yaml;
+        age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
         secrets = lib.mkIf (agents != [ ]) {
           context7_api_key = { };
         };

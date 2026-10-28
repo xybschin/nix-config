@@ -9,7 +9,7 @@ background {
     blur_passes = 4
     blur_size = 5
     brightness = 1.000000
-    color = rgb(101010)
+    color = rgba(10101000)
     contrast = 1.000000
     noise = 0.020000
 }
