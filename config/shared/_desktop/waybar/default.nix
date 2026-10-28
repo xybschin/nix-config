@@ -97,6 +97,7 @@ in
         "custom/nixos" = {
           format = "";
           tooltip = false;
+          on-click = "qs ipc call launcher toggle";
         };
         "custom/power" = {
           format = "󰐥";
