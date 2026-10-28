@@ -4,7 +4,6 @@
     environment.systemPackages = with pkgs; [
       discord
       spotify
-      wowup-cf
       curseforge
       faugus-launcher
       amdtop
