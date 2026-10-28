@@ -23,8 +23,6 @@
         text = ''
           set -euo pipefail
 
-          # Wait for the daemon to discover the mouse; the wireless dongle
-          # can take a few seconds after login.
           name=""
           for _ in $(seq 1 45); do
             name="$(razer-cli -l 2>/dev/null | sed -n 's/^\(Razer Naga Pro.*\):$/\1/p' | head -n1)" || true
@@ -40,11 +38,23 @@
           fi
 
           echo "razer-apply: configuring $name"
-          exec razer-cli -d "$name" \
-            --dpi ${toString mouseSettings.dpi} \
-            --poll ${toString mouseSettings.pollRate} \
-            --battery low ${toString mouseSettings.lowBatteryPercent} idle ${toString mouseSettings.idleSeconds} \
-            --effect ${mouseSettings.effect} --color '${mouseSettings.color}' --brightness ${toString mouseSettings.brightness}
+          sleep 3
+
+          for i in $(seq 1 5); do
+            if razer-cli -d "$name" \
+              --dpi ${toString mouseSettings.dpi} \
+              --poll ${toString mouseSettings.pollRate} \
+              --battery low ${toString mouseSettings.lowBatteryPercent} idle ${toString mouseSettings.idleSeconds} \
+              --effect ${mouseSettings.effect} --color '${mouseSettings.color}' --brightness ${toString mouseSettings.brightness}; then
+              echo "razer-apply: successfully applied settings"
+              exit 0
+            fi
+            echo "razer-apply: failed to apply, retrying in 3s (attempt $i/5)..." >&2
+            sleep 3
+          done
+
+          echo "razer-apply: error: failed to apply settings after multiple attempts" >&2
+          exit 1
         '';
       };
     in
