@@ -83,7 +83,6 @@ in
           format = "SNK {volume}%";
           format-muted = "SNK 0%";
           on-click = "pwvucontrol";
-          on-click-right = "audio-control";
           on-click-middle = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         };
         "wireplumber#source" = {
@@ -91,7 +90,6 @@ in
           format = "SRC {volume}%";
           format-muted = "SRC 0%";
           on-click = "pwvucontrol";
-          on-click-right = "audio-control";
           on-click-middle = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
         };
         "custom/nixos" = {

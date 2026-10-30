@@ -76,7 +76,6 @@
       "workmux"
       "terminals"
       "mangohud"
-      "waybar-audio-control"
       "xembsni"
       "lfbw"
       "shared.desktop"
@@ -205,7 +204,7 @@
 
         services.lfbw = {
           enable = true;
-          settings.background = "file=${./_fenris/webcam-backgrounds/pub.png}";
+          settings.background = "file=${./_fenris/webcam-backgrounds/pub.png},blur=15";
         };
 
         services.hypridle = {
