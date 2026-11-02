@@ -22,8 +22,6 @@
           dark = "WhiteSur";
         };
 
-        image = ./_desktop/hyprpaper/wallpapers/single/nix-wallpaper-nineish-dark-gray.png;
-        imageScalingMode = "fill";
 
         cursor = {
           name = "macOS";
@@ -54,12 +52,6 @@
             desktop = 12;
             popups = 12;
           };
-        };
-
-        targets = {
-          hyprland.enable = false;
-          # Wallpaper config is managed manually in ~/.config/hypr/hyprpaper.conf
-          hyprpaper.enable = false;
         };
       };
 
