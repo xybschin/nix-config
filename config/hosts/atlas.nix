@@ -66,7 +66,7 @@
         boot.kernel.sysctl."net.ipv6.conf.eth0.accept_ra" = 0;
 
         sops = {
-          defaultSopsFile = ../../secrets/atlas.yaml;
+          defaultSopsFile = ../../secrets/secrets.yaml;
           age.keyFile = "/var/lib/sops-nix/age/keys.txt";
         };
 
