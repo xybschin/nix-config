@@ -20,7 +20,7 @@ in
     enable = true;
     settings = [
       {
-        position = "bottom";
+        position = "top";
         layer = "bottom";
         margin = "0";
         modules-left = [
