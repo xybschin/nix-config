@@ -11,6 +11,7 @@
       stylix = {
         enable = true;
 
+        # base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa-dragon.yaml";
         base16Scheme = ./_stylix/koda-dark.yaml;
         polarity = "dark";
         overlays.enable = false;
@@ -39,8 +40,8 @@
             name = "Segoe-UI";
           };
           monospace = {
-            package = pkgs.nerd-fonts.jetbrains-mono;
-            name = "JetBrainsMono Nerd Font Mono";
+            package = pkgs.nerd-fonts.iosevka;
+            name = "Iosevka Nerd Font Mono";
           };
           emoji = {
             package = pkgs.noto-fonts-color-emoji;

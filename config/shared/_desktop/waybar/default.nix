@@ -6,8 +6,6 @@
 }:
 let
   qs = lib.getExe' pkgs.quickshell "qs";
-
-  # Owned by the shared.desktop.monitors feature; null when unset.
   gamingWorkspace = config.my.monitors.gamingWorkspace;
 in
 {
@@ -15,9 +13,6 @@ in
     playerctl
   ];
 
-  # Use our own themed layout instead of stylix's default waybar theme,
-  # which injects per-id padding rules and 3px workspace borders that
-  # override our custom styling.
   stylix.targets.waybar.enable = false;
 
   programs.waybar = {
@@ -25,10 +20,9 @@ in
     enable = true;
     settings = [
       {
-        position = "bottom";
+        position = "top";
         layer = "bottom";
         margin = "0";
-        height = 48;
         modules-left = [
           "custom/nixos"
           "hyprland/workspaces"
@@ -50,7 +44,6 @@ in
           format = "{icon}";
           all-outputs = true;
           warp-on-scroll = false;
-          # Base list is curated here; the gaming workspace joins from data.
           persistent-workspaces = {
             "1" = [ ];
             "2" = [ ];
@@ -169,8 +162,8 @@ in
         }
 
         * {
-            font-family: FontAwesome, "Terminess Nerd Font Mono";
-            font-size: ${toString config.stylix.fonts.sizes.desktop}pt;
+            font-family: FontAwesome, "Iosevka Nerd Font Mono";
+            font-size: 10pt;
         }
 
         button {
@@ -184,7 +177,7 @@ in
 
         #custom-nixos {
             margin: 2px 21px;
-            font-size: 42px;
+            font-size: 24px;
             color: @base03;
         }
 
@@ -230,7 +223,7 @@ in
         #custom-power,
         #custom-monitor,
         #custom-notification {
-            font-size: 24px;
+            font-size: 20px;
         }
       '';
   };
