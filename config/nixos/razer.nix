@@ -68,12 +68,17 @@
         };
       };
 
+      # Keep this out of the graphical-session transaction. It polls for up
+      # to 90s when the mouse is absent, and systemd won't activate a target
+      # until its wanted jobs finish — so being WantedBy
+      # graphical-session.target delayed xdg-desktop-autostart (waybar,
+      # hyprpaper, ...) by ~95s and left the desktop black after login.
+      # The daemon is all this needs, not a compositor.
       systemd.user.services.razer-apply = {
         description = "Apply declarative settings to Razer devices";
         wants = [ "openrazer-daemon.service" ];
         after = [ "openrazer-daemon.service" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
+        wantedBy = [ "default.target" ];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${razerApply}/bin/razer-apply";
