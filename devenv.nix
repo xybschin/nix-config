@@ -8,6 +8,5 @@
     nixfmt
     nixfmt-tree
     sops
-    mcp-nixos
   ];
 }
