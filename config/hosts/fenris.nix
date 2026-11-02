@@ -195,6 +195,36 @@
                 }
               ];
             }
+            # Generic fallback: DP-2 at whatever the connected monitor prefers,
+            # plus Hyprland's empty-output rule catching anything else that
+            # shows up, placed to the right.
+            {
+              glyph = config.my.monitors.glyphs.Single;
+              outputs = [
+                {
+                  name = "DP-2";
+                  mode = "preferred";
+                  position = "0x0";
+                  workspaces = [
+                    1
+                    2
+                    3
+                    4
+                    5
+                    6
+                    7
+                    8
+                    9
+                    10
+                  ];
+                }
+                {
+                  name = "";
+                  mode = "preferred";
+                  position = "auto-right";
+                }
+              ];
+            }
           ];
           alwaysDisabled = [ "DP-3" ];
           gamingWorkspace = 10;
