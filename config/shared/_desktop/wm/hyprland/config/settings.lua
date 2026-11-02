@@ -2,8 +2,8 @@ local C = require("colors")
 
 hl.config({
 	general = {
-		gaps_in = 0,
-		gaps_out = 0,
+		gaps_in = 1,
+		gaps_out = 2,
 		border_size = 1,
 		col = {
 			active_border = C.base04,
@@ -14,8 +14,8 @@ hl.config({
 		layout = "dwindle",
 	},
 	decoration = {
-		rounding = 0,
-		rounding_power = 1.0,
+		rounding = 10,
+		rounding_power = 0.0,
 		active_opacity = 1.0,
 		inactive_opacity = 1.0,
 		dim_special = 0.6,
