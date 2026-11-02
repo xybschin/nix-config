@@ -99,6 +99,32 @@ CLAUDE_CODE_VERSION=nixpkgs  make nixos host=<hostname>   # nixpkgs' version, no
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.
 
+Only age keys are used — there is no PGP key. `.sops.yaml` lists the
+recipients: `moonz`'s user key plus one system key per host. Each identity is
+the single `AGE-SECRET-KEY-1…` line from an age key file, stored with mode
+`600`:
+
+| Identity | File | Consumed by |
+| --- | --- | --- |
+| `moonz` | `~/.config/sops/age/keys.txt` | `sops` CLI, `home/coding-agents.nix` |
+| `fenris` | `/var/lib/sops-nix/key.txt` (root) | `nixos/brave-browser.nix` |
+| `atlas` | `/var/lib/sops-nix/age/keys.txt` (root) | `hosts/atlas.nix` |
+
+`SOPS_AGE_KEY_FILE=/path/to/keys.txt sops …` overrides the user identity for a
+single invocation.
+
+### Install a key on a host
+
+```bash
+install -d -m 700 ~/.config/sops/age
+op read 'op://<vault>/sops age key/password' > ~/.config/sops/age/keys.txt
+chmod 600 ~/.config/sops/age/keys.txt
+age-keygen -y ~/.config/sops/age/keys.txt   # must match an age1… in .sops.yaml
+```
+
+System keys (`/var/lib/sops-nix/…`) are written as root, then
+`chown root:root` + `chmod 600`.
+
 ### Edit a secret
 
 ```bash

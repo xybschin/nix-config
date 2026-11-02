@@ -79,9 +79,10 @@ change is not complete until it passes. Evaluation is impure — `make` exports
 
 ## Secrets
 
-Encrypted with sops-nix under `secrets/`, key rules in `.sops.yaml` (your
-PGP key, atlas's age key). Edit only via the `sops` command in
-[`README.md`](README.md); decrypted values never belong in the repo.
+Encrypted with sops-nix under `secrets/`, age-only (no PGP) — recipients in
+`.sops.yaml` are `moonz`'s user key plus one per host. Key locations are
+listed in [`README.md`](README.md). Edit only via the `sops` command there;
+decrypted values never belong in the repo.
 
 ## Submodule
 
