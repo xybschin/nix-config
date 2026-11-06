@@ -92,45 +92,64 @@
       ];
 
       # OpenRazer only handles DPI/lighting; it can't rebind buttons. The
-      # Naga's 12-button plate emits number-row or numpad keys over the
-      # mouse's own keyboard interface depending on the underside hardware
-      # switch — remap both sets to F1-F12 so the switch position doesn't
-      # matter. IDs are scoped to the Naga (dongle + wired), so the real
-      # keyboard's digits/numpad are untouched.
-      services.keyd = {
-        enable = true;
-        keyboards.naga-side-panel = {
-          ids = [
-            "1532:0090" # wireless dongle
-            "1532:008f" # wired
-          ];
-          settings.main = {
-            "1" = "f1";
-            "2" = "f2";
-            "3" = "f3";
-            "4" = "f4";
-            "5" = "f5";
-            "6" = "f6";
-            "7" = "f7";
-            "8" = "f8";
-            "9" = "f9";
-            "0" = "f10";
-            minus = "f11";
-            equal = "f12";
-            kp1 = "f1";
-            kp2 = "f2";
-            kp3 = "f3";
-            kp4 = "f4";
-            kp5 = "f5";
-            kp6 = "f6";
-            kp7 = "f7";
-            kp8 = "f8";
-            kp9 = "f9";
-            kp0 = "f10";
-            kpminus = "f11";
-            kpplus = "f12";
-          };
-        };
-      };
+      # Naga's 12-button plate emits standard HID number-row or numpad keys
+      # over the mouse's own keyboard interface depending on the underside
+      # hardware switch — remap both sets of usages to F1-F12 at the udev
+      # level (no daemon) so the switch position doesn't matter. Modaliases
+      # are scoped to the Naga's vendor/product IDs (dongle + wired), so the
+      # real keyboard's digits/numpad are untouched.
+      services.udev.extraHwdb = ''
+        evdev:input:b0003v1532p0090*
+         KEYBOARD_KEY_7001e=f1
+         KEYBOARD_KEY_7001f=f2
+         KEYBOARD_KEY_70020=f3
+         KEYBOARD_KEY_70021=f4
+         KEYBOARD_KEY_70022=f5
+         KEYBOARD_KEY_70023=f6
+         KEYBOARD_KEY_70024=f7
+         KEYBOARD_KEY_70025=f8
+         KEYBOARD_KEY_70026=f9
+         KEYBOARD_KEY_70027=f10
+         KEYBOARD_KEY_7002d=f11
+         KEYBOARD_KEY_7002e=f12
+         KEYBOARD_KEY_70056=f11
+         KEYBOARD_KEY_70057=f12
+         KEYBOARD_KEY_70059=f1
+         KEYBOARD_KEY_7005a=f2
+         KEYBOARD_KEY_7005b=f3
+         KEYBOARD_KEY_7005c=f4
+         KEYBOARD_KEY_7005d=f5
+         KEYBOARD_KEY_7005e=f6
+         KEYBOARD_KEY_7005f=f7
+         KEYBOARD_KEY_70060=f8
+         KEYBOARD_KEY_70061=f9
+         KEYBOARD_KEY_70062=f10
+
+        evdev:input:b0003v1532p008f*
+         KEYBOARD_KEY_7001e=f1
+         KEYBOARD_KEY_7001f=f2
+         KEYBOARD_KEY_70020=f3
+         KEYBOARD_KEY_70021=f4
+         KEYBOARD_KEY_70022=f5
+         KEYBOARD_KEY_70023=f6
+         KEYBOARD_KEY_70024=f7
+         KEYBOARD_KEY_70025=f8
+         KEYBOARD_KEY_70026=f9
+         KEYBOARD_KEY_70027=f10
+         KEYBOARD_KEY_7002d=f11
+         KEYBOARD_KEY_7002e=f12
+         KEYBOARD_KEY_70056=f11
+         KEYBOARD_KEY_70057=f12
+         KEYBOARD_KEY_70059=f1
+         KEYBOARD_KEY_7005a=f2
+         KEYBOARD_KEY_7005b=f3
+         KEYBOARD_KEY_7005c=f4
+         KEYBOARD_KEY_7005d=f5
+         KEYBOARD_KEY_7005e=f6
+         KEYBOARD_KEY_7005f=f7
+         KEYBOARD_KEY_70060=f8
+         KEYBOARD_KEY_70061=f9
+         KEYBOARD_KEY_70062=f10
+      '';
     };
 }
