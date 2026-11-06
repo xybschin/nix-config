@@ -90,5 +90,47 @@
         openrazer-daemon
         razer-cli
       ];
+
+      # OpenRazer only handles DPI/lighting; it can't rebind buttons. The
+      # Naga's 12-button plate emits number-row or numpad keys over the
+      # mouse's own keyboard interface depending on the underside hardware
+      # switch — remap both sets to F1-F12 so the switch position doesn't
+      # matter. IDs are scoped to the Naga (dongle + wired), so the real
+      # keyboard's digits/numpad are untouched.
+      services.keyd = {
+        enable = true;
+        keyboards.naga-side-panel = {
+          ids = [
+            "1532:0090" # wireless dongle
+            "1532:008f" # wired
+          ];
+          settings.main = {
+            "1" = "f1";
+            "2" = "f2";
+            "3" = "f3";
+            "4" = "f4";
+            "5" = "f5";
+            "6" = "f6";
+            "7" = "f7";
+            "8" = "f8";
+            "9" = "f9";
+            "0" = "f10";
+            minus = "f11";
+            equal = "f12";
+            kp1 = "f1";
+            kp2 = "f2";
+            kp3 = "f3";
+            kp4 = "f4";
+            kp5 = "f5";
+            kp6 = "f6";
+            kp7 = "f7";
+            kp8 = "f8";
+            kp9 = "f9";
+            kp0 = "f10";
+            kpminus = "f11";
+            kpplus = "f12";
+          };
+        };
+      };
     };
 }
