@@ -32,6 +32,7 @@ hl.config({
 		kb_layout = "eu",
 		follow_mouse = 2,
 	},
+  cursor = { no_warps = true },
 	dwindle = {
 		preserve_split = true,
 		force_split = 2,
