@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   modulesPath,
   pkgs,
@@ -28,6 +29,15 @@
     "ntsync"
   ];
 
+  # CachyOS kernel tuned for Zen 3 (5800X3D): x86_64-v3, no LTO. The `pinned`
+  # overlay reuses the flake's own nixpkgs revision, which is what the Hydra
+  # builds in cache.lantian.pub were made from.
+  nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+  nix.settings = {
+    substituters = [ "https://cache.lantian.pub/lantian" ];
+    trusted-public-keys = [ "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=" ];
+  };
+
   # Workarounds for out-of-tree modules vs. aggregateModules (nixos-unstable
   # as of 2026-10-20). Drop each override once its upstream fix reaches the
   # channel.
@@ -37,7 +47,7 @@
   # - openrazer: installs no per-module .ko.cer, which aggregateModules now
   #   cats into modules.cer; an empty one is enough. Fixed on master by
   #   965f876a7 (https://github.com/NixOS/nixpkgs/issues/575192).
-  boot.kernelPackages = pkgs.linuxPackages_latest.extend (
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3.extend (
     _final: prev: {
       v4l2loopback = prev.v4l2loopback.overrideAttrs (old: {
         postInstall = (old.postInstall or "") + ''
