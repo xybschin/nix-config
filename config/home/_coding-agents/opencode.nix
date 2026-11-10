@@ -10,7 +10,6 @@ in
 lib.mkIf (lib.elem "opencode" config.my.coding-agents.agents) {
   programs.opencode = {
     enable = true;
-    # OPENCODE_CONFIG is merged on top of the generated global config.
     package = overlay.wrap {
       package = pkgs.opencode;
       bin = "opencode";
@@ -21,13 +20,19 @@ lib.mkIf (lib.elem "opencode" config.my.coding-agents.agents) {
       '';
     };
     enableMcpIntegration = true;
+    mutableSettings = true;
     settings = {
       autoupdate = false;
     };
-    tui = {
-      theme = lib.mkForce "system";
+    cli = {
+      theme = {
+        name = "system";
+        mode = "system";
+      };
     };
   };
+
+  stylix.targets.opencode.enable = false;
 
   home.shellAliases.oc = "opencode";
 }
