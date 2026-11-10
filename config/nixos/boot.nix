@@ -5,7 +5,7 @@
       loader = {
         systemd-boot = {
           enable = true;
-          configurationLimit = 1;
+          configurationLimit = 3;
           consoleMode = "max";
         };
         timeout = lib.mkDefault 15;
