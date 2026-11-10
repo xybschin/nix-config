@@ -16,6 +16,12 @@
         polarity = "dark";
         overlays.enable = false;
 
+        targets = {
+          # Rofi is unused, and stylix still sets the deprecated
+          # programs.rofi.font instead of programs.rofi.settings.font.
+          rofi.enable = false;
+        };
+
         icons = {
           enable = true;
           package = pkgs.whitesur-icon-theme;

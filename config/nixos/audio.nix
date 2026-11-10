@@ -5,6 +5,8 @@
       pwvucontrol
       easyeffects
       pulseaudio
+      # JACK clients go through `pw-jack` instead of a global LD_LIBRARY_PATH.
+      pipewire.jack
     ];
 
     security.rtkit.enable = true;
@@ -18,7 +20,6 @@
         alsa.enable = true;
         alsa.support32Bit = true;
         pulse.enable = true;
-        jack.enable = true;
       };
     };
   };
