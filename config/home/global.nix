@@ -19,9 +19,6 @@
         ./_global/ranger.nix
       ];
 
-      # Safe default scheme so tmux/zsh color interpolation always resolves
-      # (config.lib.stylix.colors is computed even when stylix.enable = false).
-      # shared.stylix overrides this with the same theme on desktop hosts.
       stylix.base16Scheme = lib.mkDefault ../shared/_stylix/koda-dark.yaml;
 
       home.packages =
@@ -35,7 +32,6 @@
           jq
           htop
           tldr
-          tuicr
         ]
         ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [
           pkgs.systemctl-tui

@@ -26,6 +26,7 @@
       "wireguard"
       "v4l2loopback"
     ];
+
     nixos.extraModules = [ ./_fenris/hardware.nix ];
     nixos.configuration = { pkgs, ... }: {
       networking.hostName = "fenris";
@@ -62,8 +63,6 @@
 
       environment.systemPackages = with pkgs; [
         geary
-        gnupg
-        efibootmgr
       ];
     };
 
