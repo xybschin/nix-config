@@ -35,66 +35,6 @@ Windows OpenSSH agent via `npiperelay.exe`. This binary must be on the Windows
 make check
 ```
 
-### Per-project dev shells (devenv)
-
-The `devenv` CLI ships as a home feature (`devenv`, enabled on fenris and
-nixwsl). Each project carries its own `devenv.nix`; shared, pre-configured
-language stacks (go, typescript, dotnet) are exported by this flake as
-`devenvModules`.
-
-```bash
-cd ~/src/my-project
-devenv init --include-envrc   # scaffolds devenv.nix, devenv.yaml, .envrc
-```
-
-Point the project at this repo, then import the stack you need:
-
-```yaml
-# devenv.yaml
-inputs:
-  nix-config:
-    url: github:xybschin/nix-config
-```
-
-```nix
-# devenv.nix
-{ inputs, ... }: {
-  imports = [ inputs.nix-config.devenvModules.typescript ];
-}
-```
-
-Then `direnv allow` (or `devenv shell`). The `.envrc` needs
-`eval "$(devenv direnvrc)"` before `use devenv` — `devenv init --include-envrc`
-writes it for you. `devenv update` bumps the lock when the shared modules
-change. Note: devenv builds environments with its own pinned nixpkgs; pin a
-`nixpkgs` input in `devenv.yaml` if a project needs a different one.
-
-This repo uses its own devenv: `direnv allow` loads `devenv.nix` (nil, nixfmt,
-sops, mcp-nixos). The devenv installs no coding agent. The `nixos` MCP server
-is project-scoped — `.opencode/opencode.json` runs `mcp-nixos` from the devenv
-shell's `PATH` — so it is only available inside this repo's shell, not in the
-global agent config.
-
-## Claude Code releases
-
-`claude-code` is overlaid (`config/_overlays/claude-code.nix`) to follow
-Anthropic's release feed: the newest release is resolved while the
-configuration is evaluated, so a rebuild lands on the current release instead
-of the one nixpkgs pins.
-
-```bash
-make nixos host=<hostname>   # picks up the newest release
-```
-
-The lookup happens during evaluation, so it needs `--impure` — the Makefile
-and `make check` already pass it. Pin the release with an environment
-variable:
-
-```bash
-CLAUDE_CODE_VERSION=2.1.300 make nixos host=<hostname>   # a specific release
-CLAUDE_CODE_VERSION=nixpkgs  make nixos host=<hostname>   # nixpkgs' version, no network
-```
-
 ## Secrets
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.

@@ -24,11 +24,6 @@
         default = { };
       };
     };
-    devenvModules = lib.mkOption {
-      type = lib.types.attrsOf lib.types.deferredModule;
-      default = { };
-      description = "Shared devenv modules exported as flake.devenvModules for per-project dev shells.";
-    };
     hosts = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule {

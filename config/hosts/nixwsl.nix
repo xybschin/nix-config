@@ -51,7 +51,6 @@
       "global"
       "1password"
       "coding-agents"
-      "devenv"
       "workmux"
       "dotnet"
     ];
