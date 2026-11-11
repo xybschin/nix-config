@@ -38,27 +38,18 @@
     trusted-public-keys = [ "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=" ];
   };
 
-  # Workarounds for out-of-tree modules vs. aggregateModules (nixos-unstable
-  # as of 2026-10-20). Drop each override once its upstream fix reaches the
-  # channel.
+  # Workaround for out-of-tree modules vs. aggregateModules. Drop once the
+  # upstream fix reaches the channel.
   # - v4l2loopback: kernel.dev now ships System.map, so modules_install runs
   #   depmod and the package's modules.* files collide with the kernel's.
   #   https://github.com/NixOS/nixpkgs/issues/576406
-  # - openrazer: installs no per-module .ko.cer, which aggregateModules now
-  #   cats into modules.cer; an empty one is enough. Fixed on master by
-  #   965f876a7 (https://github.com/NixOS/nixpkgs/issues/575192).
+  # The former openrazer .ko.cer workaround is gone: 965f876a7 (fixes
+  # https://github.com/NixOS/nixpkgs/issues/575192) is in our nixpkgs pin.
   boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3.extend (
     _final: prev: {
       v4l2loopback = prev.v4l2loopback.overrideAttrs (old: {
         postInstall = (old.postInstall or "") + ''
           rm -f $out/lib/modules/*/modules.*
-        '';
-      });
-      openrazer = prev.openrazer.overrideAttrs (old: {
-        postInstall = (old.postInstall or "") + ''
-          for ko in $out/lib/modules/*/kernel/drivers/hid/*.ko; do
-            touch "$ko.cer"
-          done
         '';
       });
     }
