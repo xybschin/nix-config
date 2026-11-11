@@ -115,15 +115,20 @@ single invocation.
 
 ### Install a key on a host
 
+Keys live in the 1Password vault `sops-nix`, one item per identity (`moonz`,
+`fenris`, `atlas`), key in the `password` field.
+
 ```bash
-install -d -m 700 ~/.config/sops/age
-op read 'op://<vault>/sops age key/password' > ~/.config/sops/age/keys.txt
-chmod 600 ~/.config/sops/age/keys.txt
-age-keygen -y ~/.config/sops/age/keys.txt   # must match an age1… in .sops.yaml
+make age-key key=moonz               # ~/.config/sops/age/keys.txt
+make age-key key=fenris              # system key, via sudo
+make age-key key=fenris root=/mnt    # from the installer, before first boot
 ```
 
-System keys (`/var/lib/sops-nix/…`) are written as root, then
-`chown root:root` + `chmod 600`.
+Uses the installed `op`, else `nix shell nixpkgs#_1password-cli`; sign in
+first (`op account add` + `eval "$(op signin)"`, or set
+`OP_SERVICE_ACCOUNT_TOKEN`). It refuses to install a key whose public half is
+not a recipient in `.sops.yaml`. Reinstalling a host with the same key needs no
+re-encryption.
 
 ### Edit a secret
 
