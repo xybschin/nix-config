@@ -1,6 +1,4 @@
-# The combined .NET SDK host used by both the home feature
-# (config/home/dotnet.nix) and the shared devenv module
-# (config/devenv-modules/dotnet.nix), so one place decides the SDK versions.
+# The combined .NET SDK host used by the home feature (config/home/dotnet.nix).
 { pkgs }:
 with pkgs.dotnetCorePackages;
 combinePackages [

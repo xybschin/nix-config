@@ -35,66 +35,6 @@ Windows OpenSSH agent via `npiperelay.exe`. This binary must be on the Windows
 make check
 ```
 
-### Per-project dev shells (devenv)
-
-The `devenv` CLI ships as a home feature (`devenv`, enabled on fenris and
-nixwsl). Each project carries its own `devenv.nix`; shared, pre-configured
-language stacks (go, typescript, dotnet) are exported by this flake as
-`devenvModules`.
-
-```bash
-cd ~/src/my-project
-devenv init --include-envrc   # scaffolds devenv.nix, devenv.yaml, .envrc
-```
-
-Point the project at this repo, then import the stack you need:
-
-```yaml
-# devenv.yaml
-inputs:
-  nix-config:
-    url: github:xybschin/nix-config
-```
-
-```nix
-# devenv.nix
-{ inputs, ... }: {
-  imports = [ inputs.nix-config.devenvModules.typescript ];
-}
-```
-
-Then `direnv allow` (or `devenv shell`). The `.envrc` needs
-`eval "$(devenv direnvrc)"` before `use devenv` — `devenv init --include-envrc`
-writes it for you. `devenv update` bumps the lock when the shared modules
-change. Note: devenv builds environments with its own pinned nixpkgs; pin a
-`nixpkgs` input in `devenv.yaml` if a project needs a different one.
-
-This repo uses its own devenv: `direnv allow` loads `devenv.nix` (nil, nixfmt,
-sops, mcp-nixos). The devenv installs no coding agent. The `nixos` MCP server
-is project-scoped — `.opencode/opencode.json` runs `mcp-nixos` from the devenv
-shell's `PATH` — so it is only available inside this repo's shell, not in the
-global agent config.
-
-## Claude Code releases
-
-`claude-code` is overlaid (`config/_overlays/claude-code.nix`) to follow
-Anthropic's release feed: the newest release is resolved while the
-configuration is evaluated, so a rebuild lands on the current release instead
-of the one nixpkgs pins.
-
-```bash
-make nixos host=<hostname>   # picks up the newest release
-```
-
-The lookup happens during evaluation, so it needs `--impure` — the Makefile
-and `make check` already pass it. Pin the release with an environment
-variable:
-
-```bash
-CLAUDE_CODE_VERSION=2.1.300 make nixos host=<hostname>   # a specific release
-CLAUDE_CODE_VERSION=nixpkgs  make nixos host=<hostname>   # nixpkgs' version, no network
-```
-
 ## Secrets
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.
@@ -115,15 +55,20 @@ single invocation.
 
 ### Install a key on a host
 
+Keys live in the 1Password vault `sops-nix`, one item per identity (`moonz`,
+`fenris`, `atlas`), key in the `password` field.
+
 ```bash
-install -d -m 700 ~/.config/sops/age
-op read 'op://<vault>/sops age key/password' > ~/.config/sops/age/keys.txt
-chmod 600 ~/.config/sops/age/keys.txt
-age-keygen -y ~/.config/sops/age/keys.txt   # must match an age1… in .sops.yaml
+make age-key key=moonz               # ~/.config/sops/age/keys.txt
+make age-key key=fenris              # system key, via sudo
+make age-key key=fenris root=/mnt    # from the installer, before first boot
 ```
 
-System keys (`/var/lib/sops-nix/…`) are written as root, then
-`chown root:root` + `chmod 600`.
+Uses the installed `op`, else `nix shell nixpkgs#_1password-cli`; sign in
+first (`op account add` + `eval "$(op signin)"`, or set
+`OP_SERVICE_ACCOUNT_TOKEN`). It refuses to install a key whose public half is
+not a recipient in `.sops.yaml`. Reinstalling a host with the same key needs no
+re-encryption.
 
 ### Edit a secret
 

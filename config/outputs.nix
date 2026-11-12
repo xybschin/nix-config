@@ -87,7 +87,5 @@ in
   flake = {
     nixosConfigurations = lib.mapAttrs mkSystem (hostsOfKind "nixos");
     darwinConfigurations = lib.mapAttrs mkSystem (hostsOfKind "darwin");
-    # Shared devenv modules for per-project dev shells (see README).
-    devenvModules = config.my.devenvModules;
   };
 }

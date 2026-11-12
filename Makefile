@@ -27,6 +27,12 @@ wg-peer:
 	@test -n "$(name)" || { echo "usage: make wg-peer name=<device> [args=\"--home-lan\"]"; exit 1; }
 	./scripts/wg-add-peer.sh "$(name)" --deploy --commit $(args)
 
+# Install an age key from the 1Password "sops-nix" vault (item = identity name).
+# usage: make age-key key=<moonz|fenris|atlas> [root=/mnt]
+age-key:
+	@test -n "$(key)" || { echo "usage: make age-key key=<moonz|fenris|atlas> [root=/mnt]"; exit 1; }
+	./scripts/age-key.sh "$(key)" "$(root)"
+
 darwin: submodules
 	CONFIG_ROOT=$(CONFIG_ROOT) CODING_AGENTS=$(CODING_AGENTS) NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake .#$(host)
 
@@ -38,7 +44,7 @@ up:
 check:
 	CONFIG_ROOT=$(CONFIG_ROOT) NIXPKGS_ALLOW_UNFREE=1 ./scripts/check.sh
 
-.PHONY: submodules nixos nixos-remote nixos-install wg-peer darwin up check clean-all
+.PHONY: submodules nixos nixos-remote nixos-install wg-peer age-key darwin up check clean-all
 
 clean-all:
 	sudo nix-collect-garbage -d

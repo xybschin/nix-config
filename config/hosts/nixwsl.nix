@@ -51,7 +51,6 @@
       "global"
       "1password"
       "coding-agents"
-      "devenv"
       "workmux"
       "dotnet"
     ];
@@ -72,11 +71,14 @@
         python3
         nodejs
         bun
-        _1password-cli
         (pkgs.writeShellScriptBin "code" "exec code.exe --remote \"wsl+\${WSL_DISTRO_NAME}\" \"$@\"")
       ];
 
       home.sessionPath = [ "$HOME/.bun/bin" ];
+
+      # Use the Windows 1Password CLI (op.exe) through WSL interop instead of
+      # installing the Linux one.
+      home.shellAliases.op = "op.exe";
 
       home.sessionVariables = {
         NODE_USE_SYSTEM_CA = "1";
