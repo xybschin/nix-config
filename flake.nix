@@ -60,11 +60,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # `release` branch = latest CachyOS kernel that Hydra has built and pushed
-    # to the binary cache. Never make its nixpkgs follow ours: the CachyOS
-    # patches are matched to the exact nixpkgs kernel version.
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;
