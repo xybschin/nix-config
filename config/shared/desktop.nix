@@ -297,7 +297,10 @@ in
         '';
       };
 
-      services.udiskie.enable = true;
+      services.udiskie = {
+        enable = true;
+        notify = false;
+      };
 
       dconf.settings = {
         "org/gnome/desktop/media-handling" = {

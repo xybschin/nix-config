@@ -32,16 +32,6 @@
       services.openssh.enable = true;
       networking.firewall.allowedTCPPorts = [ 22 ];
 
-      services.keyd = {
-        enable = true;
-        keyboards.default = {
-          ids = [ "*" ];
-          settings.main.f12 = "sysrq";
-        };
-      };
-      # https://github.com/NixOS/nixpkgs/issues/290161
-      systemd.services.keyd.serviceConfig.CapabilityBoundingSet = [ "CAP_SETGID" ];
-
       boot.kernelParams = [
         "amd_pstate=active"
         "nvme_core.default_ps_max_latency_us=0"
