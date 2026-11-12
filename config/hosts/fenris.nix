@@ -39,6 +39,8 @@
           settings.main.f12 = "sysrq";
         };
       };
+      # https://github.com/NixOS/nixpkgs/issues/290161
+      systemd.services.keyd.serviceConfig.CapabilityBoundingSet = [ "CAP_SETGID" ];
 
       boot.kernelParams = [
         "amd_pstate=active"
