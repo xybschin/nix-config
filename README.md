@@ -55,14 +55,20 @@ single invocation.
 
 ### Install a key on a host
 
-Keys live in the 1Password vault `sops-nix`, one item per identity (`moonz`,
-`fenris`, `atlas`), key in the `password` field.
+Keys live in the 1Password vault `sops-nix`, one Document item per identity
+(`moonz`, `fenris`, `atlas`) with the age key file uploaded as `keys.txt`. The
+installer only distinguishes user keys from root keys; the item name is just
+whatever to read from 1Password.
 
 ```bash
-make age-key key=moonz               # ~/.config/sops/age/keys.txt
-make age-key key=fenris              # system key, via sudo
-make age-key key=fenris root=/mnt    # from the installer, before first boot
+make age-key key=moonz kind=user                  # ~/.config/sops/age/keys.txt
+make age-key key=fenris kind=root                 # /var/lib/sops-nix/key.txt, via sudo
+make age-key key=fenris kind=root prefix=/mnt     # from the installer, before first boot
+make age-key key=atlas kind=root dest=/var/lib/sops-nix/age/keys.txt
 ```
+
+`prefix` is prepended to the destination (for a mounted root); `dest` replaces
+the default destination entirely. `SOPS_VAULT` overrides the vault name.
 
 Uses the installed `op`, else `nix shell nixpkgs#_1password-cli`; sign in
 first (`op account add` + `eval "$(op signin)"`, or set

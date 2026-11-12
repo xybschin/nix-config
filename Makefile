@@ -27,11 +27,13 @@ wg-peer:
 	@test -n "$(name)" || { echo "usage: make wg-peer name=<device> [args=\"--home-lan\"]"; exit 1; }
 	./scripts/wg-add-peer.sh "$(name)" --deploy --commit $(args)
 
-# Install an age key from the 1Password "sops-nix" vault (item = identity name).
-# usage: make age-key key=<moonz|fenris|atlas> [root=/mnt]
+# Install an age key from the 1Password "sops-nix" vault.
+# kind=user installs to ~/.config/sops/age/keys.txt; kind=root to
+# /var/lib/sops-nix/key.txt via sudo. Use dest= for a host-specific path.
+# usage: make age-key key=<item> kind=<user|root> [prefix=/mnt] [dest=/path]
 age-key:
-	@test -n "$(key)" || { echo "usage: make age-key key=<moonz|fenris|atlas> [root=/mnt]"; exit 1; }
-	./scripts/age-key.sh "$(key)" "$(root)"
+	@test -n "$(key)" -a -n "$(kind)" || { echo "usage: make age-key key=<item> kind=<user|root> [prefix=/mnt] [dest=/path]"; exit 1; }
+	./scripts/age-key.sh "$(key)" "$(kind)" $(if $(prefix),--prefix "$(prefix)") $(if $(dest),--dest "$(dest)")
 
 darwin: submodules
 	CONFIG_ROOT=$(CONFIG_ROOT) CODING_AGENTS=$(CODING_AGENTS) NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake .#$(host)
