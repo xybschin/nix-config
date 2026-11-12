@@ -32,6 +32,14 @@
       services.openssh.enable = true;
       networking.firewall.allowedTCPPorts = [ 22 ];
 
+      services.keyd = {
+        enable = true;
+        keyboards.default = {
+          ids = [ "*" ];
+          settings.main.f12 = "sysrq";
+        };
+      };
+
       boot.kernelParams = [
         "amd_pstate=active"
         "pcie_aspm=off"
