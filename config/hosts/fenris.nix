@@ -74,7 +74,11 @@
 
       environment.systemPackages = with pkgs; [
         geary
+        nvme-cli
+        smartmontools
       ];
+
+      services.fwupd.enable = true;
     };
 
     home.features = [
