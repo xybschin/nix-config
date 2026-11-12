@@ -38,22 +38,7 @@
     trusted-public-keys = [ "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=" ];
   };
 
-  # Workaround for out-of-tree modules vs. aggregateModules. Drop once the
-  # upstream fix reaches the channel.
-  # - v4l2loopback: kernel.dev now ships System.map, so modules_install runs
-  #   depmod and the package's modules.* files collide with the kernel's.
-  #   https://github.com/NixOS/nixpkgs/issues/576406
-  # The former openrazer .ko.cer workaround is gone: 965f876a7 (fixes
-  # https://github.com/NixOS/nixpkgs/issues/575192) is in our nixpkgs pin.
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3.extend (
-    _final: prev: {
-      v4l2loopback = prev.v4l2loopback.overrideAttrs (old: {
-        postInstall = (old.postInstall or "") + ''
-          rm -f $out/lib/modules/*/modules.*
-        '';
-      });
-    }
-  );
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/2418fd5a-e4f8-4074-98f0-2f61c1ebe083";
     fsType = "ext4";
