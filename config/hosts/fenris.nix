@@ -29,6 +29,8 @@
     nixos.extraModules = [ ./_fenris/hardware.nix ];
     nixos.configuration = { pkgs, ... }: {
       networking.hostName = "fenris";
+      services.openssh.enable = true;
+      networking.firewall.allowedTCPPorts = [ 22 ];
 
       boot.kernelParams = [
         "amd_pstate=active"
