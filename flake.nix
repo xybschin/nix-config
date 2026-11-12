@@ -52,14 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Stopgap until nixos-unstable picks up the brave re-add
-    # (NixOS/nixpkgs#584534, merged 2026-11-07). See
-    # config/_overlays/brave.nix.
-    brave-browser-nix = {
-      url = "git+https://codeberg.org/buckley310/brave-browser-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;

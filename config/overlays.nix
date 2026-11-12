@@ -2,7 +2,6 @@
 let
   overlays = [
     (import ./_overlays/armada-theme.nix)
-    (import ./_overlays/brave.nix { inherit inputs; })
     (import ./_overlays/curseforge.nix)
     (import ./_overlays/claude-code.nix)
     (import ./_overlays/segoe-ui.nix)
