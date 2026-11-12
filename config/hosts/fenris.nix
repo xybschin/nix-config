@@ -44,7 +44,9 @@
 
       boot.kernelParams = [
         "amd_pstate=active"
+        "nvme_core.default_ps_max_latency_us=0"
         "pcie_aspm=off"
+        "pcie_port_pm=off"
         "usbcore.autosuspend=-1"
         "video=DP-3:d"
       ];
