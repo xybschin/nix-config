@@ -38,7 +38,6 @@
         "pcie_aspm=off"
         "pcie_port_pm=off"
         "usbcore.autosuspend=-1"
-        "video=DP-3:d"
       ];
 
       users.users.moonz = {
@@ -293,7 +292,6 @@
             "inode/directory" = "org.gnome.Nautilus.desktop";
           };
         };
-
 
         stylix.targets.hyprland.enable = false;
         xdg.configFile."hypr/settings.user.lua".source = ./_fenris/hyprland-user/settings.user.lua;
