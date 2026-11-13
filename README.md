@@ -39,8 +39,11 @@ make check
 
 This repo edits itself inside a [devenv](https://devenv.sh) shell: `.envrc`
 runs `use devenv` and `devenv.nix` lists the tools (`nil`, `nixfmt`,
-`lua-language-server`, `sops`, …). The `devenv` CLI comes from the `devenv`
-home feature, enabled on fenris and nixwsl. After cloning:
+`lua-language-server`, `sops`, …), plus the `mcp-nixos` server that
+`.opencode/opencode.json` launches. `mcp-nixos` is a devenv *script*, not a
+shell package, so its Python environment stays out of the shell. The `devenv`
+CLI comes from the `devenv` home feature, enabled on fenris and nixwsl. After
+cloning:
 
 ```bash
 direnv allow    # or: devenv shell
