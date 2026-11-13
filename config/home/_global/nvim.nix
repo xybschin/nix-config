@@ -17,20 +17,30 @@ in
   };
 
   home.packages = with pkgs; [
-    # LSP
-    nil
+    # LSP servers (must match `vim.lsp.enable()` in
+    # config/home/_global/nvim/config/plugin/40_plugins.lua)
     bash-language-server
-    lua-language-server
     cmake-language-server
     docker-language-server
-    typescript-language-server
+    gopls
+    lua-language-server
+    nil
+    omnisharp-roslyn
     tailwindcss-language-server
-    tree-sitter
-    gcc
+    typescript-language-server
+
+    # Formatters (must match `formatters_by_ft` in the conform setup)
+    beautysh
+    go # gofmt
+    gotools # goimports
     nixfmt
     prettier
-    beautysh
     stylua
+    yamlfmt
+
+    # Tree-sitter parsers need the CLI and a C compiler to build
+    gcc
+    tree-sitter
   ];
 
   xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink nvimDir;
