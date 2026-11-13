@@ -35,6 +35,17 @@ Windows OpenSSH agent via `npiperelay.exe`. This binary must be on the Windows
 make check
 ```
 
+### Repo dev shell (devenv)
+
+This repo edits itself inside a [devenv](https://devenv.sh) shell: `.envrc`
+runs `use devenv` and `devenv.nix` lists the tools (`nil`, `nixfmt`,
+`lua-language-server`, `sops`, …). The `devenv` CLI comes from the `devenv`
+home feature, enabled on fenris and nixwsl. After cloning:
+
+```bash
+direnv allow    # or: devenv shell
+```
+
 ## Secrets
 
 Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) and stored in `secrets/`.
