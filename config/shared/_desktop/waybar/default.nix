@@ -20,9 +20,10 @@ in
     enable = true;
     settings = [
       {
-        position = "top";
+        position = "bottom";
         layer = "bottom";
         margin = "0";
+        height = 48;
         modules-left = [
           "custom/nixos"
           "hyprland/workspaces"
