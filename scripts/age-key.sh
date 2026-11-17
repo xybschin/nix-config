@@ -61,9 +61,12 @@ if [[ $kind == root ]]; then
     [[ $EUID -eq 0 ]] || as_root=(sudo)
 fi
 
-# op: use the installed CLI, else a throwaway nix shell (unfree).
+# op: use the installed CLI, else the Windows CLI through WSL interop (it talks
+# to the 1Password desktop app), else a throwaway nix shell (unfree).
 if command -v op >/dev/null; then
     op=(op)
+elif command -v op.exe >/dev/null; then
+    op=(op.exe)
 else
     export NIXPKGS_ALLOW_UNFREE=1
     op=(nix shell --impure nixpkgs#_1password-cli -c op)
@@ -76,7 +79,7 @@ if ! key=$("${op[@]}" read "op://$vault/$item/keys.txt"); then
     echo "could not read keys.txt from item '$item' in vault '$vault'" >&2
     exit 1
 fi
-key=${key//\"/} # op may quote the value
+key=${key//[\"$'\r']/} # op may quote the value; op.exe emits CRLF
 # The document may be a whole age key file; keep only the secret key line.
 key=$(grep -m1 '^AGE-SECRET-KEY-1' <<<"$key" || true)
 
