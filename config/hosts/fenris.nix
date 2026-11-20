@@ -24,6 +24,7 @@
       "podman"
       "printing"
       "wireguard"
+      "v4l2loopback"
     ];
 
     nixos.extraModules = [ ./_fenris/hardware.nix ];
@@ -82,6 +83,7 @@
       "terminals"
       "mangohud"
       "xembsni"
+      "lfbw"
       "shared.desktop"
       "shared.desktop.wm.hyprland"
       "shared.desktop.monitors"
@@ -235,6 +237,11 @@
         };
 
         my.coding-agents.agents = [ "opencode" ];
+
+        services.lfbw = {
+          enable = true;
+          settings.background = "file=${./_fenris/webcam-backgrounds/pub.png},blur=15";
+        };
 
         services.hypridle = {
           enable = true;

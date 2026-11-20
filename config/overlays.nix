@@ -4,6 +4,7 @@ let
     (import ./_overlays/armada-theme.nix)
     (import ./_overlays/curseforge.nix)
     (import ./_overlays/claude-code.nix)
+    (import ./_overlays/lfbw.nix)
     (import ./_overlays/segoe-ui.nix)
     (import ./_overlays/xembsni.nix)
   ];
