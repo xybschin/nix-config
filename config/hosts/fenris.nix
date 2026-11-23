@@ -240,7 +240,11 @@
 
         services.lfbw = {
           enable = true;
-          settings.background = "file=${./_fenris/webcam-backgrounds/pub.png},blur=15";
+          settings = {
+            background = "file=${./_fenris/webcam-backgrounds/fireplace.mp4}";
+            fps = 25;
+            threshold = 75;
+          };
         };
 
         services.hypridle = {
