@@ -25,6 +25,7 @@
       "printing"
       "wireguard"
       "v4l2loopback"
+      "localsend"
     ];
 
     nixos.extraModules = [ ./_fenris/hardware.nix ];
