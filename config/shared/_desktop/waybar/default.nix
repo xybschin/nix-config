@@ -178,7 +178,7 @@ in
 
         #custom-nixos {
             margin: 2px 21px;
-            font-size: 24px;
+            font-size: 30px;
             color: @base03;
         }
 
