@@ -16,6 +16,45 @@
         xwayland.enable = true;
       };
 
+      # xdg-desktop-portal-hyprland keeps one PipeWire core connection from
+      # startup and does not reconnect if PipeWire restarts. Tie the portal
+      # services to PipeWire's lifecycle so a crash or rebuild restarts them
+      # too; otherwise Discord screen sharing times out until the portal is
+      # restarted by hand.
+      systemd.user.services."xdg-desktop-portal" = {
+        unitConfig = {
+          PartOf = [
+            "pipewire.service"
+            "wireplumber.service"
+          ];
+          Requires = [
+            "pipewire.service"
+            "wireplumber.service"
+          ];
+          After = [
+            "pipewire.service"
+            "wireplumber.service"
+          ];
+        };
+      };
+
+      systemd.user.services."xdg-desktop-portal-hyprland" = {
+        unitConfig = {
+          PartOf = [
+            "pipewire.service"
+            "wireplumber.service"
+          ];
+          Requires = [
+            "pipewire.service"
+            "wireplumber.service"
+          ];
+          After = [
+            "pipewire.service"
+            "wireplumber.service"
+          ];
+        };
+      };
+
       services.greetd = {
         enable = true;
         useTextGreeter = true;
