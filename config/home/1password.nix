@@ -54,14 +54,11 @@
       programs.ssh = {
         enable = true;
         enableDefaultConfig = isDarwin;
+        # WSL instances are throwaway/per-machine: let them add hand-written
+        # hosts in ~/.ssh/config.d/ without touching the Nix-managed config.
+        includes = lib.optionals isWsl [ "~/.ssh/config.d/*" ];
         settings."*" = {
           identityAgent = onePassPath;
-        };
-        settings.atlas = {
-          hostname = "37.120.171.251";
-          user = "root";
-          identityFile = "~/.ssh/moonz@atlas.bjarneschindler.dev.pub";
-          identitiesOnly = true;
         };
       };
 
