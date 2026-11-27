@@ -1,3 +1,4 @@
 [submodule "config/home/_global/nvim/config"]
 	path = config/home/_global/nvim/config
 	url = ssh://git@github.com/xybschin/neovim-config
+	branch = main
