@@ -31,6 +31,21 @@
 
       services.vscode-server.enable = true;
 
+      # Open files/URLs with the Windows default handler via explorer.exe.
+      environment.systemPackages = [
+        (pkgs.writeShellScriptBin "xdg-open" ''
+          t="''${1:-.}"
+          case "$t" in
+            file://*) t="$(wslpath -aw "''${t#file://}")" ;;
+            *://*|mailto:*) ;;
+            *) t="$(wslpath -aw "$t")" ;;
+          esac
+          explorer.exe "$t"
+          exit 0
+        '')
+      ];
+      environment.sessionVariables.BROWSER = "xdg-open";
+
       wsl = {
         enable = true;
         wslConf.automount.root = "/mnt";
