@@ -20,10 +20,6 @@
           # Rofi is unused, and stylix still sets the deprecated
           # programs.rofi.font instead of programs.rofi.settings.font.
           rofi.enable = false;
-
-          # Home Manager removed programs.wayprompt after nixpkgs dropped the
-          # unmaintained package; stylix still auto-enables its wayprompt target.
-          wayprompt.enable = false;
         };
 
         icons = {
